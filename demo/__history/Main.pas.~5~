@@ -1,0 +1,44 @@
+unit Main;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
+  uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniGUIBaseClasses, uniButton,
+  uniStatusBar, uniPanel, uniHTMLFrame;
+
+type
+  TMainForm = class(TUniForm)
+    procedure UniButton1Click(Sender: TObject);
+    procedure UniButton2Click(Sender: TObject);
+    procedure ButtonClick(Sender: Tobject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+function MainForm: TMainForm;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  uniGUIVars, MainModule, uniGUIApplication;
+
+function MainForm: TMainForm;
+begin
+  Result := TMainForm(UniMainModule.GetFormInstance(TMainForm));
+end;
+
+procedure TMainForm.ButtonClick(Sender: Tobject);
+begin
+  ShowMessage('teste');
+end;
+
+initialization
+  RegisterAppFormClass(TMainForm);
+
+end.

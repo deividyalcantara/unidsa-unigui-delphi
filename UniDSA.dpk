@@ -1,0 +1,64 @@
+package UniDSA;
+
+{$R *.res}
+{$R *.dres}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS OFF}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION ON}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO OFF}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES OFF}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE RELEASE}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'Componente UniDSA para UniGUI'}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl,
+  DesignIDE,
+  uniGUI28Core,
+  uniTools28,
+  uIndy28,
+  soaprtl,
+  dbrtl,
+  xmlrtl,
+  inet,
+  vclimg,
+  vcl,
+  vcldb,
+  vclwinx,
+  bindengine,
+  vcledge,
+  uniGUI28;
+
+contains
+  UniDSAJQuery in 'sources\UniDSAJQuery.pas',
+  UniDSALibrary in 'sources\UniDSALibrary.pas',
+  UniDSAToast in 'sources\UniDSAToast.pas',
+  UniDSAConfirm in 'sources\UniDSAConfirm.pas',
+  UniDSABrowser in 'sources\UniDSABrowser.pas' {FormUniDSABrowser},
+  UniDSASource in 'sources\UniDSASource.pas',
+  UniDSABase in 'sources\UniDSABase.pas',
+  UniDSAColor in 'sources\UniDSAColor.pas',
+  UniDSAMenu in 'sources\UniDSAMenu.pas';
+
+end.
+
+
+

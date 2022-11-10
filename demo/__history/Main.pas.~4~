@@ -1,0 +1,85 @@
+unit Main;
+
+interface
+
+uses
+  Windows, Messages, SysUtils, Variants, Classes, Graphics,
+  Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
+  uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniGUIBaseClasses, uniButton,
+  uniStatusBar, uniPanel, uniHTMLFrame;
+
+type
+  TMainForm = class(TUniForm)
+    procedure UniButton1Click(Sender: TObject);
+    procedure UniButton2Click(Sender: TObject);
+    procedure ButtonClick(Sender: Tobject);
+  private
+    { Private declarations }
+  public
+    { Public declarations }
+  end;
+
+function MainForm: TMainForm;
+
+implementation
+
+{$R *.dfm}
+
+uses
+  uniGUIVars, MainModule, uniGUIApplication;
+
+function MainForm: TMainForm;
+begin
+  Result := TMainForm(UniMainModule.GetFormInstance(TMainForm));
+end;
+
+procedure TMainForm.ButtonClick(Sender: Tobject);
+begin
+  ShowMessage('teste');
+end;
+
+procedure TMainForm.UniButton1Click(Sender: TObject);
+begin
+  UniDSAConfirm1.Prompt;
+end;
+
+procedure TMainForm.UniButton2Click(Sender: TObject);
+var
+  button: TUniDSAConfirmButtonItem;
+begin
+  UniDSAConfirm1.Clear;
+
+  button := TUniDSAConfirmButtonItem.Create(UniDSAConfirm1.Buttons);
+  button.Text := 'ola';
+
+  with TUniDSAConfirmButtonItem(UniDSAConfirm1.Buttons.Add) do begin
+    Text := 'Dois';
+    BtnClass := 'btn-blue';
+  end;
+end;
+
+procedure TMainForm.UniDSAConfirm1ButtonClick(ButtonText, Result: string);
+begin
+  if AnsiUpperCase(ButtonText) = 'SALVAR' then
+    ShowMessage('Salvo... ' + Result)
+  else if AnsiUpperCase(ButtonText) = 'CANCELAR' then
+    ShowMessage('Cancelado...')
+  else if AnsiUpperCase(ButtonText) = 'OLA' then
+    ShowMessage('OLA...')
+end;
+
+procedure TMainForm.UniDSAConfirm1Buttons0Click(Sender: TObject);
+begin
+  ShowMessage('Salvo  | ' + UniDSAConfirm1.Response);
+
+end;
+
+procedure TMainForm.UniDSAConfirm1Buttons1Click(Sender: TObject);
+begin
+  ShowMessage('Cancelado');
+end;
+
+initialization
+  RegisterAppFormClass(TMainForm);
+
+end.
