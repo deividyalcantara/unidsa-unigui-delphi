@@ -592,3 +592,432 @@ UniDSADemo.exe: 00003478: 14:34:45 [TUniGUISessionManager]:Session manager termi
 UniDSADemo.exe: 00003478: 14:34:45 [TUniServerModule]:Server Shutdown Completed.
 UniDSADemo.exe: 00003478: 14:34:45 []:<-------------------------------------------------------------->
 UniDSADemo.exe: 00003478: 14:34:45 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 000004DC: 14:56:47 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 000004DC: 14:56:47 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 000004DC: 14:56:47 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 000004DC: 14:56:47 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 000004DC: 14:56:47 [InitWebServer]:EIdCouldNotBindSocket : Could not bind socket. : Addr: $00EAEB0B
+UniDSADemo.exe: 000004DC: 14:56:53 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 000004DC: 14:56:53 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 000004DC: 14:56:54 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 000004DC: 14:56:54 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 000004DC: 14:56:54 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 000004DC: 14:56:54 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 000004DC: 14:56:54 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 000004DC: 14:56:54 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 000004DC: 14:56:54 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 000004DC: 14:56:54 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 000004DC: 14:56:54 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 0000326C: 14:56:54 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 0000326C: 14:56:54 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 0000326C: 14:56:54 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 0000326C: 14:56:54 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 0000326C: 14:56:54 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00004668: 14:57:01 [HandleFileRequest[127.0.0.1]]:File not found: D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\files\dsa\dsa.css
+UniDSADemo.exe: 00003F74: 14:57:04 [HandleFileRequest[127.0.0.1]]:File not found: D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\files\dsa\dsa.css
+UniDSADemo.exe: 0000326C: 14:57:17 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 0000326C: 14:57:17 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 0000326C: 14:57:18 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 0000326C: 14:57:18 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 0000326C: 14:57:18 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 0000326C: 14:57:18 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 0000326C: 14:57:18 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 0000326C: 14:57:18 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 0000326C: 14:57:18 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 0000326C: 14:57:18 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 0000326C: 14:57:18 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00003188: 14:57:30 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00003188: 14:57:30 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00003188: 14:57:30 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00003188: 14:57:30 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00003188: 14:57:30 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00003188: 14:57:30 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00002DC8: 14:57:33 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: VRyWKeOm4710B7AC438 ) : Addr: $00B1D923
+UniDSADemo.exe: 00002DC8: 14:57:33 [HandleFileRequest[127.0.0.1]]:File not found: D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\files\dsa\dsa.css
+UniDSADemo.exe: 00003188: 14:57:44 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00003188: 14:57:44 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00003188: 14:57:45 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00003188: 14:57:45 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00003188: 14:57:45 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00003188: 14:57:45 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00003188: 14:57:45 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00003188: 14:57:45 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00003188: 14:57:45 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00003188: 14:57:45 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00003188: 14:57:45 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00002994: 14:57:45 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00002994: 14:57:45 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00002994: 14:57:46 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00002994: 14:57:46 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00002994: 14:57:46 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00002994: 14:57:46 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00003B34: 14:57:47 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: C2eyproyly10B7AC45A ) : Addr: $00F8D923
+UniDSADemo.exe: 00003B34: 14:57:47 [HandleFileRequest[127.0.0.1]]:File not found: D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\files\dsa\dsa.css
+UniDSADemo.exe: 000029C4: 14:57:53 [HandleFileRequest[127.0.0.1]]:File not found: D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\files\dsa\dsa.css
+UniDSADemo.exe: 00002938: 14:58:12 [HandleFileRequest[127.0.0.1]]:File not found: D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\files\dsa\dsa.css
+UniDSADemo.exe: 00004E5C: 14:58:13 [HandleFileRequest[127.0.0.1]]:File not found: D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\files\dsa\dsa.css
+UniDSADemo.exe: 00003FDC: 14:58:18 [HandleFileRequest[127.0.0.1]]:File not found: D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\favicon.ico
+UniDSADemo.exe: 00004600: 14:58:21 [HandleFileRequest[127.0.0.1]]:File not found: D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\files\dsa\dsa.css
+UniDSADemo.exe: 00002994: 14:58:52 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00002994: 14:58:52 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00002994: 14:58:53 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00002994: 14:58:53 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00002994: 14:58:53 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00002994: 14:58:53 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00002994: 14:58:53 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00002994: 14:58:53 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00002994: 14:58:53 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00002994: 14:58:53 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00002994: 14:58:53 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 000010FC: 14:59:33 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 000010FC: 14:59:33 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 000010FC: 14:59:33 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 000010FC: 14:59:33 [TUniGUISessionManager]:Cache erase job created, Folder count: [2]
+UniDSADemo.exe: 000010FC: 14:59:33 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 000010FC: 14:59:33 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 0000283C: 14:59:36 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: BYLWUjTUpT10B7AC489 ) : Addr: $00E5D923
+UniDSADemo.exe: 00002F34: 15:03:27 [HandleFileRequest[127.0.0.1]]:File not found: D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\files\dsa\dsa.css
+UniDSADemo.exe: 0000283C: 15:03:28 [HandleFileRequest[127.0.0.1]]:File not found: D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\files\dsa\dsa.css
+UniDSADemo.exe: 000010FC: 15:21:05 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 000010FC: 15:21:05 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 000010FC: 15:21:06 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 000010FC: 15:21:06 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 000010FC: 15:21:06 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 000010FC: 15:21:06 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 000010FC: 15:21:06 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 000010FC: 15:21:06 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 000010FC: 15:21:06 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 000010FC: 15:21:06 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 000010FC: 15:21:06 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00005430: 15:40:16 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00005430: 15:40:16 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00005430: 15:40:16 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00005430: 15:40:16 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00005430: 15:40:16 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00005430: 15:40:16 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00005430: 15:40:44 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00005430: 15:40:44 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00005430: 15:40:45 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00005430: 15:40:45 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00005430: 15:40:45 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00005430: 15:40:45 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00005430: 15:40:45 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00005430: 15:40:45 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00005430: 15:40:46 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00005430: 15:40:46 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00005430: 15:40:46 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00004D1C: 15:40:47 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00004D1C: 15:40:47 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00004D1C: 15:40:47 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00004D1C: 15:40:47 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00004D1C: 15:40:47 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00004D1C: 15:40:47 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00000580: 15:40:49 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: JZPB3SwUKR10B7ACFF8 ) : Addr: $010BD923
+UniDSADemo.exe: 00004D1C: 15:41:47 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00004D1C: 15:41:47 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00004D1C: 15:41:48 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00004D1C: 15:41:48 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00004D1C: 15:41:48 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00004D1C: 15:41:48 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00004D1C: 15:41:48 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00004D1C: 15:41:48 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00004D1C: 15:41:48 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00004D1C: 15:41:48 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00004D1C: 15:41:48 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00000B64: 15:41:49 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00000B64: 15:41:49 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00000B64: 15:41:49 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00000B64: 15:41:49 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00000B64: 15:41:49 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00000B64: 15:41:49 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 000035F4: 15:41:51 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: ZFm27Rq7Oi10B7AD017 ) : Addr: $004FD923
+UniDSADemo.exe: 00000B64: 15:42:19 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00000B64: 15:42:19 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00000B64: 15:42:20 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00000B64: 15:42:20 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00000B64: 15:42:20 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00000B64: 15:42:20 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00000B64: 15:42:20 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00000B64: 15:42:20 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00000B64: 15:42:20 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00000B64: 15:42:20 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00000B64: 15:42:20 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00001664: 15:42:21 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00001664: 15:42:21 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00001664: 15:42:21 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00001664: 15:42:21 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00001664: 15:42:21 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00001664: 15:42:21 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00002DFC: 15:42:23 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: XTkFfbS7No10B7AD05F ) : Addr: $0062D923
+UniDSADemo.exe: 00001664: 15:42:38 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00001664: 15:42:38 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00001664: 15:42:39 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00001664: 15:42:39 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00001664: 15:42:39 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00001664: 15:42:39 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00001664: 15:42:40 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00001664: 15:42:40 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00001664: 15:42:40 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00001664: 15:42:40 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00001664: 15:42:40 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00004B98: 15:42:40 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00004B98: 15:42:40 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00004B98: 15:42:40 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00004B98: 15:42:40 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00004B98: 15:42:40 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00004B98: 15:42:40 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 000052E0: 15:42:43 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: rN7nxT11P710B7AD084 ) : Addr: $0072D923
+UniDSADemo.exe: 00004B98: 15:43:10 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00004B98: 15:43:10 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00004B98: 15:43:11 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00004B98: 15:43:11 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00004B98: 15:43:11 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00004B98: 15:43:11 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00004B98: 15:43:11 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00004B98: 15:43:11 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00004B98: 15:43:11 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00004B98: 15:43:11 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00004B98: 15:43:11 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00002390: 15:43:11 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00002390: 15:43:11 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00002390: 15:43:11 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00002390: 15:43:11 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00002390: 15:43:11 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00002390: 15:43:11 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00003AA4: 15:43:14 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: clQsXO9NXa10B7AD09B ) : Addr: $0073D923
+UniDSADemo.exe: 00002390: 15:44:45 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00002390: 15:44:45 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00002390: 15:44:46 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00002390: 15:44:46 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00002390: 15:44:46 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00002390: 15:44:46 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00002390: 15:44:46 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00002390: 15:44:46 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00002390: 15:44:46 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00002390: 15:44:46 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00002390: 15:44:46 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00000AB4: 15:44:47 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00000AB4: 15:44:47 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00000AB4: 15:44:47 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00000AB4: 15:44:47 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00000AB4: 15:44:47 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00000AB4: 15:44:47 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 000024B0: 15:44:48 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: 7LmiCdymMm10B7AD0BF ) : Addr: $0082D923
+UniDSADemo.exe: 00000AB4: 15:45:06 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00000AB4: 15:45:06 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00000AB4: 15:45:07 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00000AB4: 15:45:07 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00000AB4: 15:45:07 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00000AB4: 15:45:07 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00000AB4: 15:45:07 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00000AB4: 15:45:07 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00000AB4: 15:45:07 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00000AB4: 15:45:07 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00000AB4: 15:45:07 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00004444: 15:45:08 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00004444: 15:45:08 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00004444: 15:45:08 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00004444: 15:45:08 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00004444: 15:45:08 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00004444: 15:45:08 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00002164: 15:45:09 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: qnyl619KYi10B7AD12C ) : Addr: $0099D923
+UniDSADemo.exe: 00004444: 15:46:12 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00004444: 15:46:12 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00004444: 15:46:13 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00004444: 15:46:13 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00004444: 15:46:14 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00004444: 15:46:14 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00004444: 15:46:14 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00004444: 15:46:14 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00004444: 15:46:14 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00004444: 15:46:14 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00004444: 15:46:14 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00002630: 15:46:14 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00002630: 15:46:14 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00002630: 15:46:14 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00002630: 15:46:14 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00002630: 15:46:14 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00002630: 15:46:14 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 000054DC: 15:46:16 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: N4Eg2dixWU10B7AD144 ) : Addr: $0062D923
+UniDSADemo.exe: 00002630: 15:49:37 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00002630: 15:49:37 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00002630: 15:49:38 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00002630: 15:49:38 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00002630: 15:49:38 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00002630: 15:49:38 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00002630: 15:49:38 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00002630: 15:49:38 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00002630: 15:49:38 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00002630: 15:49:38 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00002630: 15:49:38 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 000054F8: 15:49:43 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 000054F8: 15:49:43 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 000054F8: 15:49:43 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 000054F8: 15:49:43 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 000054F8: 15:49:43 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 000054F8: 15:49:43 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00005610: 15:49:44 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: KSDHM999bh10B7AD192 ) : Addr: $0101D923
+UniDSADemo.exe: 000054F8: 15:50:29 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 000054F8: 15:50:29 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 000054F8: 15:50:30 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 000054F8: 15:50:30 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 000054F8: 15:50:30 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 000054F8: 15:50:30 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 000054F8: 15:50:30 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 000054F8: 15:50:30 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 000054F8: 15:50:30 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 000054F8: 15:50:30 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 000054F8: 15:50:30 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 000036F0: 15:50:31 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 000036F0: 15:50:31 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 000036F0: 15:50:31 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 000036F0: 15:50:31 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 000036F0: 15:50:31 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 000036F0: 15:50:31 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 0000427C: 15:50:33 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: GMzZNxMKI910B7AD282 ) : Addr: $0023D923
+UniDSADemo.exe: 000036F0: 15:51:06 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 000036F0: 15:51:06 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 000036F0: 15:51:07 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 000036F0: 15:51:07 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 000036F0: 15:51:07 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 000036F0: 15:51:07 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 000036F0: 15:51:07 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 000036F0: 15:51:08 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 000036F0: 15:51:08 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 000036F0: 15:51:08 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 000036F0: 15:51:08 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00005674: 15:51:08 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00005674: 15:51:08 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00005674: 15:51:08 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00005674: 15:51:08 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00005674: 15:51:08 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00005674: 15:51:08 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00002A30: 15:51:10 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: FFTghkeX2y10B7AD2BB ) : Addr: $00D5D923
+UniDSADemo.exe: 00005674: 15:52:08 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00005674: 15:52:08 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00005674: 15:52:09 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00005674: 15:52:09 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00005674: 15:52:09 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00005674: 15:52:09 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00005674: 15:52:09 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00005674: 15:52:09 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00005674: 15:52:09 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00005674: 15:52:09 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00005674: 15:52:09 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00004578: 15:52:12 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00004578: 15:52:12 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00004578: 15:52:12 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00004578: 15:52:12 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00004578: 15:52:12 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00004578: 15:52:12 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00002B68: 15:52:14 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: 1bhT9ibwdA10B7AD2E6 ) : Addr: $006DD923
+UniDSADemo.exe: 00004578: 15:57:08 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00004578: 15:57:08 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00004578: 15:57:09 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00004578: 15:57:09 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00004578: 15:57:09 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00004578: 15:57:09 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00004578: 15:57:09 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00004578: 15:57:09 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00004578: 15:57:09 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00004578: 15:57:09 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00004578: 15:57:09 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00003C10: 15:57:09 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00003C10: 15:57:09 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00003C10: 15:57:09 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00003C10: 15:57:09 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00003C10: 15:57:09 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00003C10: 15:57:09 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 000003BC: 15:57:11 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: 32g2eJlunz10B7AD32F ) : Addr: $002CD923
+UniDSADemo.exe: 00003C10: 15:57:27 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00003C10: 15:57:27 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00003C10: 15:57:28 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00003C10: 15:57:28 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00003C10: 15:57:28 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00003C10: 15:57:28 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00003C10: 15:57:28 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00003C10: 15:57:28 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00003C10: 15:57:28 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00003C10: 15:57:28 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00003C10: 15:57:28 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00000848: 15:57:30 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00000848: 15:57:30 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00000848: 15:57:30 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00000848: 15:57:30 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00000848: 15:57:30 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00000848: 15:57:30 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 000030B0: 15:57:32 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: 1BXoGZ6BWh10B7AD488 ) : Addr: $0056D923
+UniDSADemo.exe: 00000848: 15:57:53 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00000848: 15:57:53 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00000848: 15:57:54 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00000848: 15:57:54 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00000848: 15:57:54 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00000848: 15:57:54 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00000848: 15:57:54 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00000848: 15:57:54 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00000848: 15:57:54 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00000848: 15:57:54 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00000848: 15:57:54 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00001A4C: 15:57:55 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00001A4C: 15:57:55 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00001A4C: 15:57:55 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00001A4C: 15:57:55 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00001A4C: 15:57:55 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00001A4C: 15:57:55 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 000052D8: 15:57:57 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: b2hVw9WnxE10B7AD4A0 ) : Addr: $00B4D923
+UniDSADemo.exe: 00001A4C: 15:58:15 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00001A4C: 15:58:15 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00001A4C: 15:58:16 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00001A4C: 15:58:16 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00001A4C: 15:58:16 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00001A4C: 15:58:16 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00001A4C: 15:58:16 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00001A4C: 15:58:16 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00001A4C: 15:58:16 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00001A4C: 15:58:16 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00001A4C: 15:58:16 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00001CEC: 15:58:17 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00001CEC: 15:58:17 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00001CEC: 15:58:17 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00001CEC: 15:58:17 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00001CEC: 15:58:17 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00001CEC: 15:58:17 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 000051E4: 15:58:19 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: T6y3tU8YNR10B7AD4BD ) : Addr: $0116D923
+UniDSADemo.exe: 00001CEC: 15:58:53 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 00001CEC: 15:58:53 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 00001CEC: 15:58:54 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 00001CEC: 15:58:54 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 00001CEC: 15:58:54 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 00001CEC: 15:58:54 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 00001CEC: 15:58:54 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 00001CEC: 15:58:54 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 00001CEC: 15:58:54 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 00001CEC: 15:58:54 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 00001CEC: 15:58:54 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 000038C0: 15:59:00 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 000038C0: 15:59:00 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 000038C0: 15:59:00 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 000038C0: 15:59:00 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 000038C0: 15:59:00 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 000038C0: 15:59:00 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00002AA0: 15:59:02 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: DJ3NFsHQsX10B7AD4D6 ) : Addr: $0022D923
+UniDSADemo.exe: 000038C0: 16:01:51 [TUniServerModule]:Shutting Down Server.
+UniDSADemo.exe: 000038C0: 16:01:51 [TUniServerModule]:Stopping HTTP Server.
+UniDSADemo.exe: 000038C0: 16:01:52 [TUniServerModule]:HTTP Server Stopped.
+UniDSADemo.exe: 000038C0: 16:01:52 [TUniGUISessionManager]:Terminating Session manager.
+UniDSADemo.exe: 000038C0: 16:01:52 [TUniGUISessionManager]:Stopping Cache Eraser...
+UniDSADemo.exe: 000038C0: 16:01:52 [TUniGUISessionManager]:Cache Eraser Stopped.
+UniDSADemo.exe: 000038C0: 16:01:52 [TUniGUISessionManager]:Destroying Worker Threads.
+UniDSADemo.exe: 000038C0: 16:01:52 [TUniGUISessionManager]:Session manager terminated.
+UniDSADemo.exe: 000038C0: 16:01:52 [TUniServerModule]:Server Shutdown Completed.
+UniDSADemo.exe: 000038C0: 16:01:52 []:<-------------------------------------------------------------->
+UniDSADemo.exe: 000038C0: 16:01:52 [Terminated]:Exit Code: 0
+UniDSADemo.exe: 00004BB0: 16:01:54 []:>--------------------------------------------------------------<
+UniDSADemo.exe: 00004BB0: 16:01:54 [TUniServerModule]:Server First Init.
+UniDSADemo.exe: 00004BB0: 16:01:54 [TUniServerModule]:Start Path = D:\Andamento\unidsa-unigui-delphi\demo\Win32\Debug\
+UniDSADemo.exe: 00004BB0: 16:01:54 [TUniGUISessionManager]:Cache erase job created, Folder count: [1]
+UniDSADemo.exe: 00004BB0: 16:01:54 [TUniServerModule]:Starting HTTP Server on Port: 8077...
+UniDSADemo.exe: 00004BB0: 16:01:54 [TUniServerModule]:HTTP Server Started on Port: 8077
+UniDSADemo.exe: 00005658: 16:01:55 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: WFZVSLVCBB10B7AD508 ) : Addr: $00E8D923
+UniDSADemo.exe: 00002718: 16:31:17 [127.0.0.1]:EUniSessionException : Invalid session or session Timeout. (Session not found: 2UKNdT6gIM10B7AD5D1 ) : Addr: $00E8D923
+UniDSADemo.exe: 00004BB0: 16:41:01 [Exit]:Unexpected attempt to terminate server application with Exit Code: 0

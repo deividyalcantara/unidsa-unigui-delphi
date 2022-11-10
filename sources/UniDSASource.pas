@@ -29,6 +29,7 @@ begin
     UniAddCSSLibrary(cFolder + '/dist/jquery-confirm.min.css', True, [upoFolderUni, upoPlatformBoth]);
     UniAddCSSLibrary('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', True, [upoFolderUni, upoPlatformBoth]);
     UniAddJSLibrary(cFolder + '/dist/jquery-confirm.min.js', True, [upoFolderUni, upoPlatformBoth]);
+    UniAddCSSLibrary(cFolder + '/css/dsa.css', True, [upoFolderUni, upoPlatformBoth]);
   end
   else if component = TTypeUniDSASource.MenuSiderbar then begin
     UniAddCSSLibrary(cFolder + '/menu/menu_1/style.css', True, [upoFolderUni, upoPlatformBoth]);
