@@ -1,0 +1,42 @@
+object FormLeitorQrCode: TFormLeitorQrCode
+  Left = 0
+  Top = 0
+  ClientHeight = 380
+  ClientWidth = 602
+  Caption = 'Leitor de QRCode'
+  OldCreateOrder = False
+  OnClose = UniFormClose
+  MonitoredKeys.Keys = <>
+  PageMode = True
+  TextHeight = 15
+  object UniDSAQrCodeReader1: TUniDSAQrCodeReader
+    Left = 104
+    Top = 8
+    Width = 401
+    Height = 337
+    Hint = ''
+    Version = '1.1.0'
+    Text = ''
+    SingleRead = True
+    QrBox = 250
+    FPS = 10
+    SupportedFormats.QR_CODE = True
+    SupportedFormats.AZTEC = True
+    SupportedFormats.CODABAR = True
+    SupportedFormats.CODE_39 = True
+    SupportedFormats.CODE_93 = True
+    SupportedFormats.CODE_128 = True
+    SupportedFormats.DATA_MATRIX = True
+    SupportedFormats.MAXICODE = True
+    SupportedFormats.ITF = True
+    SupportedFormats.EAN_13 = True
+    SupportedFormats.EAN_8 = True
+    SupportedFormats.PDF_417 = True
+    SupportedFormats.RSS_14 = True
+    SupportedFormats.RSS_EXPANDED = True
+    SupportedFormats.UPC_A = True
+    SupportedFormats.UPC_E = True
+    SupportedFormats.UPC_EAN_EXTENSION = True
+    OnAfterReading = UniDSAQrCodeReader1AfterReading
+  end
+end
