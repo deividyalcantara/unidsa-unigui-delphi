@@ -10057,7 +10057,7 @@ var __Html5QrcodeLibrary__;
                 }, t.noCameraFound = function() {
                     return "Nenhuma câmera encontrada"
                 }, t.scanButtonStopScanningText = function() {
-                    return "Parando escaneamento"
+                    return "Parar escaneamento"
                 }, t.scanButtonStartScanningText = function() {
                     return "Iniciando escaneamento"
                 }, t.torchOnButton = function() {
