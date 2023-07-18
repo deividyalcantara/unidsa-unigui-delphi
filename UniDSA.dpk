@@ -10,21 +10,21 @@ package UniDSA;
 {$EXTENDEDSYNTAX ON}
 {$IMPORTEDDATA ON}
 {$IOCHECKS ON}
-{$LOCALSYMBOLS OFF}
+{$LOCALSYMBOLS ON}
 {$LONGSTRINGS ON}
 {$OPENSTRINGS ON}
-{$OPTIMIZATION ON}
-{$OVERFLOWCHECKS OFF}
-{$RANGECHECKS OFF}
-{$REFERENCEINFO OFF}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
 {$SAFEDIVIDE OFF}
-{$STACKFRAMES OFF}
+{$STACKFRAMES ON}
 {$TYPEDADDRESS OFF}
 {$VARSTRINGCHECKS ON}
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
-{$DEFINE RELEASE}
+{$DEFINE DEBUG}
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Componente UniDSA para UniGUI'}
 {$IMPLICITBUILD ON}
@@ -56,7 +56,9 @@ contains
   UniDSASource in 'sources\UniDSASource.pas',
   UniDSABase in 'sources\UniDSABase.pas',
   UniDSAColor in 'sources\UniDSAColor.pas',
-  UniDSAMenu in 'sources\UniDSAMenu.pas';
+  UniDSAMenu in 'sources\UniDSAMenu.pas',
+  UniDSAQrCodeReader in 'sources\UniDSAQrCodeReader.pas',
+  UniDSABaseControl in 'sources\UniDSABaseControl.pas';
 
 end.
 

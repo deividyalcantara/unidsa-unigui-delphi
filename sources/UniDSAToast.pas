@@ -5,7 +5,8 @@ interface
 uses
   System.SysUtils, System.Classes, uniGUIBaseClasses, uniGUIClasses, UniDSAJQuery, UniDSALibrary,
   System.UITypes, uniGUITypes, System.TypInfo, Vcl.Graphics, UniDSASource,  UniDSABrowser,
-  DesignMenus, UniDSABase, UniDSAColor;
+  //DesignMenus,
+  UniDSABase, UniDSAColor;
 
 type
   TUniDSAToastTypeTextAlign = (Left, Right, Center);

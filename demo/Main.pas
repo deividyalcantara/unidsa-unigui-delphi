@@ -7,7 +7,7 @@ uses
   Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
   uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniGUIBaseClasses, uniButton,
   uniStatusBar, uniPanel, uniHTMLFrame, UniDSAJQuery, UniDSABase, UniDSAConfirm,
-  UniDSAToast;
+  UniDSAToast, uniEdit, UniDSABaseControl, UniDSAQrCodeReader;
 
 type
   TMainForm = class(TUniForm)
@@ -17,6 +17,9 @@ type
     UniButton2: TUniButton;
     UniButton3: TUniButton;
     UniButton4: TUniButton;
+    UniButton5: TUniButton;
+    eQrCode: TUniEdit;
+    UniDSAQrCodeReader1: TUniDSAQrCodeReader;
     procedure UniDSAConfirm1Buttons0Click(Sender: TObject);
     procedure UniDSAConfirm1Buttons1Click(Sender: TObject);
     procedure UniDSAConfirm1Buttons2Click(Sender: TObject);
@@ -24,6 +27,8 @@ type
     procedure UniDSAConfirm1ButtonClick(ButtonText, Result: string);
     procedure UniButton2Click(Sender: TObject);
     procedure ButtonClick(Sender: TObject);
+    procedure UniButton5Click(Sender: TObject);
+    procedure UniDSAQrCodeReader1AfterReading(Sender: TObject);
   end;
 
 function MainForm: TMainForm;
@@ -33,7 +38,7 @@ implementation
 {$R *.dfm}
 
 uses
-  uniGUIVars, MainModule, uniGUIApplication;
+  uniGUIVars, MainModule, uniGUIApplication, LeitorQrCode;
 
 function MainForm: TMainForm;
 begin
@@ -55,6 +60,11 @@ begin
   UniDSAToast1.Heading := 'Produto';
   UniDSAToast1.Text := 'Novo produto cadastrado!';
   UniDSAToast1.Show;
+end;
+
+procedure TMainForm.UniButton5Click(Sender: TObject);
+begin
+  eQrCode.Text := LeitorQrCode.RealizarLeituraQrCode;
 end;
 
 procedure TMainForm.UniDSAConfirm1ButtonClick(ButtonText, Result: string);
@@ -81,6 +91,11 @@ end;
 procedure TMainForm.UniDSAConfirm1Buttons2Click(Sender: TObject);
 begin
   ShowMessage('Cancelar');
+end;
+
+procedure TMainForm.UniDSAQrCodeReader1AfterReading(Sender: TObject);
+begin
+  eQrCode.Text := UniDSAQrCodeReader1.Result;
 end;
 
 initialization

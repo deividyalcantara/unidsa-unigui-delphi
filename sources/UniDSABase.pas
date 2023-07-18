@@ -42,15 +42,17 @@ function TUniDSABaseComponent.AjaxRequest(EventName: string; Parametros: TArrayO
     Result := '[';
 
     for k := Low(Parametros) to High(Parametros) do
-      Result := Result +  IIfStr(k <> Low(Parametros), ',', '') + QuotedStr(Parametros[k]);
+      Result := Result +  IIfStr(k <> Low(Parametros), ',', '') + QuotedStr(Parametros[k] + '=p' + IntToStr(k));
 
     Result := Result + ']'
   end;
 begin
   Result :=
     ' ' +
-    'function () { ' +
+    'function (p0) { ' +
+    '  alert(p0); ' +
     '  ajaxRequest(' + IIfStr(Self.JSName = '', 'body', Self.JSName) + ', "' + EventName + '", ' + GetParametros +'); ' +
+    '  $(".qrr-overlay").remove(); ' +
     '} ';
 end;
 
@@ -58,7 +60,7 @@ constructor TUniDSABaseComponent.Create(AOwner: TComponent);
 begin
   inherited Create(AOwner);
   FAbout := 'https://github.com/deividyalcantara?tab=repositories';
-  FVersion := '1.0.0';
+  FVersion := '1.1.0';
 end;
 
 destructor TUniDSABaseComponent.Destroy;

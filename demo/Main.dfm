@@ -7,7 +7,6 @@ object MainForm: TMainForm
   OldCreateOrder = False
   MonitoredKeys.Keys = <>
   Font.Height = -12
-  Font.Name = 'Segoe UI'
   TextHeight = 15
   object UniButton1: TUniButton
     Left = 0
@@ -19,6 +18,7 @@ object MainForm: TMainForm
     Align = alTop
     TabOrder = 0
     OnClick = UniButton1Click
+    ExplicitWidth = 863
   end
   object UniButton2: TUniButton
     Left = 0
@@ -30,7 +30,7 @@ object MainForm: TMainForm
     Align = alTop
     TabOrder = 1
     OnClick = UniButton2Click
-    ExplicitTop = 39
+    ExplicitWidth = 863
   end
   object UniButton3: TUniButton
     Left = 0
@@ -42,8 +42,7 @@ object MainForm: TMainForm
     Align = alTop
     TabOrder = 2
     OnClick = UniButton2Click
-    ExplicitLeft = -8
-    ExplicitTop = 72
+    ExplicitWidth = 863
   end
   object UniButton4: TUniButton
     Left = 0
@@ -55,7 +54,60 @@ object MainForm: TMainForm
     Align = alTop
     TabOrder = 3
     OnClick = UniButton2Click
-    ExplicitTop = 74
+    ExplicitWidth = 863
+  end
+  object UniButton5: TUniButton
+    Left = 0
+    Top = 169
+    Width = 867
+    Height = 33
+    Hint = ''
+    Caption = 'Ler QRCode'
+    Align = alTop
+    TabOrder = 4
+    OnClick = UniButton5Click
+    ExplicitWidth = 863
+  end
+  object eQrCode: TUniEdit
+    Left = 0
+    Top = 132
+    Width = 867
+    Height = 37
+    Hint = ''
+    Text = 'Leia o QRCode'
+    Align = alTop
+    TabOrder = 5
+    ExplicitWidth = 863
+  end
+  object UniDSAQrCodeReader1: TUniDSAQrCodeReader
+    Left = 8
+    Top = 208
+    Width = 377
+    Height = 360
+    Hint = ''
+    Version = '1.1.0'
+    Text = ''
+    SingleRead = False
+    QrBox = 200
+    FPS = 10
+    SupportedFormats.QR_CODE = True
+    SupportedFormats.AZTEC = True
+    SupportedFormats.CODABAR = True
+    SupportedFormats.CODE_39 = True
+    SupportedFormats.CODE_93 = True
+    SupportedFormats.CODE_128 = True
+    SupportedFormats.DATA_MATRIX = True
+    SupportedFormats.MAXICODE = True
+    SupportedFormats.ITF = True
+    SupportedFormats.EAN_13 = True
+    SupportedFormats.EAN_8 = True
+    SupportedFormats.PDF_417 = True
+    SupportedFormats.RSS_14 = True
+    SupportedFormats.RSS_EXPANDED = True
+    SupportedFormats.UPC_A = True
+    SupportedFormats.UPC_E = True
+    SupportedFormats.UPC_EAN_EXTENSION = True
+    OnAfterReading = UniDSAQrCodeReader1AfterReading
   end
   object UniDSAConfirm1: TUniDSAConfirm
     Version = '1.0.0'
@@ -119,8 +171,8 @@ object MainForm: TMainForm
     TypeConfirm = Alert
     Type = Blue
     OnButtonClick = UniDSAConfirm1ButtonClick
-    Left = 456
-    Top = 128
+    Left = 608
+    Top = 472
   end
   object UniDSAToast1: TUniDSAToast
     Version = '1.0.0'
@@ -142,7 +194,7 @@ object MainForm: TMainForm
     Position.Custom.Bottom = 0
     Loader.Enabled = True
     Loader.Background = clAqua
-    Left = 312
-    Top = 304
+    Left = 720
+    Top = 472
   end
 end

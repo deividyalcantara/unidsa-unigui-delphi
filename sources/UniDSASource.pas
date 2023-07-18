@@ -6,7 +6,7 @@ uses
   uniGUIClasses, uniGUITypes;
 
 type
-  TTypeUniDSASource = (Toast, Confirm, MenuSiderbar);
+  TTypeUniDSASource = (Toast, Confirm, MenuSiderbar, QrCodeReader);
 
 procedure GetLink(Component: TTypeUniDSASource);
 
@@ -30,6 +30,10 @@ begin
     UniAddCSSLibrary('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', True, [upoFolderUni, upoPlatformBoth]);
     UniAddJSLibrary(cFolder + '/dist/jquery-confirm.min.js', True, [upoFolderUni, upoPlatformBoth]);
     UniAddCSSLibrary(cFolder + '/css/dsa.css', True, [upoFolderUni, upoPlatformBoth]);
+  end
+  else if component = TTypeUniDSASource.QrCodeReader then begin
+    UniAddJSLibrary(cFolder + '/qrcode_reader/js/qrcode_library.js', True, [upoFolderUni, upoPlatformBoth]);
+    //UniAddJSLibrary('https://unpkg.com/html5-qrcode', True, [upoFolderUni, upoPlatformBoth]);
   end
   else if component = TTypeUniDSASource.MenuSiderbar then begin
     UniAddCSSLibrary(cFolder + '/menu/menu_1/style.css', True, [upoFolderUni, upoPlatformBoth]);

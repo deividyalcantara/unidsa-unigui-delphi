@@ -4,5 +4,8 @@
     <Transaction>2022/10/08 21:23:33.000.897,=D:\Andamento\componente-unidsa-unigui\demo\MainModule.pas</Transaction>
     <Transaction>2022/10/08 21:23:33.000.807,=D:\Andamento\componente-unidsa-unigui\demo\ServerModule.pas</Transaction>
     <Transaction>2022/10/08 21:23:34.000.243,=D:\Andamento\componente-unidsa-unigui\demo\Main.pas</Transaction>
+    <Transaction>2023/07/16 20:57:45.000.880,=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\demo\Unit1.pas</Transaction>
+    <Transaction>2023/07/16 20:58:08.000.714,E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\demo\LeitorQrCode.pas=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\demo\Unit1.pas</Transaction>
+    <Transaction>2023/07/16 20:58:08.000.714,E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\demo\LeitorQrCode.dfm=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\demo\Unit1.dfm</Transaction>
   </Transactions>
 </BorlandProject>
