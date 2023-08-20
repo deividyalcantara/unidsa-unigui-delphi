@@ -5,7 +5,15 @@ uses
   ServerModule in 'ServerModule.pas' {UniServerModule: TUniGUIServerModule},
   MainModule in 'MainModule.pas' {UniMainModule: TUniGUIMainModule},
   Main in 'Main.pas' {MainForm: TUniForm},
-  LeitorQrCode in 'LeitorQrCode.pas' {FormLeitorQrCode: TUniForm};
+  FrameBase in 'View\FrameBase.pas' {FrBase: TUniFrame},
+  FrameMenuLateral in 'View\FrameMenuLateral.pas' {FrMenuLateral: TUniFrame},
+  Funcoes in 'Library\Funcoes.pas',
+  FrameHome in 'View\FrameHome.pas' {FrHome: TUniFrame},
+  FormContribuicoes in 'View\FormContribuicoes.pas' {FrmContribuicoes: TUniForm},
+  FrameToast in 'View\FrameToast.pas' {FrToast: TUniFrame},
+  FrameLeitorQRCode in 'View\FrameLeitorQRCode.pas' {FrLeitorQrCode: TUniFrame},
+  FormLeitorQrCode in 'View\FormLeitorQrCode.pas' {FrmLeitorQrCode: TUniForm},
+  FrameConfirm in 'View\FrameConfirm.pas' {FrConfirm: TUniFrame};
 
 {$R *.res}
 
@@ -15,3 +23,4 @@ begin
   TUniServerModule.Create(Application);
   Application.Run;
 end.
+

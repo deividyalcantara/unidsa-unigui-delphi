@@ -3,7 +3,8 @@ unit UniDSAMenu;
 interface
 
 uses
-  UniDSAConfirm, UniDSAToast, UniDSABrowser, DesignEditors, DesignIntf, System.Classes;
+  UniDSAConfirm, UniDSAToast, UniDSABrowser, UniDSAMenuLateral,
+  DesignEditors, DesignIntf, System.Classes, ColnEdit;
 
 type
   TUniDSAConfirmMenu = class(TComponentEditor)
@@ -25,6 +26,16 @@ type
     constructor Create(AComponent: TComponent; ADesigner: IDesigner); override;
   end;
 
+  TUniDSAToastMenuLateral = class(TComponentEditor)
+  public
+    function GetVerbCount: Integer; override;
+    function GetVerb(Index: Integer): string; override;
+    procedure ExecuteVerb(Index: Integer); override;
+    procedure Edit; override;
+    destructor Destroy; override;
+    constructor Create(AComponent: TComponent; ADesigner: IDesigner); override;
+  end;
+
 procedure Register;
 
 implementation
@@ -33,6 +44,7 @@ procedure Register;
 begin
   RegisterComponentEditor(TUniDSAConfirm, TUniDSAConfirmMenu);
   RegisterComponentEditor(TUniDSAToast, TUniDSAToastMenu);
+  RegisterComponentEditor(TUniDSAMenuLateral, TUniDSAToastMenuLateral);
 end;
 
 { TUniDSAConfirmMenu }
@@ -49,25 +61,28 @@ end;
 
 procedure TUniDSAConfirmMenu.ExecuteVerb(Index: Integer);
 var
-  funcao: string;
+  LFuncao: string;
 begin
   inherited;
 
   if TUniDSAConfirm(Component).TypeConfirm = TUniDSAConfirmTypeConfirm.Alert then
-    funcao := 'alert'
+    LFuncao := 'alert'
   else if TUniDSAConfirm(Component).TypeConfirm = TUniDSAConfirmTypeConfirm.Dialog then
-    funcao := 'dialog'
+    LFuncao := 'dialog'
   else
-    funcao := 'confirm';
+    LFuncao := 'confirm';
 
   case Index of
     0: begin
          TUniDSAConfirm(Component).Prepare;
-         TUniDSAConfirm(Component).ConfirmProperty.FunctionName(funcao);
+         TUniDSAConfirm(Component).ConfirmProperty.FunctionName(LFuncao);
          UniDSABrowser.Navegar(TUniDSAConfirm(Component).ConfirmProperty.JQuery);
        end;
     1: begin
          UniDSABrowser.Navegar('https://fontawesome.com/v4/icons', UniDSABrowser.TUniDSABrowserMode.bmSite);
+       end;
+    2: begin
+         ShowCollectionEditor(Designer, Component, TUniDSAConfirm(Component).Buttons, 'TUniDSAConfirmButtonItem');
        end;
   end;
 end;
@@ -77,12 +92,13 @@ begin
   case Index of
     0: Result := '&Testar';
     1: Result := '&Fonte Awesome';
+    2: Result := '&Botões';
   end;
 end;
 
 function TUniDSAConfirmMenu.GetVerbCount: Integer;
 begin
-  Result := 2;
+  Result := 3;
 end;
 
 { TUniDSAToastMenu }
@@ -124,6 +140,46 @@ begin
 end;
 
 function TUniDSAToastMenu.GetVerbCount: Integer;
+begin
+  Result := 1;
+end;
+
+{ TUniDSAToastMenuLateral }
+
+constructor TUniDSAToastMenuLateral.Create(AComponent: TComponent; ADesigner: IDesigner);
+begin
+  inherited;
+end;
+
+destructor TUniDSAToastMenuLateral.Destroy;
+begin
+  inherited;
+end;
+
+procedure TUniDSAToastMenuLateral.Edit;
+begin
+  inherited;
+  ExecuteVerb(0);
+end;
+
+procedure TUniDSAToastMenuLateral.ExecuteVerb(Index: Integer);
+begin
+  inherited;
+  case Index of
+    0: begin
+         ShowCollectionEditor(Designer, Component, TUniDSAMenuLateral(Component).Menu, 'TUniDSAMenuLateralMenuItem');
+       end;
+  end;
+end;
+
+function TUniDSAToastMenuLateral.GetVerb(Index: Integer): string;
+begin
+  case Index of
+    0: Result := '&Menu';
+  end;
+end;
+
+function TUniDSAToastMenuLateral.GetVerbCount: Integer;
 begin
   Result := 1;
 end;

@@ -7,10 +7,12 @@ uses
 
 type
   TUniMainModule = class(TUniGUIMainModule)
+    procedure UniGUIMainModuleCreate(Sender: TObject);
   private
     { Private declarations }
   public
     { Public declarations }
+
   end;
 
 function UniMainModule: TUniMainModule;
@@ -25,6 +27,11 @@ uses
 function UniMainModule: TUniMainModule;
 begin
   Result := TUniMainModule(UniApplication.UniMainModule)
+end;
+
+procedure TUniMainModule.UniGUIMainModuleCreate(Sender: TObject);
+begin
+//    Self.theme := gray;
 end;
 
 initialization

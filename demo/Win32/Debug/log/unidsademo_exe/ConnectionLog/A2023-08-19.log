@@ -1,0 +1,6 @@
+UniDSADemo.exe: 00003A7C: 13:07:18 [127.0.0.1]:Failed Sequence Recovery: SeqId: 5, Event: click
+UniDSADemo.exe: 00003A7C: 13:07:23 [127.0.0.1]:Sequence sent from cache:  SeqId: 5
+UniDSADemo.exe: 00003A7C: 13:07:23 [127.0.0.1]:Processed: Id: 5, Evt: click, [D7FNU4FL2f10D28F27B]
+UniDSADemo.exe: 00001108: 13:08:33 [127.0.0.1]:Failed Sequence Recovery: SeqId: 8, Event: click
+UniDSADemo.exe: 00001108: 13:08:34 [127.0.0.1]:Sequence sent from cache:  SeqId: 8
+UniDSADemo.exe: 00001108: 13:08:34 [127.0.0.1]:Processed: Id: 8, Evt: click, [D7FNU4FL2f10D28F27B]

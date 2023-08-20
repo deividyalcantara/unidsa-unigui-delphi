@@ -8,45 +8,82 @@ uses
 type
   TArrayOfString = Array of string;
 
-function ColorToHex(cor: TColor): string;
-function IIfStr(condicao: Boolean; verdadeiro: string; falso: string): string;
+function ColorToHex(ACor: TColor): string;
+function IIfStr(ACondicao: Boolean; AVerdadeiro: string; AFalso: string): string;
+function IIfDbl(ACondicao: Boolean; AVerdadeiro: Double; AFalso: Double): Double;
+function IIf(ACondicao: Boolean; AVerdadeiro: Variant; AFalso: Variant): Variant;
 function SortName: string;
+function RemoverTagFontAwesome(AStr: string): string;
+function px(AValor: Integer): string;
 
 implementation
+
+function px(AValor: Integer): string;
+begin
+  try
+    Result := IntToStr(AValor) + 'px';
+  except
+    Result := '0px';
+  end;
+end;
+
+function IIf(ACondicao: Boolean; AVerdadeiro: Variant; AFalso: Variant): Variant;
+begin
+  if ACondicao then
+    Result := AVerdadeiro
+  else
+    Result := AFalso;
+end;
+
+function IIfDbl(ACondicao: Boolean; AVerdadeiro: Double; AFalso: Double): Double;
+begin
+  if ACondicao then
+    Result := AVerdadeiro
+  else
+    Result := AFalso;
+end;
+
+function RemoverTagFontAwesome(AStr: string): string;
+begin
+  Result := StringReplace(AStr, '  <i class="', '', [rfReplaceAll]);
+  Result := StringReplace(Result, ' <i class="', '', [rfReplaceAll]);
+  Result := StringReplace(Result, '<i class="', '', [rfReplaceAll]);
+  Result := StringReplace(Result, '"></i>', '', [rfReplaceAll]);
+end;
 
 function SortName: string;
 var
   i: Integer;
-  values: TArrayOfString;
+  AValues: TArrayOfString;
 begin
-  values := ['D','E','I','V','I','D','Y', '_', 'A','L','C','A','N','T','A','R','A'];
+  AValues := ['D','E','I','V','I','D','Y', '_', 'A','L','C','A','N','T','A','R','A'];
 
   for i := 1 to 10 do
-    Result := Result + values[random(16)];
+    Result := Result + AValues[random(16)];
 end;
 
-function ColorToHex(cor: TColor): string;
+function ColorToHex(ACor: TColor): string;
 var
-  color: LongInt;
-  red: Integer;
-  green: Integer;
-  blue: Integer;
+  LColor: LongInt;
+  LRed: Integer;
+  LGreen: Integer;
+  LBlue: Integer;
 begin
-  color := ColorToRGB(cor);
+  LColor := ColorToRGB(ACor);
 
-  red := ($000000FF and Color);
-  green := ($0000FF00 and Color) Shr 8;
-  blue := ($00FF0000 and Color) Shr 16;
+  LRed := ($000000FF and LColor);
+  LGreen := ($0000FF00 and LColor) Shr 8;
+  LBlue := ($00FF0000 and LColor) Shr 16;
 
-  Result := 'rgb(' + IntToStr(red) + ',' + IntToStr(green) + ',' + IntToStr(blue) + ')'
+  Result := 'rgb(' + IntToStr(LRed) + ',' + IntToStr(LGreen) + ',' + IntToStr(LBlue) + ')';
 end;
 
-function IIfStr(condicao: Boolean; verdadeiro: string; falso: string): string;
+function IIfStr(ACondicao: Boolean; AVerdadeiro: string; AFalso: string): string;
 begin
-  if condicao then
-    Result := verdadeiro
+  if ACondicao then
+    Result := AVerdadeiro
   else
-    Result := falso;
+    Result := AFalso;
 end;
 
 end.

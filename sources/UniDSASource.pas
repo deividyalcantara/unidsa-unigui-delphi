@@ -6,9 +6,9 @@ uses
   uniGUIClasses, uniGUITypes;
 
 type
-  TTypeUniDSASource = (Toast, Confirm, MenuSiderbar, QrCodeReader);
+  TTypeUniDSASource = (Toast, Confirm, MenuSiderbar, QrCodeReader, MenuLateral);
 
-procedure GetLink(Component: TTypeUniDSASource);
+procedure GetLink(AComponent: TTypeUniDSASource);
 
 implementation
 
@@ -19,25 +19,28 @@ const
      cFolder = './files/dsa';
   {$ENDIF}
 
-procedure GetLink(Component: TTypeUniDSASource);
+procedure GetLink(AComponent: TTypeUniDSASource);
 begin
-  if component = TTypeUniDSASource.Toast then begin
+  if AComponent = TTypeUniDSASource.Toast then begin
     UniAddCSSLibrary(cFolder + '/css/jquery.toast.css', True, [upoFolderUni, upoPlatformBoth]);
     UniAddJSLibrary(cFolder + '/js/jquery.toast.js', True, [upoFolderUni, upoPlatformBoth]);
   end
-  else if component = TTypeUniDSASource.Confirm then begin
+  else if AComponent = TTypeUniDSASource.Confirm then begin
     UniAddCSSLibrary(cFolder + '/dist/jquery-confirm.min.css', True, [upoFolderUni, upoPlatformBoth]);
     UniAddCSSLibrary('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', True, [upoFolderUni, upoPlatformBoth]);
     UniAddJSLibrary(cFolder + '/dist/jquery-confirm.min.js', True, [upoFolderUni, upoPlatformBoth]);
     UniAddCSSLibrary(cFolder + '/css/dsa.css', True, [upoFolderUni, upoPlatformBoth]);
   end
-  else if component = TTypeUniDSASource.QrCodeReader then begin
+  else if AComponent = TTypeUniDSASource.QrCodeReader then begin
     UniAddJSLibrary(cFolder + '/qrcode_reader/js/qrcode_library.js', True, [upoFolderUni, upoPlatformBoth]);
-    //UniAddJSLibrary('https://unpkg.com/html5-qrcode', True, [upoFolderUni, upoPlatformBoth]);
   end
-  else if component = TTypeUniDSASource.MenuSiderbar then begin
+  else if AComponent = TTypeUniDSASource.MenuSiderbar then begin
     UniAddCSSLibrary(cFolder + '/menu/menu_1/style.css', True, [upoFolderUni, upoPlatformBoth]);
     UniAddJSLibrary(cFolder + '/menu/menu_1/meuscript.js', True, [upoFolderUni, upoPlatformBoth]);
+  end
+  else if AComponent = TTypeUniDSASource.MenuLateral then begin
+    UniAddCSSLibrary(cFolder + '/menu_lateral/css/style.css', True, [upoFolderUni, upoPlatformBoth]);
+    UniAddJSLibrary(cFolder + '/menu_lateral/js/script.js', True, [upoFolderUni, upoPlatformBoth]);
   end;
 end;
 

@@ -1,147 +1,299 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  ClientHeight = 686
-  ClientWidth = 867
-  Caption = 'MainForm'
+  ClientHeight = 692
+  ClientWidth = 966
+  Caption = 'UniDSA Demo'
+  Color = 16579066
   OldCreateOrder = False
   MonitoredKeys.Keys = <>
   Font.Height = -12
+  OnAfterShow = UniFormAfterShow
+  OnCreate = UniFormCreate
   TextHeight = 15
-  object UniButton1: TUniButton
+  object mlMenu: TUniDSAMenuLateral
     Left = 0
     Top = 0
-    Width = 867
-    Height = 33
+    Width = 300
+    Height = 692
     Hint = ''
-    Caption = 'Exemplo 1'
-    Align = alTop
-    TabOrder = 0
-    OnClick = UniButton1Click
-    ExplicitWidth = 863
+    Logo.UrlImage = 'https://i.ibb.co/yhLx7mc/Logo.jpg'
+    Logo.CompanyName = 'UniDSA - Unigui'
+    Logo.Visible = True
+    Search.Icon = 'fas fa-search'
+    Search.TextPrompt = 'Pesquisa...'
+    Search.AutoComplete = True
+    Search.Visible = True
+    Theme.StyleLeft = mltUniGray
+    Theme.StyleRight = mltEscuro
+    Theme.TitleLeft = 'Claro'
+    Theme.TitleRight = 'Escuro'
+    Theme.Visible = True
+    Profile.Name = 'Nome Sobrenome'
+    Profile.Email = 'nome@dominio.com'
+    Profile.ImageURL = 'https://s11.gifyu.com/images/SchAL.png'
+    Profile.Visible = True
+    Menu.IMenuParent = mlMenu
+    Menu = <
+      item
+        Icon = 'fas fa-home'
+        Caption = 'Home'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+        OnClick = mlMenuMenu0Click
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu Lateral'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+        OnClick = mlMenuMenu1Click
+        OnClickNotification = mlMenuMenu1ClickNotification
+      end
+      item
+        Icon = 'fas fa-bell'
+        Caption = 'Toast'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+        OnClick = mlMenuMenu2Click
+      end
+      item
+        Icon = 'fas fa-check-square'
+        Caption = 'Confirm'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+        OnClick = mlMenuMenu3Click
+      end
+      item
+        Icon = 'fas fa-qrcode'
+        Caption = 'QrCode Reader'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+        OnClick = mlMenuMenu4Click
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 5'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = True
+      end
+      item
+        Icon = 'fas fa-hands-helping'
+        Caption = 'Apoie o projeto'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+        OnClick = mlMenuMenu6Click
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 8'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 9'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 10'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 11'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 12'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 13'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 14'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 15'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 16'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 17'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 18'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 19'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 20'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end>
+    MenuState = mlmMaximize
+    Style.PaddingTop = 20
+    Style.PaddingLeft = 20
+    Style.PaddingRight = 20
+    Style.PaddingBottom = 20
+    Style.BorderTop = 0
+    Style.BorderLeft = 0
+    Style.BorderRight = 2
+    Style.BorderBottom = 0
+    Style.BorderRadiusTopLeft = 0
+    Style.BorderRadiusTopRight = 15
+    Style.BorderRadiusBottomLeft = 0
+    Style.BorderRadiusBottomRight = 15
+    SelectedDiretionTheme = mltThemeLeft
+    SelectedTheme = mltUniCrisp
+    OnClickLogo = mlMenuClickLogo
+    OnClickLogoff = mlMenuClickLogoff
+    OnSearchEnter = mlMenuSearchEnter
+    AjaxSecurity = True
   end
-  object UniButton2: TUniButton
-    Left = 0
-    Top = 33
-    Width = 867
-    Height = 33
-    Hint = ''
-    Caption = 'Novos bot'#245'es'
-    Align = alTop
-    TabOrder = 1
-    OnClick = UniButton2Click
-    ExplicitWidth = 863
-  end
-  object UniButton3: TUniButton
-    Left = 0
-    Top = 66
-    Width = 867
-    Height = 33
-    Hint = ''
-    Caption = 'Dialogo'
-    Align = alTop
-    TabOrder = 2
-    OnClick = UniButton2Click
-    ExplicitWidth = 863
-  end
-  object UniButton4: TUniButton
-    Left = 0
-    Top = 99
-    Width = 867
-    Height = 33
-    Hint = ''
-    Caption = 'Toast'
-    Align = alTop
-    TabOrder = 3
-    OnClick = UniButton2Click
-    ExplicitWidth = 863
-  end
-  object UniButton5: TUniButton
-    Left = 0
-    Top = 169
-    Width = 867
-    Height = 33
-    Hint = ''
-    Caption = 'Ler QRCode'
-    Align = alTop
-    TabOrder = 4
-    OnClick = UniButton5Click
-    ExplicitWidth = 863
-  end
-  object eQrCode: TUniEdit
-    Left = 0
-    Top = 132
-    Width = 867
-    Height = 37
-    Hint = ''
-    Text = 'Leia o QRCode'
-    Align = alTop
-    TabOrder = 5
-    ExplicitWidth = 863
-  end
-  object UniDSAQrCodeReader1: TUniDSAQrCodeReader
-    Left = 8
-    Top = 208
-    Width = 377
-    Height = 360
-    Hint = ''
+  object Toast: TUniDSAToast
     Version = '1.1.0'
-    Text = ''
-    SingleRead = False
-    QrBox = 200
-    FPS = 10
-    SupportedFormats.QR_CODE = True
-    SupportedFormats.AZTEC = True
-    SupportedFormats.CODABAR = True
-    SupportedFormats.CODE_39 = True
-    SupportedFormats.CODE_93 = True
-    SupportedFormats.CODE_128 = True
-    SupportedFormats.DATA_MATRIX = True
-    SupportedFormats.MAXICODE = True
-    SupportedFormats.ITF = True
-    SupportedFormats.EAN_13 = True
-    SupportedFormats.EAN_8 = True
-    SupportedFormats.PDF_417 = True
-    SupportedFormats.RSS_14 = True
-    SupportedFormats.RSS_EXPANDED = True
-    SupportedFormats.UPC_A = True
-    SupportedFormats.UPC_E = True
-    SupportedFormats.UPC_EAN_EXTENSION = True
-    OnAfterReading = UniDSAQrCodeReader1AfterReading
+    Icon = Success
+    ShowHideTransition = Fade
+    HideAfter = 0
+    AllowToastClose = True
+    Stack.Enabled = True
+    Stack.Value = 5
+    BgColor.Enabled = False
+    BgColor.Color = clAqua
+    TextColor.Enabled = False
+    TextColor.Color = clAqua
+    TextAlign = Left
+    Position.Position = BottomLeft
+    Position.Custom.Left = 0
+    Position.Custom.Top = 0
+    Position.Custom.Right = 0
+    Position.Custom.Bottom = 0
+    Loader.Enabled = True
+    Loader.Background = clAqua
+    OnAfterHidden = ToastAfterHidden
+    Left = 488
+    Top = 296
   end
-  object UniDSAConfirm1: TUniDSAConfirm
-    Version = '1.0.0'
-    Title = 'Cliente'
-    Content = 'Deseja excluir o cliente?'
+  object Confirm: TUniDSAConfirm
+    Version = '1.1.0'
+    Title = 'Teste'
     Draggable = True
     DrawWindowsBorder = True
     DrawWindowsGap = 15
     Buttons = <
       item
-        Text = 'Sim'
-        BtnClass = 'btn-green'
         IsHidden = False
         isDisabled = False
         AutoClose = 0
         ScapeKey = False
       end
       item
-        Text = 'N'#227'o'
         IsHidden = False
         isDisabled = False
         AutoClose = 0
         ScapeKey = False
-        OnClick = UniDSAConfirm1Buttons1Click
       end>
     Theme = Supervan
     Types.Enabled = True
-    Types.Color = clBlue
+    Types.Color = clLime
     TypeAnimated = False
     ContainerFluid = False
     ColumnClass = 
       'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-' +
       'xs-offset-1'
-    BoxWidth = '80%'
+    BoxWidth = '30%'
     UseBootstrap = False
     Dismiss.BackgroundDismiss = False
     Dismiss.BackgroundDismissAnimation = Shake
@@ -164,37 +316,13 @@ object MainForm: TMainForm
     PromptCustom.ClassForm = 'formName'
     PromptCustom.ClassGroup = 'form-group'
     PromptCustom.ClassInput = 'name form-control'
-    PromptCustom.PlaceHolder = 'Digite o ID do cliente...'
+    PromptCustom.PlaceHolder = 'Digite...'
     PromptCustom.InputType = Text
     EscapeKey = False
-    Close.CloseIcon = True
+    Close.CloseIcon = False
     TypeConfirm = Alert
-    Type = Blue
-    OnButtonClick = UniDSAConfirm1ButtonClick
-    Left = 608
-    Top = 472
-  end
-  object UniDSAToast1: TUniDSAToast
-    Version = '1.0.0'
-    Icon = Success
-    ShowHideTransition = Fade
-    HideAfter = 3000
-    AllowToastClose = True
-    Stack.Enabled = True
-    Stack.Value = 5
-    BgColor.Enabled = False
-    BgColor.Color = clAqua
-    TextColor.Enabled = False
-    TextColor.Color = clAqua
-    TextAlign = Left
-    Position.Position = BottomLeft
-    Position.Custom.Left = 0
-    Position.Custom.Top = 0
-    Position.Custom.Right = 0
-    Position.Custom.Bottom = 0
-    Loader.Enabled = True
-    Loader.Background = clAqua
-    Left = 720
-    Top = 472
+    Type = Green
+    Left = 488
+    Top = 224
   end
 end

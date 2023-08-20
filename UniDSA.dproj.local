@@ -2,23 +2,23 @@
 <BorlandProject>
 	<Transactions>
     <Transaction>2022/10/01 21:01:36.000.112,=rtl.dcp</Transaction>
-    <Transaction>2022/10/01 21:02:06.000.094,=D:\Andamento\componente-unidsa-unigui\sources\UniDSAToast.pas</Transaction>
-    <Transaction>2022/10/01 21:02:06.000.169,=uniTools28.dcp</Transaction>
-    <Transaction>2022/10/01 21:02:06.000.405,=vcldb.dcp</Transaction>
-    <Transaction>2022/10/01 21:02:06.000.250,=soaprtl.dcp</Transaction>
-    <Transaction>2022/10/01 21:02:06.000.371,=vcl.dcp</Transaction>
-    <Transaction>2022/10/01 21:02:06.000.293,=xmlrtl.dcp</Transaction>
-    <Transaction>2022/10/01 21:02:06.000.211,=uIndy28.dcp</Transaction>
+    <Transaction>2022/10/01 21:02:06.000.328,=inet.dcp</Transaction>
     <Transaction>2022/10/01 21:02:06.000.144,=uniGUI28Core.dcp</Transaction>
-    <Transaction>2022/10/01 21:02:06.000.449,=bindengine.dcp</Transaction>
-    <Transaction>2022/10/01 21:02:06.000.349,=vclimg.dcp</Transaction>
+    <Transaction>2022/10/01 21:02:06.000.094,=D:\Andamento\componente-unidsa-unigui\sources\UniDSAToast.pas</Transaction>
+    <Transaction>2022/10/01 21:02:06.000.211,=uIndy28.dcp</Transaction>
     <Transaction>2022/10/01 21:02:06.000.427,=vclwinx.dcp</Transaction>
     <Transaction>2022/10/01 21:02:06.000.271,=dbrtl.dcp</Transaction>
-    <Transaction>2022/10/01 21:02:06.000.328,=inet.dcp</Transaction>
-    <Transaction>2022/10/01 21:05:25.000.060,=D:\Andamento\componente-unidsa-unigui\librarys\UniJQuery.pas</Transaction>
+    <Transaction>2022/10/01 21:02:06.000.371,=vcl.dcp</Transaction>
+    <Transaction>2022/10/01 21:02:06.000.250,=soaprtl.dcp</Transaction>
+    <Transaction>2022/10/01 21:02:06.000.449,=bindengine.dcp</Transaction>
+    <Transaction>2022/10/01 21:02:06.000.405,=vcldb.dcp</Transaction>
+    <Transaction>2022/10/01 21:02:06.000.169,=uniTools28.dcp</Transaction>
+    <Transaction>2022/10/01 21:02:06.000.293,=xmlrtl.dcp</Transaction>
+    <Transaction>2022/10/01 21:02:06.000.349,=vclimg.dcp</Transaction>
     <Transaction>2022/10/01 21:05:25.000.117,=D:\Andamento\componente-unidsa-unigui\librarys\UniLibrary.pas</Transaction>
-    <Transaction>2022/10/01 21:09:47.000.360,=D:\Andamento\componente-unidsa-unigui\sources\UniLibrary.pas</Transaction>
+    <Transaction>2022/10/01 21:05:25.000.060,=D:\Andamento\componente-unidsa-unigui\librarys\UniJQuery.pas</Transaction>
     <Transaction>2022/10/01 21:09:47.000.323,=D:\Andamento\componente-unidsa-unigui\sources\UniJQuery.pas</Transaction>
+    <Transaction>2022/10/01 21:09:47.000.360,=D:\Andamento\componente-unidsa-unigui\sources\UniLibrary.pas</Transaction>
     <Transaction>2022/10/01 21:11:14.000.945,D:\Andamento\componente-unidsa-unigui\sources\UniDSAToast.pas=</Transaction>
     <Transaction>2022/10/01 21:12:01.000.558,=D:\Andamento\componente-unidsa-unigui\sources\UniDSAToast.pas</Transaction>
     <Transaction>2022/10/01 21:13:31.000.740,D:\Andamento\componente-unidsa-unigui\sources\UniJQuery.pas=D:\Andamento\componente-unidsa-unigui\sources\UniDSAJQuery.pas</Transaction>
@@ -43,8 +43,8 @@
     <Transaction>2022/10/06 18:31:47.000.536,=D:\Andamento\componente-unidsa-unigui\Unit1.pas</Transaction>
     <Transaction>2022/10/06 18:32:02.000.591,D:\Andamento\componente-unidsa-unigui\Unit1.pas=D:\Andamento\componente-unidsa-unigui\sources\TuniDSAToastMenu.pas</Transaction>
     <Transaction>2022/10/06 18:32:25.000.086,D:\Andamento\componente-unidsa-unigui\sources\TuniDSAToastMenu.pas=D:\Andamento\componente-unidsa-unigui\sources\UniDSAToastMenu.pas</Transaction>
-    <Transaction>2022/10/06 18:33:34.000.895,D:\Andamento\componente-unidsa-unigui\sources\TUniDSABrowser.dfm=D:\Andamento\componente-unidsa-unigui\sources\UniDSABrowser.dfm</Transaction>
     <Transaction>2022/10/06 18:33:34.000.895,D:\Andamento\componente-unidsa-unigui\sources\TUniDSABrowser.pas=D:\Andamento\componente-unidsa-unigui\sources\UniDSABrowser.pas</Transaction>
+    <Transaction>2022/10/06 18:33:34.000.895,D:\Andamento\componente-unidsa-unigui\sources\TUniDSABrowser.dfm=D:\Andamento\componente-unidsa-unigui\sources\UniDSABrowser.dfm</Transaction>
     <Transaction>2022/10/07 21:11:02.000.907,=D:\Andamento\componente-unidsa-unigui\Unit1.pas</Transaction>
     <Transaction>2022/10/07 21:11:22.000.740,D:\Andamento\componente-unidsa-unigui\Unit1.pas=D:\Andamento\componente-unidsa-unigui\sources\UniDSABaseComponent.pas</Transaction>
     <Transaction>2022/10/07 21:48:41.000.551,D:\Andamento\componente-unidsa-unigui\sources\UniDSABaseComponent.pas=D:\Andamento\componente-unidsa-unigui\sources\UniDSABase.pas</Transaction>
@@ -95,13 +95,21 @@
     <Transaction>2023/07/17 21:13:47.000.646,=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\images\TUniDSAQrCodeReader.bmp</Transaction>
     <Transaction>2023/07/17 21:21:03.000.999,E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\images\TUniDSAQrCodeReader.bmp=</Transaction>
     <Transaction>2023/07/17 21:21:29.000.949,=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\images\TUniDSAQrCodeReader.bmp</Transaction>
+    <Transaction>2023/07/23 10:58:09.000.436,E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\sources\UniDSAMenu.pas=</Transaction>
+    <Transaction>2023/07/23 10:58:26.000.788,=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\sources\UniDSAMenu.pas</Transaction>
+    <Transaction>2023/07/23 10:58:56.000.298,=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\sources\UniDSAMenuLateral.pas</Transaction>
+    <Transaction>2023/08/05 19:23:00.000.666,=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\Unit1.pas</Transaction>
+    <Transaction>2023/08/05 19:23:16.000.665,E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\Unit1.pas=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\sources\UniDSAMenuLateralTypes.pas</Transaction>
+    <Transaction>2023/08/07 19:52:09.000.311,E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\sources\UniDSAMenuLateralTypes.pas=</Transaction>
+    <Transaction>2023/08/13 10:07:52.000.296,=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\Unit1.pas</Transaction>
+    <Transaction>2023/08/13 10:08:29.000.216,E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\Unit1.pas=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\sources\UniDSADiv.pas</Transaction>
+    <Transaction>2023/08/19 20:59:14.000.217,=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\images\TUniDSAToast.bmp</Transaction>
+    <Transaction>2023/08/19 20:59:14.000.168,=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\images\TUniDSAQrCodeReader.bmp</Transaction>
+    <Transaction>2023/08/19 20:59:14.000.135,=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\images\TUniDSAConfirm.bmp</Transaction>
+    <Transaction>2023/08/19 20:59:14.000.098,=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\images\TFormUniDSABrowser.bmp</Transaction>
+    <Transaction>2023/08/19 22:57:25.000.895,=E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\images\TUniDSAMenuLateral.bmp</Transaction>
   </Transactions>
 	<ProjectSortOrder AutoSort="0" SortType="0">
-    <File Path="images"/>
-    <File Path="images\TFormUniDSABrowser.bmp"/>
-    <File Path="images\TUniDSAConfirm.bmp"/>
-    <File Path="images\TUniDSAToast.bmp"/>
-    <File Path="images\TUniDSAQrCodeReader.bmp"/>
     <File Path="sources"/>
     <File Path="sources\UniDSABase.pas"/>
     <File Path="sources\UniDSABaseControl.pas"/>
@@ -109,9 +117,11 @@
     <File Path="sources\UniDSABrowser.dfm"/>
     <File Path="sources\UniDSAColor.pas"/>
     <File Path="sources\UniDSAConfirm.pas"/>
+    <File Path="sources\UniDSADiv.pas"/>
     <File Path="sources\UniDSAJQuery.pas"/>
     <File Path="sources\UniDSALibrary.pas"/>
     <File Path="sources\UniDSAMenu.pas"/>
+    <File Path="sources\UniDSAMenuLateral.pas"/>
     <File Path="sources\UniDSAQrCodeReader.pas"/>
     <File Path="sources\UniDSASource.pas"/>
     <File Path="sources\UniDSAToast.pas"/>

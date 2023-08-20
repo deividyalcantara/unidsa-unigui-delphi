@@ -13,7 +13,7 @@ type
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
-    function AjaxRequest(EventName: string; Parametros: TArrayOfString = nil): string;
+    function AjaxRequest(AEventName: string; AParametros: TArrayOfString = nil): string;
     function IIfStr(condicao: Boolean; verdadeiro: string; falso: string): string;
     function IIfVar(condicao: Boolean; verdadeiro: Variant; falso: Variant): Variant;
   protected
@@ -34,15 +34,15 @@ procedure TUniDSABaseComponent.AJAXEvent(var EventName: string; var Params: TUni
 begin
 end;
 
-function TUniDSABaseComponent.AjaxRequest(EventName: string; Parametros: TArrayOfString = nil): string;
+function TUniDSABaseComponent.AjaxRequest(AEventName: string; AParametros: TArrayOfString = nil): string;
   function GetParametros: string;
   var
     k: Integer;
   begin
     Result := '[';
 
-    for k := Low(Parametros) to High(Parametros) do
-      Result := Result +  IIfStr(k <> Low(Parametros), ',', '') + QuotedStr(Parametros[k] + '=p' + IntToStr(k));
+    for k := Low(AParametros) to High(AParametros) do
+      Result := Result +  IIfStr(k <> Low(AParametros), ',', '') + QuotedStr(AParametros[k] + '=p' + IntToStr(k));
 
     Result := Result + ']'
   end;
@@ -50,8 +50,7 @@ begin
   Result :=
     ' ' +
     'function (p0) { ' +
-    '  alert(p0); ' +
-    '  ajaxRequest(' + IIfStr(Self.JSName = '', 'body', Self.JSName) + ', "' + EventName + '", ' + GetParametros +'); ' +
+    '  ajaxRequest(' + IIfStr(Self.JSName = '', 'body', Self.JSName) + ', "' + AEventName + '", ' + GetParametros +'); ' +
     '  $(".qrr-overlay").remove(); ' +
     '} ';
 end;

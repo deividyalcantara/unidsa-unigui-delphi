@@ -73,6 +73,8 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
   published
+    procedure Stop;
+    procedure Start;
     property Align;
     property Text: string read FText write FText;
     property Result: string read FText write FText;
@@ -227,6 +229,16 @@ begin
       '}); '
     );
   end;
+end;
+
+procedure TUniDSAQrCodeReader.Start;
+begin
+  JS('$("#uni-dsa-qrcode-reader-qr-reader-' + Self.JSName + '").find("#html5-qrcode-button-camera-start").click();');
+end;
+
+procedure TUniDSAQrCodeReader.Stop;
+begin
+  JS('$("#uni-dsa-qrcode-reader-qr-reader-' + Self.JSName + '").find("#html5-qrcode-button-camera-stop").click();');
 end;
 
 procedure TUniDSAQrCodeReader.WebCreate;

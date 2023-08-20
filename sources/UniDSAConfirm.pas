@@ -8,6 +8,9 @@ uses
  UniDSABrowser;
 
 type
+  TUniDSAConfirmSender = reference to procedure(Sender: TObject);
+  TConfirmPromptOnClick = procedure(AButtonText: string; AResult: string) of object;
+
   TUniDSAConfirmTypeTheme = (Bootstrap, Dark, Light, Modern, Material, Supervan);
   TUniDSAConfirmTypeConfirm = (Alert, Confirm, Dialog, Prompt);
   TUniDSAConfirmTypeBgDismiss = (Shake, Glow);
@@ -37,24 +40,26 @@ type
     Week
   );
 
-  TConfirmPromptOnClick = procedure(ButtonText: string; Result: string) of object;
-
   TUniDSAConfirmButtonItem = class(TCollectionItem)
   private
     FName: string; 
     FText: string;
     FBtnClass: string;
     FOnClick: TNotifyEvent;
+    FOnClickRef: TUniDSAConfirmSender;
     FKeys: string;  
     FIsHidden: Boolean;
     FisDisabled: Boolean;
     FAutoClose: Integer;
     FScapeKey: Boolean;
+    procedure SetName;
   public
     constructor Create(Collection: TCollection); override;
     destructor Destroy; override;
-    procedure SetName;
+
+    property OnClickRef: TUniDSAConfirmSender read FOnClickRef write FOnClickRef;
   published
+    property Caption: string read FText write FText;
     property Text: string read FText write FText;
     property BtnClass: string read FBtnClass write FBtnClass;
     property Keys: string read FKeys write FKeys;
@@ -67,6 +72,7 @@ type
 
   TUniDSAConfirmButton = class(TOwnedCollection)
   public
+    function AddItem: TUniDSAConfirmButtonItem;
     destructor Destroy; override;
   end;
 
@@ -186,6 +192,7 @@ type
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
     procedure Clear;
+    procedure ClearEvents;
     procedure Show;
     procedure Alert;
     procedure Dialog;
@@ -225,7 +232,7 @@ type
     property PromptCustom: TUniDSAConfirmPrompt read FPromptCustom write FPromptCustom;
     property Response: string read FResponse write FResponse;
     property EscapeKey: Boolean read FEscapeKey write FEscapeKey;
-    property ConfirmProperty: TJQuery read FConfirm write FConfirm;
+    property ConfirmProperty: TJQuery read FConfirm;
 
     property Close: TUniDSAConfirmClose read FClose write FClose;
     property TypeConfirm: TUniDSAConfirmTypeConfirm read FTypeConfirm write FTypeConfirm;
@@ -253,7 +260,7 @@ end;
 
 procedure TUniDSAConfirm.AJAXEvent(var EventName: string; var Params: TUniStrings);
 var
-  button_item: TUniDSAConfirmButtonItem;
+  LButtonItem: TUniDSAConfirmButtonItem;
 
   function SearchButton(ButtonName: string): TUniDSAConfirmButtonItem;
   var
@@ -274,13 +281,16 @@ begin
   FResponse := Params.Values['Response'];
 
   if EventName = 'UniDSAToastButtons' then begin
-    button_item := SearchButton(Params.Values['ButtonName']);
+    LButtonItem := SearchButton(Params.Values['ButtonName']);
 
     if Assigned(FOnButtonClick) then
-      FOnButtonClick(button_item.FText, response);
+      FOnButtonClick(LButtonItem.FText, response);
 
-    if Assigned(button_item.OnClick) then
-      button_item.OnClick(Self);
+    if Assigned(LButtonItem.FOnClickRef) then
+      LButtonItem.OnClickRef(LButtonItem);
+
+    if Assigned(LButtonItem.OnClick) then
+      LButtonItem.OnClick(LButtonItem);
   end
   else if EventName = 'UniDSAToastOnContentReady' then begin
     if Assigned(FOnContentReady) then
@@ -366,6 +376,17 @@ begin
   UseBootstrap := False;
   OffsetTop := 40;
   OffsetBottom := 40;
+end;
+
+procedure TUniDSAConfirm.ClearEvents;
+begin
+  FOnButtonClick := nil;
+  FOnContentReady := nil;
+  FOnOpenBefore := nil;
+  FOnOpen := nil;
+  FOnClose := nil;
+  FOnDestroy := nil;
+  FOnAction := nil;
 end;
 
 procedure TUniDSAConfirm.Confirm;
@@ -631,10 +652,10 @@ end;
 
 procedure TUniDSAConfirmButtonItem.SetName;
 var
-  name_invalid: Boolean;
-  generated_name: string;
-    
-  function ExistingButton(name: string): Boolean;
+  LNameInvalid: Boolean;
+  LGeneratedName: string;
+
+  function ExistingButton(AName: string): Boolean;
   var
     i: Integer;
 
@@ -642,19 +663,19 @@ var
     Result := False;
     
     for i := 0 to Collection.Count - 1 do begin
-      if TUniDSAConfirmButtonItem(Collection.Items[i]).FName = name then begin
+      if TUniDSAConfirmButtonItem(Collection.Items[i]).FName = AName then begin
         Result := True;
         Break;
-      end;       
+      end;
     end;
   end;
 begin
-  name_invalid := True;
+  LNameInvalid := True;
   repeat
-    generated_name := SortName;
-  until name_invalid;
+    LGeneratedName := SortName;
+  until LNameInvalid;
 
-  FName := generated_name;  
+  FName := LGeneratedName;
 end;
 
 { TUniDSAConfirmAnimation }
@@ -729,6 +750,11 @@ begin
 end;
 
 { TUniDSAConfirmButton }
+
+function TUniDSAConfirmButton.AddItem: TUniDSAConfirmButtonItem;
+begin
+  Result := TUniDSAConfirmButtonItem(Add);
+end;
 
 destructor TUniDSAConfirmButton.Destroy;
 begin

@@ -163,11 +163,12 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="rtl.dcp"/>
-        <DCCReference Include="DesignIDE.dcp"/>
         <DCCReference Include="uniGUI28Core.dcp"/>
         <DCCReference Include="uniTools28.dcp"/>
         <DCCReference Include="uIndy28.dcp"/>
+        <DCCReference Include="uniGUI28.dcp"/>
+        <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="DesignIDE.dcp"/>
         <DCCReference Include="soaprtl.dcp"/>
         <DCCReference Include="dbrtl.dcp"/>
         <DCCReference Include="xmlrtl.dcp"/>
@@ -178,37 +179,21 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="vclwinx.dcp"/>
         <DCCReference Include="bindengine.dcp"/>
         <DCCReference Include="vcledge.dcp"/>
-        <DCCReference Include="uniGUI28.dcp"/>
         <DCCReference Include="sources\UniDSAJQuery.pas"/>
         <DCCReference Include="sources\UniDSALibrary.pas"/>
         <DCCReference Include="sources\UniDSAToast.pas"/>
         <DCCReference Include="sources\UniDSAConfirm.pas"/>
         <DCCReference Include="sources\UniDSABrowser.pas">
             <Form>FormUniDSABrowser</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
         <DCCReference Include="sources\UniDSASource.pas"/>
         <DCCReference Include="sources\UniDSABase.pas"/>
         <DCCReference Include="sources\UniDSAColor.pas"/>
-        <DCCReference Include="sources\UniDSAMenu.pas"/>
         <DCCReference Include="sources\UniDSAQrCodeReader.pas"/>
         <DCCReference Include="sources\UniDSABaseControl.pas"/>
-        <RcItem Include="images\TUniDSAConfirm.bmp">
-            <ResourceType>BITMAP</ResourceType>
-            <ResourceId>TUniDSAConfirm</ResourceId>
-        </RcItem>
-        <RcItem Include="images\TUniDSAToast.bmp">
-            <ResourceType>BITMAP</ResourceType>
-            <ResourceId>TUniDSAToast</ResourceId>
-        </RcItem>
-        <RcItem Include="images\TFormUniDSABrowser.bmp">
-            <ResourceType>BITMAP</ResourceType>
-            <ResourceId>TFormUniDSABrowser</ResourceId>
-        </RcItem>
-        <RcItem Include="images\TUniDSAQrCodeReader.bmp">
-            <ResourceType>BITMAP</ResourceType>
-            <ResourceId>TUniDSAQrCodeReader</ResourceId>
-        </RcItem>
+        <DCCReference Include="sources\UniDSAMenu.pas"/>
+        <DCCReference Include="sources\UniDSAMenuLateral.pas"/>
+        <DCCReference Include="sources\UniDSADiv.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
