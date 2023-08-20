@@ -1,2 +1,2 @@
 # unidsa-unigui-delphi
-Componentes web para utilização no UniGUI
+Paleta de componentes web para utilização no UniGUI
