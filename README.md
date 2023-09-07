@@ -163,51 +163,51 @@ Este é um componente que representa um menu lateral, comumente usado em aplica�
 **Gerais:**
 
 - `Logo`: Controla a aparência e comportamento do logotipo na parte superior do menu.
- - `UrlImage` Define a imagem do logo
- - `CompanyName` Define o nome do cliente/empresa
+1.   `UrlImage` Define a imagem do logo
+2.   `CompanyName` Define o nome do cliente/empresa
 - `Search`: Permite a pesquisa dentro do menu.
- - `Icon` Define o icone da área de pesquisa.
- - `TextPrompt` Define o texto informativo que será exibido na área da pesquisa, padrão "Pesquisar.."
- - `AutoComplete` Habilitar ou desabilitar a sugestão com bases nos textos já utilizados.
- - `Visible` Define se o pesquisar será exibido.
- - `SearchText` Texto pesquisado pelo usuário.
+1.   `Icon` Define o icone da área de pesquisa.
+2.   `TextPrompt` Define o texto informativo que será exibido na área da pesquisa, padrão "Pesquisar.."
+3.   `AutoComplete` Habilitar ou desabilitar a sugestão com bases nos textos já utilizados.
+4.   `Visible` Define se o pesquisar será exibido.
+5.   `SearchText` Texto pesquisado pelo usuário.
 - `Theme` Define o tema visual do menu.
- - `TitleLeft` Título do tema a esquerda.
- - `TitleRight` Título do tema a direita.
- - `StyleLeft` Estilo do tema a esquerda
-  - `StyleRight` Estilo do tema a direita
-  - `Visible` Define se ficará visível para o usuário a opção de mudança de temas
+1.   `TitleLeft` Título do tema a esquerda.
+2.   `TitleRight` Título do tema a direita.
+3.   `StyleLeft` Estilo do tema a esquerda
+4.   `StyleRight` Estilo do tema a direita
+5.   `Visible` Define se ficará visível para o usuário a opção de mudança de temas
 - `Menu`: Controla os itens individuais dentro do menu.
- - `Icon` Define o icone do menu (Font Awesome 5.15.4)
- - `Caption` Descrição do menu
- - `NotificationCount` Quando maior que 0 será exibido ao lado do menu a quantidade de notificações.
- - `Visible` Define se o menu ficará visivel.
- - `Enabled` Define se o menu ficará ativo
- - `Hidden` Define se o menu ficará visível mantendo o local do mesmo.
- - `Separator` Define que o menu será um separador de menus
- - `Hint` Descrição do menu ao passar o mouse por cima.
- - `OnClick` Acionado ao clicar no menu
- - `OnClickNotification` Acionado ao clicar na notificação do menu.
- - `OnClickRef` Acionado ao clicar no menu (Usado em runtime)
- - `OnClickNotificationRef` Acionado ao clicar na notificação do menu (Usado em runtime)
+1.   `Icon` Define o icone do menu (Font Awesome 5.15.4)
+2.   `Caption` Descrição do menu
+3.   `NotificationCount` Quando maior que 0 será exibido ao lado do menu a quantidade de notificações.
+4.   `Visible` Define se o menu ficará visivel.
+5.   `Enabled` Define se o menu ficará ativo
+6.   `Hidden` Define se o menu ficará visível mantendo o local do mesmo.
+7.   `Separator` Define que o menu será um separador de menus
+8.   `Hint` Descrição do menu ao passar o mouse por cima.
+9.   `OnClick` Acionado ao clicar no menu
+10.   `OnClickNotification` Acionado ao clicar na notificação do menu.
+11.   `OnClickRef` Acionado ao clicar no menu (Usado em runtime)
+12.   `OnClickNotificationRef` Acionado ao clicar na notificação do menu (Usado em runtime)
 - `Profile` Permite exibir informações de perfil, como nome de usuário ou imagem, no menu.
- - `Name` Nome do usuário do sistema
- - `Email` E-mail do usuário do sistema
- - `ImageURL` Imagem do usuário do sistema
- - `Visible` Indica se o perfil do usuário será visível.
+1.  `Name` Nome do usuário do sistema
+2.  `Email` E-mail do usuário do sistema
+3.  `ImageURL` Imagem do usuário do sistema
+4.  `Visible` Indica se o perfil do usuário será visível.
 - `Style` Controla o estilo visual geral do menu.
- - `PaddingTop` Similiar ao padding-top do CSS. Define o espaço interno no topo do elemento.
- - `PaddingLeft` Similar ao padding-left do CSS. Define o espaço interno à esquerda do elemento.
- - `PaddingRight` Similar ao padding-right do CSS. Define o espaço interno à direita do elemento.
- - `PaddingBottom` Similar ao padding-bottom do CSS. Define o espaço interno na parte inferior do elemento.
- - `BorderRadiusTopLeft` Similar ao border-top-left-radius do CSS. Define o raio da borda no canto superior esquerdo.
- - `BorderRadiusTopRight` Similar ao border-top-right-radius do CSS. Define o raio da borda no canto superior direito.
- - `BorderRadiusBottomLeft` Similar ao border-bottom-left-radius do CSS. Define o raio da borda no canto inferior esquerdo.
- - `BorderRadiusBottomRight` Similar ao border-bottom-right-radius do CSS. Define o raio da borda no canto inferior direito.
- - `BorderTop` Similar ao border-top do CSS. Define a espessura da borda superior do elemento.
- - `BorderLeft` Similar ao border-left do CSS. Define a espessura da borda à esquerda do elemento.
- - `BorderRight` Similar ao border-right do CSS. Define a espessura da borda à direita do elemento.
- - `BorderBottom` Similar ao border-bottom do CSS. Define a espessura da borda inferior do elemento.
+1.   `PaddingTop` Similiar ao padding-top do CSS. Define o espaço interno no topo do elemento.
+2.   `PaddingLeft` Similar ao padding-left do CSS. Define o espaço interno à esquerda do elemento.
+3.   `PaddingRight` Similar ao padding-right do CSS. Define o espaço interno à direita do elemento.
+4.   `PaddingBottom` Similar ao padding-bottom do CSS. Define o espaço interno na parte inferior do elemento.
+5.   `BorderRadiusTopLeft` Similar ao border-top-left-radius do CSS. Define o raio da borda no canto superior esquerdo.
+6.   `BorderRadiusTopRight` Similar ao border-top-right-radius do CSS. Define o raio da borda no canto superior direito.
+7.   `BorderRadiusBottomLeft` Similar ao border-bottom-left-radius do CSS. Define o raio da borda no canto inferior esquerdo.
+8.   `BorderRadiusBottomRight` Similar ao border-bottom-right-radius do CSS. Define o raio da borda no canto inferior direito.
+9.   `BorderTop` Similar ao border-top do CSS. Define a espessura da borda superior do elemento.
+10.   `BorderLeft` Similar ao border-left do CSS. Define a espessura da borda à esquerda do elemento.
+11.   `BorderRight` Similar ao border-right do CSS. Define a espessura da borda à direita do elemento.
+12.   `BorderBottom` Similar ao border-bottom do CSS. Define a espessura da borda inferior do elemento.
 
 **Comportamento:**
 
