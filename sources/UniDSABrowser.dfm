@@ -2137,8 +2137,8 @@ object FormUniDSABrowser: TFormUniDSABrowser
     Height = 560
     Align = alClient
     TabOrder = 0
+    AllowSingleSignOnUsingOSPrimaryAccount = False
+    TargetCompatibleBrowserVersion = '117.0.2045.28'
     UserDataFolder = '%LOCALAPPDATA%\bds.exe.WebView2'
-    ExplicitWidth = 776
-    ExplicitHeight = 559
   end
 end

@@ -4,9 +4,11 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Graphics,
-  {$IF CompilerVersion >= 34.0}Winapi.WebView2, Winapi.ActiveX, Vcl.Edge, {$IFEND}
-  Vcl.Buttons;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Graphics, Vcl.Buttons,
+  {$IF CompilerVersion >= 34.0}
+  Winapi.WebView2, Winapi.ActiveX, Vcl.Edge
+  {$IFEND}
+  ;
 
 type
   TUniDSABrowserMode = (bmJQuery, bmSite);
@@ -134,10 +136,12 @@ end;
 
 procedure TFormUniDSABrowser.FormShow(Sender: TObject);
 begin
-  if FMode = TUniDSABrowserMode.bmJQuery then
-    Execute
-  else
-    ebUniDSABrowser.Navigate(FCommand);
+  {$IF CompilerVersion < 34.0}
+    if FMode = TUniDSABrowserMode.bmJQuery then
+      Execute
+    else
+      ebUniDSABrowser.Navigate(FCommand);
+  {$IFEND}
 end;
 
 procedure TFormUniDSABrowser.btnUniDSARecarregarClick(Sender: TObject);

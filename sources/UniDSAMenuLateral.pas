@@ -545,12 +545,12 @@ destructor TUniDSAMenuLateral.Destroy;
 begin
   Menu.Clear;
   inherited;
-  FreeAndNil(Logo);
-  FreeAndNil(Search);
-  FreeAndNil(Theme);
-  FreeAndNil(Profile);
-  FreeAndNil(Style);
-  FreeAndNil(Menu);
+  FreeAndNil(FLogo);
+  FreeAndNil(FSearch);
+  FreeAndNil(FTheme);
+  FreeAndNil(FProfile);
+  FreeAndNil(FStyle);
+  FreeAndNil(FMenu);
   FreeAndNil(FMenuLateral);
 end;
 

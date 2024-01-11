@@ -30,6 +30,13 @@ package UniDSA;
 {$IMPLICITBUILD ON}
 
 requires
+  {$IFDEF VER360}  // Delphi 12 Athens
+    uniGUI29Core,
+    uniTools29,
+    uIndy29,
+    uniGUI29,
+  {$IFEND}
+
   {$IFDEF VER350}  // Delphi 11.0 Alexandria / C++Builder 11.0 Alexandria
     uniGUI28Core,
     uniTools28,
@@ -180,8 +187,19 @@ requires
   vcl,
   vcldb,
   vclwinx,
-  bindengine,
-  vcledge;
+  bindengine
+  {$IFDEF VER350}
+    ,vcledge
+  {$IFEND}
+
+  {$IFDEF VER340}
+    ,vcledge
+  {$IFEND}
+
+  {$IFDEF VER360}
+    ,vcledge
+  {$IFEND}
+  ;
 
 contains
   UniDSAJQuery in 'sources\UniDSAJQuery.pas',
