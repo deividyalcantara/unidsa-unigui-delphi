@@ -4,9 +4,9 @@ interface
 
 uses
   Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Graphics, Vcl.Buttons,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.Graphics, Vcl.Buttons
   {$IF CompilerVersion >= 34.0}
-  Winapi.WebView2, Winapi.ActiveX, Vcl.Edge
+  ,Winapi.WebView2, Winapi.ActiveX, Vcl.Edge
   {$IFEND}
   ;
 
@@ -136,7 +136,7 @@ end;
 
 procedure TFormUniDSABrowser.FormShow(Sender: TObject);
 begin
-  {$IF CompilerVersion < 34.0}
+  {$IF CompilerVersion > 34.0}
     if FMode = TUniDSABrowserMode.bmJQuery then
       Execute
     else
