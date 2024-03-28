@@ -3,7 +3,7 @@ unit FrameMenuLateral;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
+  Windows, Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FrameBase, uniGUIBaseClasses, uniGUIClasses, uniLabel,
   uniButton, uniPanel, UniDSAMenuLateral, uniTimer, MainModule, System.TypInfo, Funcoes, uniGroupBox,
   uniSpinEdit, uniEdit, uniCheckBox, uniScrollBox, UniDSAConfirm;

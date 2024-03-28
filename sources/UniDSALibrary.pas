@@ -3,7 +3,7 @@ unit UniDSALibrary;
 interface
 
 uses
-  System.UITypes, System.SysUtils, Vcl.Graphics, Winapi.Windows;
+  System.UITypes, System.SysUtils, Vcl.Graphics, Windows;
 
 type
   TArrayOfString = Array of string;

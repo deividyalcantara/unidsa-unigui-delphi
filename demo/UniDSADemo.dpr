@@ -19,6 +19,7 @@ uses
 
 begin
   ReportMemoryLeaksOnShutdown := True;
+
   Application.Initialize;
   TUniServerModule.Create(Application);
   Application.Run;
