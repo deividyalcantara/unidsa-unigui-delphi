@@ -4,8 +4,7 @@ interface
 
 uses
  System.SysUtils, System.Classes, uniGUIClasses, UniDSABase, UniDSAJQuery, UniDSAColor,
- uniGUITypes, System.TypInfo, UniDSALibrary, System.Variants, Vcl.Graphics, UniDSASource,
- UniDSABrowser;
+ uniGUITypes, System.TypInfo, UniDSALibrary, System.Variants, Vcl.Graphics, UniDSASource;
 
 type
   TUniDSAConfirmSender = reference to procedure(Sender: TObject);

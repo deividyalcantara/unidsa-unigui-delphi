@@ -4,7 +4,7 @@ interface
 
 uses
   System.SysUtils, System.Classes, uniGUIBaseClasses, uniGUIClasses, UniDSAJQuery, UniDSALibrary,
-  System.UITypes, uniGUITypes, System.TypInfo, Vcl.Graphics, UniDSASource,  UniDSABrowser, UniDSABase,
+  System.UITypes, uniGUITypes, System.TypInfo, Vcl.Graphics, UniDSASource,  UniDSABase,
   UniDSAColor;
 
 type

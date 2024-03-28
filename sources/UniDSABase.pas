@@ -3,7 +3,7 @@ unit UniDSABase;
 interface
 
 uses
- System.SysUtils, System.Classes, uniGUIClasses, UniDSAJQuery, UniDSABrowser, UniDSALibrary, uniGUITypes;
+ System.SysUtils, System.Classes, uniGUIClasses, UniDSAJQuery, UniDSALibrary, uniGUITypes;
 
 type
   TUniDSABaseComponent = class(TUniComponent)

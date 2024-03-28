@@ -1,9 +1,9 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
-        <ProjectGuid>{2E3603C5-F9B3-4B2F-B53C-69ABED19E8A9}</ProjectGuid>
-        <MainSource>UniDSA.dpk</MainSource>
+        <ProjectGuid>{39EE663D-347F-490C-8899-1FEAF649150A}</ProjectGuid>
+        <MainSource>UniDSADesign.dpk</MainSource>
         <ProjectVersion>20.1</ProjectVersion>
-        <FrameworkType>VCL</FrameworkType>
+        <FrameworkType>None</FrameworkType>
         <Base>True</Base>
         <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -60,25 +60,25 @@
         <DCC_K>false</DCC_K>
         <GenDll>true</GenDll>
         <GenPackage>true</GenPackage>
-        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
         <DCC_CBuilderOutput>All</DCC_CBuilderOutput>
-        <DCC_Description>Componente UniDSA para UniGUI</DCC_Description>
-        <SanitizedProjectName>UniDSA</SanitizedProjectName>
+        <SanitizedProjectName>UniDSADesign</SanitizedProjectName>
         <VerInfo_Locale>1046</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Linux64)'!=''">
-        <DCC_UsePackage>rtl;bindengine;xmlrtl;soaprtl;dbrtl;inet;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>rtl;soaprtl;dbrtl;xmlrtl;inet;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_UsePackage>vclimg;vcl;rtl;vclwinx;bindengine;xmlrtl;soaprtl;dbrtl;inet;vcldb;uniGUI28Core;uniTools28;uIndy28;vcledge;uniGUI28;uniGUI29;uniGUI29Core;uniTools29;uIndy29;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>vcl;rtl;soaprtl;dbrtl;xmlrtl;inet;vclimg;vclwinx;vcledge;vcldb;UniDSA;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
-        <DCC_UsePackage>vclimg;vcl;rtl;vclwinx;bindengine;xmlrtl;soaprtl;dbrtl;inet;vcldb;uniGUI28Core;uniTools28;uIndy28;vcledge;uniGUI28;uniGUI29;uniGUI29Core;uniTools29;uIndy29;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>vcl;rtl;soaprtl;dbrtl;xmlrtl;inet;vclimg;vclwinx;vcledge;vcldb;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -102,18 +102,18 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
+        <PostBuildEvent><![CDATA[  copy /Y "E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\outros\WebView2Loader.dll" $(OUTPUTDIR)
+$(PostBuildEvent)]]></PostBuildEvent>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_AdditionalSwitches>-LUDesignIDE</DCC_AdditionalSwitches>
     </PropertyGroup>
     <ItemGroup>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="uniGUI29Core.dcp"/>
-        <DCCReference Include="uniTools29.dcp"/>
-        <DCCReference Include="uIndy29.dcp"/>
-        <DCCReference Include="uniGUI29.dcp"/>
+        <DCCReference Include="vcledge.dcp"/>
+        <DCCReference Include="DesignIDE.dcp"/>
+        <DCCReference Include="UniDSA.dcp"/>
         <DCCReference Include="rtl.dcp"/>
         <DCCReference Include="soaprtl.dcp"/>
         <DCCReference Include="dbrtl.dcp"/>
@@ -123,17 +123,10 @@
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="vcldb.dcp"/>
         <DCCReference Include="vclwinx.dcp"/>
-        <DCCReference Include="sources\UniDSAJQuery.pas"/>
-        <DCCReference Include="sources\UniDSALibrary.pas"/>
-        <DCCReference Include="sources\UniDSAToast.pas"/>
-        <DCCReference Include="sources\UniDSAConfirm.pas"/>
-        <DCCReference Include="sources\UniDSASource.pas"/>
-        <DCCReference Include="sources\UniDSABase.pas"/>
-        <DCCReference Include="sources\UniDSAColor.pas"/>
-        <DCCReference Include="sources\UniDSAQrCodeReader.pas"/>
-        <DCCReference Include="sources\UniDSABaseControl.pas"/>
-        <DCCReference Include="sources\UniDSAMenuLateral.pas"/>
-        <DCCReference Include="sources\UniDSADiv.pas"/>
+        <DCCReference Include="sources\UniDSABrowser.pas">
+            <Form>FormUniDSABrowser</Form>
+        </DCCReference>
+        <DCCReference Include="sources\UniDSAMenu.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -152,7 +145,7 @@
         <BorlandProject>
             <Delphi.Personality>
                 <Source>
-                    <Source Name="MainSource">UniDSA.dpk</Source>
+                    <Source Name="MainSource">UniDSADesign.dpk</Source>
                 </Source>
                 <Excluded_Packages>
                     <Excluded_Packages Name="$(BDSBIN)\dcloffice2k290.bpl">Microsoft Office 2000 Sample Automation Server Wrapper Components</Excluded_Packages>
@@ -175,15 +168,9 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\22.0\Bpl\UniDSA.bpl" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\23.0\Bpl\UniDSADesign.bpl" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
-                        <RemoteName>UniDSA.bpl</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="C:\Users\Public\Documents\Embarcadero\Studio\22.0\Bpl\UniDSA.bpl" Configuration="Release" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>UniDSA.bpl</RemoteName>
+                        <RemoteName>UniDSADesign.bpl</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -212,12 +199,6 @@
                     </Platform>
                     <Platform Name="Android64">
                         <RemoteDir>res\xml</RemoteDir>
-                        <Operation>1</Operation>
-                    </Platform>
-                </DeployClass>
-                <DeployClass Name="AndroidGDBServer">
-                    <Platform Name="Android">
-                        <RemoteDir>library\lib\armeabi-v7a</RemoteDir>
                         <Operation>1</Operation>
                     </Platform>
                 </DeployClass>
@@ -1052,5 +1033,12 @@
     <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
     <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
-    <ItemGroup/>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win32'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>  copy /Y &quot;E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\outros\WebView2Loader.dll&quot; $(OUTPUTDIR)</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
 </Project>

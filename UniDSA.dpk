@@ -178,7 +178,6 @@ requires
   {$IFEND}
 
   rtl,
-  DesignIDE,
   soaprtl,
   dbrtl,
   xmlrtl,
@@ -186,33 +185,18 @@ requires
   vclimg,
   vcl,
   vcldb,
-  vclwinx,
-  bindengine
-  {$IFDEF VER350}
-    ,vcledge
-  {$IFEND}
-
-  {$IFDEF VER340}
-    ,vcledge
-  {$IFEND}
-
-  {$IFDEF VER360}
-    ,vcledge
-  {$IFEND}
-  ;
+  vclwinx;
 
 contains
   UniDSAJQuery in 'sources\UniDSAJQuery.pas',
   UniDSALibrary in 'sources\UniDSALibrary.pas',
   UniDSAToast in 'sources\UniDSAToast.pas',
   UniDSAConfirm in 'sources\UniDSAConfirm.pas',
-  UniDSABrowser in 'sources\UniDSABrowser.pas' {FormUniDSABrowser},
   UniDSASource in 'sources\UniDSASource.pas',
   UniDSABase in 'sources\UniDSABase.pas',
   UniDSAColor in 'sources\UniDSAColor.pas',
   UniDSAQrCodeReader in 'sources\UniDSAQrCodeReader.pas',
   UniDSABaseControl in 'sources\UniDSABaseControl.pas',
-  UniDSAMenu in 'sources\UniDSAMenu.pas',
   UniDSAMenuLateral in 'sources\UniDSAMenuLateral.pas',
   UniDSADiv in 'sources\UniDSADiv.pas';
 

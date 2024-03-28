@@ -4,7 +4,7 @@ interface
 
 uses
  System.SysUtils, System.Classes, uniGUIClasses, UniDSABaseControl, UniDSAJQuery, uniGUITypes,
- System.TypInfo, UniDSALibrary, System.Variants, Vcl.Graphics, UniDSASource, UniDSABrowser;
+ System.TypInfo, UniDSALibrary, System.Variants, Vcl.Graphics, UniDSASource;
 
 type
   TUniDSAQrCodeReaderSupportedFormats = class(TPersistent)

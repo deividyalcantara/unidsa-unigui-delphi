@@ -1,0 +1,63 @@
+﻿package UniDSADesign;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS ON}
+{$RANGECHECKS ON}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$IMPLICITBUILD ON}
+
+requires
+  {$IFDEF VER360}  // Delphi 12 Athens
+    vcledge,
+  {$IFEND}
+
+  {$IFDEF VER350}  // Delphi 11.0 Alexandria / C++Builder 11.0 Alexandria
+    vcledge,
+  {$IFEND}
+
+  {$IFDEF VER340}  // Delphi 10.4 Sydney / C++Builder 10.4 Sydney
+    vcledge,
+  {$IFEND}
+
+  DesignIDE,
+  UniDSA,
+  rtl,
+  DesignIDE,
+  soaprtl,
+  dbrtl,
+  xmlrtl,
+  inet,
+  vclimg,
+  vcl,
+  vcldb,
+  vclwinx;
+
+contains
+  UniDSABrowser in 'sources\UniDSABrowser.pas' {FormUniDSABrowser},
+  UniDSAMenu in 'sources\UniDSAMenu.pas';
+
+end.
+
+
+

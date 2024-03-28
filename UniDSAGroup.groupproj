@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{72CA7D80-E108-4B38-BB14-F59DBEF814CB}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="UniDSA.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="UniDSADesign.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="UniDSA">
+        <MSBuild Projects="UniDSA.dproj"/>
+    </Target>
+    <Target Name="UniDSA:Clean">
+        <MSBuild Projects="UniDSA.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="UniDSA:Make">
+        <MSBuild Projects="UniDSA.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="UniDSADesign">
+        <MSBuild Projects="UniDSADesign.dproj"/>
+    </Target>
+    <Target Name="UniDSADesign:Clean">
+        <MSBuild Projects="UniDSADesign.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="UniDSADesign:Make">
+        <MSBuild Projects="UniDSADesign.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="UniDSA;UniDSADesign"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="UniDSA:Clean;UniDSADesign:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="UniDSA:Make;UniDSADesign:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
