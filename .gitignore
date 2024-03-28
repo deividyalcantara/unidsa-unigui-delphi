@@ -73,3 +73,5 @@ modules/
 bin/
 tmp/
 *.res
+*.local
+*.identcache
