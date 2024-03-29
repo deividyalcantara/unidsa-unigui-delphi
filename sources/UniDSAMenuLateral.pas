@@ -529,14 +529,14 @@ begin
 
   FMenuLateral := TExecuteFunction.Create('qrCodeReader');
 
-  Logo := TUniDSAMenuLateralLogo.Create(Self);
-  Search := TUniDSAMenuLateralSearch.Create(Self);
-  Theme := TUniDSAMenuLateralTheme.Create(Self);
-  Profile := TUniDSAMenuLateralProfile.Create(Self);
+  FLogo := TUniDSAMenuLateralLogo.Create(Self);
+  FSearch := TUniDSAMenuLateralSearch.Create(Self);
+  FTheme := TUniDSAMenuLateralTheme.Create(Self);
+  FProfile := TUniDSAMenuLateralProfile.Create(Self);
   FMenu := TUniDSAMenuLateralMenu.Create(Self, TUniDSAMenuLateralMenuItem);
   FMenu.FIMenuParent := Self;
-  MenuState := mlmMaximize;
-  Style := TUniDSAMenuLateralMenuStyle.Create(Self);
+  FMenuState := mlmMaximize;
+  FStyle := TUniDSAMenuLateralMenuStyle.Create(Self);
 
   Visible := True;
 end;
