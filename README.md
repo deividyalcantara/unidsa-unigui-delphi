@@ -11,6 +11,7 @@ O **UniDSA** é uma paleta inovadora de componentes desenvolvida especificamente
 > TUniDSAConfirm
 > TUniDSAToast
 > TUniDSAMenuLateral
+> TUniDSALogin
 
 ## [![TUniDSAQrCodeReader](https://i.ibb.co/rvfWQs8/TUni-DSAQr-Code-Reader.png "TUniDSAQrCodeReader")](https://i.ibb.co/rvfWQs8/TUni-DSAQr-Code-Reader.png "TUniDSAQrCodeReader")  TUniDSAQrCodeReader 
 
@@ -241,4 +242,68 @@ Este é um componente que representa um menu lateral, comumente usado em aplica�
 
 > Imagem ilustrativa, pois o componente pode ter opções de personalizações...
 
+## [![TUniDSALogin](https://i.ibb.co/JQM5cSh/TUni-DSALogin.png "TUniDSAMenuLateral")](https://i.ibb.co/JQM5cSh/TUni-DSALogin.png "TUniDSAMenuLateral") TUniDSALogin
+
+O componente TUniDSALogin é uma ferramenta versátil projetada para apresentar elementos cruciais em uma tela de login, oferecendo uma experiência de usuário fluida e personalizável além de agilizar todo processo de criação dessa tela. A tela de login é responsiva, sendo assim se adaptará a diferentes tamnhos de tela.
+
+**Principais propriedades e métodos:**
+
+**Gerais:**
+
+- `Geral`: Propriedades gerais
+1.   `Title` Define o título da tela de login
+2.   `Description` Define a descrição da tela de login, texto fica logo abaixo do título
+3.   `TrimSpacesOnRememberMeForgetPassword` Para quem não for usar a opção de lembra da senha ou recuperar a senha, essa opção marcado irá remover o espaçamento entre os inputs de botões
+
+- `Logo`: Controla a aparência e comportamento do logotipo na parte superior do menu.
+1.   `Image` Define a imagem do logo de acordo a URL informada
+2.   `MarginLeft` Define a margem a partir do lado esquerdo
+3.   `MarginTop`Define a margem a partir do lado direito
+
+- `Slide`: Referente a imagem de slide inicial
+1.   `Image` Define a imagem do logo de acordo a URL informada
+2.   `MarginLeft` Define a margem a partir do lado esquerdo
+3.   `MarginTop`Define a margem a partir do lado direito
+
+- `Login`: Configurações do input de login
+1.   `Caption` Define o título do input, ex: e-mail, telefone
+2.   `Enabled` Define se o input ficará ativo ou inativo
+3.   `Value` Define ou pega o valor do campo login
+
+- `Password`: Configurações do input de senha
+1.   `Caption` Define o título do input
+2.   `Enabled` Define se o input ficará ativo ou inativo
+3.   `Value` Define ou pega o valor do campo login
+
+- `RememberMe`: Configurações da opção de lembrar da senha
+1.   `Caption` Define o título
+2.   `Checked` Define ou verifica se o checkbox está marcado
+3.   `Visible` Define a visibilidade da opção
+
+- `ForgetPassword`: Configurações para recuperar a senha
+1.   `Caption` Define o título
+2.  `Visible` Define a visibilidade da opção
+
+- `LoginNow`: Configurações do botão Entrar
+1.   `Caption` Define o título
+2.  `Visible` Define a visibilidade da opção
+3.  `Visible` Define a largura do botão
+
+- `CreateAccount`: Configurações para criação de novas contas
+1.   `Caption` Define o título
+2.  `Visible` Define a visibilidade da opção
+3.  `Visible` Define a largura do botão
+
+**Eventos:**
+
+- `OnCreateAccount` Acionado ao clicar no botão de criação de conta .
+- `OnForgetPassword` Acionado ao clicar na opção de recuperar a senha.
+- `OnLoginEnter` Acionado ao pressionar enter no input de login.
+- `OnLoginNow` Acionado ao clicar no botão Entrar.
+- `OnPasswordEnter`  Acionado ao pressionar ENTER no input do password.
+- `OnRememberMe` Acionado ao clicar no lembrar da senha
+
+#### Imagem:
+
+[![](https://i.ibb.co/7RP5LG5/Captura-de-tela-2024-03-29-132238.png)](https://i.ibb.co/7RP5LG5/Captura-de-tela-2024-03-29-132238.png)
 
