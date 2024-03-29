@@ -305,4 +305,5 @@ O componente TUniDSALogin é uma ferramenta versátil projetada para apresentar 
 
 #### Imagem:
 
-[![TUniDSALogin](https://i.ibb.co/7RP5LG5/Captura-de-tela-2024-03-29-132238.png "TUniDSALogin")](https://i.ibb.co/7RP5LG5/Captura-de-tela-2024-03-29-132238.png "TUniDSALogin")
+[![TUniDSALogin](https://i.ibb.co/RcwzzZW/TUni-DSALogin1.png "TUniDSALogin")](https://i.ibb.co/RcwzzZW/TUni-DSALogin1.png "TUniDSALogin")
+
