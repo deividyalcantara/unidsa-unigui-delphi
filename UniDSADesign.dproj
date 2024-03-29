@@ -169,6 +169,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <Form>FormUniDSABrowser</Form>
         </DCCReference>
         <DCCReference Include="sources\UniDSAMenu.pas"/>
+        <RcItem Include="images\TFormUniDSABrowser.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TFormUniDSABrowser</ResourceId>
+        </RcItem>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
