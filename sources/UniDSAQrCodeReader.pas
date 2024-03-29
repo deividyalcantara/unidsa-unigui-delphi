@@ -3,7 +3,7 @@ unit UniDSAQrCodeReader;
 interface
 
 uses
- System.SysUtils, System.Classes, uniGUIClasses, UniDSABaseControl, UniDSAJQuery, uniGUITypes,
+ System.SysUtils, System.Classes, uniGUIClasses, UniDSABaseControl, UniDSAExecuteFunction, uniGUITypes,
  System.TypInfo, UniDSALibrary, System.Variants, Vcl.Graphics, UniDSASource;
 
 type
@@ -52,7 +52,7 @@ type
 
   TUniDSAQrCodeReader = class(TUniDSABaseControl)
   private
-    FQrCodeReader: TJQuery;
+    FQrCodeReader: TExecuteFunction;
     FText: string;
     FSingleRead: Boolean;
     FOnAfterReading: TNotifyEvent;
@@ -134,7 +134,7 @@ begin
   Self.Width := 100;
   FQrBox := 250;
   FFPS := 10;
-  FQrCodeReader := TJQuery.Create('qrCodeReader');
+  FQrCodeReader := TExecuteFunction.Create('qrCodeReader');
   FSupportedFormats := TUniDSAQrCodeReaderSupportedFormats.Create;
 end;
 

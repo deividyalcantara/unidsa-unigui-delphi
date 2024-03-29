@@ -122,8 +122,8 @@
     <File Path="sources\UniDSAQrCodeReader.pas"/>
     <File Path="sources\UniDSASource.pas"/>
     <File Path="sources\UniDSAToast.pas"/>
+    <File Path="sources\UniDSAExecuteFunction.pas"/>
     <File Path="dbrtl.dcp"/>
-    <File Path="DesignIDE.dcp"/>
     <File Path="inet.dcp"/>
     <File Path="rtl.dcp"/>
     <File Path="soaprtl.dcp"/>

@@ -3,7 +3,7 @@ unit UniDSAMenuLateral;
 interface
 
 uses
- System.SysUtils, System.Classes, uniGUIClasses, UniDSABaseControl, UniDSAJQuery, uniGUITypes,
+ System.SysUtils, System.Classes, uniGUIClasses, UniDSABaseControl, UniDSAExecuteFunction, uniGUITypes,
  System.TypInfo, UniDSALibrary, System.Variants, Vcl.Graphics, UniDSASource, Vcl.Controls,
  System.Types;
 
@@ -310,7 +310,7 @@ type
 
   TUniDSAMenuLateral = class(TUniDSABaseControl)
   private
-    FMenuLateral: TJQuery;
+    FMenuLateral: TExecuteFunction;
     FLogo: TUniDSAMenuLateralLogo;
     FSearch: TUniDSAMenuLateralSearch;
     FTheme: TUniDSAMenuLateralTheme;
@@ -527,7 +527,7 @@ begin
   SetAlign(alLeft);
   AjaxSecurity := True;
 
-  FMenuLateral := TJQuery.Create('qrCodeReader');
+  FMenuLateral := TExecuteFunction.Create('qrCodeReader');
 
   Logo := TUniDSAMenuLateralLogo.Create(Self);
   Search := TUniDSAMenuLateralSearch.Create(Self);

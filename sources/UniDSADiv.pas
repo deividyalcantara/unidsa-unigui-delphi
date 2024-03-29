@@ -3,7 +3,7 @@ unit UniDSADiv;
 interface
 
 uses
- System.SysUtils, System.Classes, uniGUIClasses, UniDSABaseControl, UniDSAJQuery, uniGUITypes,
+ System.SysUtils, System.Classes, uniGUIClasses, UniDSABaseControl, UniDSAExecuteFunction, uniGUITypes,
  System.TypInfo, UniDSALibrary, System.Variants, Vcl.Graphics, UniDSASource, Vcl.Controls,
  System.Types, uniPanel, uniGUIInterfaces;
 

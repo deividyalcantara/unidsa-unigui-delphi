@@ -3,7 +3,7 @@ unit UniDSAConfirm;
 interface
 
 uses
- System.SysUtils, System.Classes, uniGUIClasses, UniDSABase, UniDSAJQuery, UniDSAColor,
+ System.SysUtils, System.Classes, uniGUIClasses, UniDSABase, UniDSAExecuteFunction, UniDSAColor,
  uniGUITypes, System.TypInfo, UniDSALibrary, System.Variants, Vcl.Graphics, UniDSASource;
 
 type
@@ -142,7 +142,7 @@ type
 
   TUniDSAConfirm = class(TUniDSABaseComponent)
   private
-    FConfirm: TJQuery;
+    FConfirm: TExecuteFunction;
     FDraggable: Boolean;
     FTitle: string;
     FContent: string;
@@ -231,7 +231,7 @@ type
     property PromptCustom: TUniDSAConfirmPrompt read FPromptCustom write FPromptCustom;
     property Response: string read FResponse write FResponse;
     property EscapeKey: Boolean read FEscapeKey write FEscapeKey;
-    property ConfirmProperty: TJQuery read FConfirm;
+    property ConfirmProperty: TExecuteFunction read FConfirm;
 
     property Close: TUniDSAConfirmClose read FClose write FClose;
     property TypeConfirm: TUniDSAConfirmTypeConfirm read FTypeConfirm write FTypeConfirm;
@@ -400,7 +400,7 @@ begin
   FTypes := TUniDSAColor.Create;
   FPromptCustom := TUniDSAConfirmPrompt.Create;
   FButtons := TUniDSAConfirmButton.Create(Self, TUniDSAConfirmButtonItem);
-  FConfirm := TJQuery.Create('confirm');
+  FConfirm := TExecuteFunction.Create('confirm');
   FDismiss := TUniDSAConfirmBgDismiss.Create;
   FAnimation := TUniDSAConfirmAnimation.Create;
 

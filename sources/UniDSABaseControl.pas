@@ -3,7 +3,7 @@ unit UniDSABaseControl;
 interface
 
 uses
- System.SysUtils, System.Classes, uniGUIClasses, UniDSAJQuery, UniDSALibrary, uniGUITypes;
+ System.SysUtils, System.Classes, uniGUIClasses, UniDSAExecuteFunction, UniDSALibrary, uniGUITypes;
 
 type
   TUniDSABaseControl = class(TUniControl)

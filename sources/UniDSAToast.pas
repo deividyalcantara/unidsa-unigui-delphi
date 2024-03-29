@@ -3,7 +3,7 @@ unit UniDSAToast;
 interface
 
 uses
-  System.SysUtils, System.Classes, uniGUIBaseClasses, uniGUIClasses, UniDSAJQuery, UniDSALibrary,
+  System.SysUtils, System.Classes, uniGUIBaseClasses, uniGUIClasses, UniDSAExecuteFunction, UniDSALibrary,
   System.UITypes, uniGUITypes, System.TypInfo, Vcl.Graphics, UniDSASource,  UniDSABase,
   UniDSAColor;
 
@@ -67,7 +67,7 @@ type
 
   TUniDSAToast = class(TUniDSABaseComponent)
   private
-    FToast: TJQuery;
+    FToast: TExecuteFunction;
     FText: string;
     FShowHideTransition: TUniDSAToastTypeHideTransition;
     FHeading: string;
@@ -111,7 +111,7 @@ type
     property OnAfterShown: TNotifyEvent read FOnAfterShown write FOnAfterShown;
     property OnBeforeHide: TNotifyEvent read FOnBeforeHide write FOnBeforeHide;
     property OnAfterHidden: TNotifyEvent read FOnAfterHidden write FOnAfterHidden;
-    property Toast: TJQuery read FToast write FToast;
+    property Toast: TExecuteFunction read FToast write FToast;
   end;
 
 procedure Register;
@@ -160,7 +160,7 @@ begin
   FStack := TUniDSAToastStack.Create;
   FPosition := TUniDSAToastPosition.Create;
   FLoader := TUniDSAToastLoader.Create;
-  FToast := TJQuery.Create('toast');
+  FToast := TExecuteFunction.Create('toast');
   FBgColor := TUniDSAColor.Create;
   FTextColor := TUniDSAColor.Create;
 

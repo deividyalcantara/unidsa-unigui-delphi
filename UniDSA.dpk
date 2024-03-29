@@ -188,7 +188,7 @@ requires
   vclwinx;
 
 contains
-  UniDSAJQuery in 'sources\UniDSAJQuery.pas',
+  UniDSAExecuteFunction in 'sources\UniDSAExecuteFunction.pas',
   UniDSALibrary in 'sources\UniDSALibrary.pas',
   UniDSAToast in 'sources\UniDSAToast.pas',
   UniDSAConfirm in 'sources\UniDSAConfirm.pas',

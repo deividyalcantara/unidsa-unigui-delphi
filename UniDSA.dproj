@@ -123,7 +123,7 @@
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="vcldb.dcp"/>
         <DCCReference Include="vclwinx.dcp"/>
-        <DCCReference Include="sources\UniDSAJQuery.pas"/>
+        <DCCReference Include="sources\UniDSAExecuteFunction.pas"/>
         <DCCReference Include="sources\UniDSALibrary.pas"/>
         <DCCReference Include="sources\UniDSAToast.pas"/>
         <DCCReference Include="sources\UniDSAConfirm.pas"/>
