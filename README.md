@@ -242,7 +242,7 @@ Este é um componente que representa um menu lateral, comumente usado em aplica�
 
 > Imagem ilustrativa, pois o componente pode ter opções de personalizações...
 
-## [![TUniDSALogin](https://i.ibb.co/JQM5cSh/TUni-DSALogin.png "TUniDSAMenuLateral")](https://i.ibb.co/JQM5cSh/TUni-DSALogin.png "TUniDSAMenuLateral") TUniDSALogin
+## [![TUniDSALogin](https://i.ibb.co/fk69Jz7/TUni-DSALogin24.png "TUniDSAMenuLateral")](https://i.ibb.co/fk69Jz7/TUni-DSALogin24.png "TUniDSAMenuLateral") TUniDSALogin
 
 O componente TUniDSALogin é uma ferramenta versátil projetada para apresentar elementos cruciais em uma tela de login, oferecendo uma experiência de usuário fluida e personalizável além de agilizar todo processo de criação dessa tela. A tela de login é responsiva, sendo assim se adaptará a diferentes tamnhos de tela.
 
