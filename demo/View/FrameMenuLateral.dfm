@@ -1,18 +1,15 @@
 inherited FrMenuLateral: TFrMenuLateral
-  Width = 929
-  Height = 682
   OnCreate = UniFrameCreate
-  ExplicitWidth = 929
-  ExplicitHeight = 682
   object usbPrincipal: TUniScrollBox
     Left = 0
     Top = 0
-    Width = 929
-    Height = 682
+    Width = 624
+    Height = 441
     Hint = ''
     Align = alClient
     TabOrder = 0
-    ScrollHeight = 665
+    ExplicitWidth = 929
+    ExplicitHeight = 682
     object ugbTema: TUniGroupBox
       AlignWithMargins = True
       Left = 20

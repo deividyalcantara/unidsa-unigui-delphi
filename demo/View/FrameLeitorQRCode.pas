@@ -4,12 +4,12 @@ interface
 
 uses
   Windows, Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FrameBase, UniDSAJQuery, uniGUIBaseClasses,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uniGUIFrame, uniGUIBaseClasses,
   uniGUIClasses, UniDSABase, UniDSAToast, uniButton, uniEdit, uniLabel, uniPanel,
-  uniGroupBox, uniScrollBox, UniDSABaseControl, UniDSAQrCodeReader, FormLeitorQrCode;
+  uniGroupBox, uniScrollBox, UniDSABaseControl, UniDSAQrCodeReader, FormLeitorQrCode, UniDSAExecuteFunction;
 
 type
-  TFrLeitorQrCode = class(TFrBase)
+  TFrLeitorQrCode = class(TUniFrame)
     usbPrincipal: TUniScrollBox;
     ugbMensagem: TUniGroupBox;
     UniContainerPanel20: TUniContainerPanel;

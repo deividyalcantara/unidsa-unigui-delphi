@@ -1,13 +1,9 @@
 inherited FrToast: TFrToast
-  Width = 643
-  Height = 500
-  ExplicitWidth = 643
-  ExplicitHeight = 500
   object usbPrincipal: TUniScrollBox
     Left = 0
     Top = 0
-    Width = 643
-    Height = 500
+    Width = 624
+    Height = 441
     Hint = ''
     Align = alClient
     TabOrder = 0
@@ -15,7 +11,6 @@ inherited FrToast: TFrToast
     ExplicitTop = 8
     ExplicitWidth = 640
     ExplicitHeight = 480
-    ScrollHeight = 175
     object ugbMensagem: TUniGroupBox
       AlignWithMargins = True
       Left = 20
@@ -179,8 +174,8 @@ inherited FrToast: TFrToast
       AlignWithMargins = True
       Left = 20
       Top = 155
-      Width = 261
-      Height = 15
+      Width = 251
+      Height = 13
       Hint = ''
       Margins.Left = 20
       Margins.Top = 5
@@ -194,8 +189,6 @@ inherited FrToast: TFrToast
       ParentColor = False
       Color = clBtnFace
       TabOrder = 3
-      ExplicitTop = 150
-      ExplicitWidth = 293
     end
   end
   object Toast: TUniDSAToast

@@ -1,5 +1,5 @@
-TFormUniDSABrowser BITMAP "images\\TFormUniDSABrowser.bmp"
 TUniDSAConfirm BITMAP "images\\TUniDSAConfirm.bmp"
+TUniDSALogin BITMAP "images\\TUniDSALogin.bmp"
 TUniDSAQrCodeReader BITMAP "images\\TUniDSAQrCodeReader.bmp"
 TUniDSAToast BITMAP "images\\TUniDSAToast.bmp"
 TUniDSAMenuLateral BITMAP "images\\TUniDSAMenuLateral.bmp"

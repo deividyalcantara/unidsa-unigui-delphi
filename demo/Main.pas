@@ -6,8 +6,8 @@ uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics, uniGUIFrame,
   Controls, Forms, uniGUITypes, uniGUIAbstractClasses, FormContribuicoes,
   uniGUIClasses, uniGUIForm, UniDSAMenuLateral, uniGUIBaseClasses, UniDSABaseControl,
-  UniDSAJQuery, UniDSABase, UniDSAConfirm, FrameToast, FrameLeitorQRCode,
-  UniDSAToast, FrameHome, FrameMenuLateral, uniPanel, uniGUIRegClasses, FrameConfirm;
+  UniDSABase, UniDSAConfirm, FrameToast, FrameLeitorQRCode,
+  UniDSAToast, FrameHome, FrameMenuLateral, uniPanel, uniGUIRegClasses, FrameConfirm, UniDSAExecuteFunction;
 
 type
   TMainForm = class(TUniForm)
@@ -187,9 +187,6 @@ begin
     Position.Position := TUniDSAToastTypePosition.BottomRight;
     Show;
   end;
-
-  if UniSession.IsMobile then
-    ShowMessage('dsf');
 end;
 
 procedure TMainForm.UniFormCreate(Sender: TObject);

@@ -5,7 +5,6 @@ uses
   ServerModule in 'ServerModule.pas' {UniServerModule: TUniGUIServerModule},
   MainModule in 'MainModule.pas' {UniMainModule: TUniGUIMainModule},
   Main in 'Main.pas' {MainForm: TUniForm},
-  FrameBase in 'View\FrameBase.pas' {FrBase: TUniFrame},
   FrameMenuLateral in 'View\FrameMenuLateral.pas' {FrMenuLateral: TUniFrame},
   Funcoes in 'Library\Funcoes.pas',
   FrameHome in 'View\FrameHome.pas' {FrHome: TUniFrame},
@@ -13,9 +12,13 @@ uses
   FrameToast in 'View\FrameToast.pas' {FrToast: TUniFrame},
   FrameLeitorQRCode in 'View\FrameLeitorQRCode.pas' {FrLeitorQrCode: TUniFrame},
   FormLeitorQrCode in 'View\FormLeitorQrCode.pas' {FrmLeitorQrCode: TUniForm},
-  FrameConfirm in 'View\FrameConfirm.pas' {FrConfirm: TUniFrame};
+  FrameConfirm in 'View\FrameConfirm.pas' {FrConfirm: TUniFrame},
+  Login in 'Login.pas' {FormLogin: TUniLoginForm};
 
 {$R *.res}
+
+{$I UniDSA.inc}
+{$INCLUDE UniDSA.inc}
 
 begin
   ReportMemoryLeaksOnShutdown := True;

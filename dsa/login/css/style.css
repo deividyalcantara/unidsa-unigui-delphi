@@ -1,0 +1,309 @@
+body {
+  padding: 0px;
+  margin: 0px;
+}
+
+.un-lg-bg {
+  width: 100%;
+  height: 100vb;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+.un-lg-bg .un-lg-shape {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.un-lg-bg .un-lg-shape svg {
+  margin-left: -40px;
+  width: 100%;
+  height: 100%;
+}
+
+.un-lg-bg .un-lg-login {
+  background-color: #f8fafb;
+  min-width: 290px;
+  height: 500px;
+  border-radius: 10px;
+  border: 1px solid #f6f8f9;
+  z-index: 2;
+  -webkit-box-shadow: 0px 2px 13px 3px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 2px 13px 3px rgba(0,0,0,0.1);
+  box-shadow: 0px 2px 13px 3px rgba(0,0,0,0.1);
+}
+
+.un-lg-bg .un-lg-login .un-lg-logo {
+  height: 77px;
+  width: auto;
+  border-radius: 10px;
+  display: flex;
+}
+
+.un-lg-bg .un-lg-login .un-lg-logo .un-lg-logo-left {
+  width: 112px;
+  display: flex;
+  align-items: center;
+  display: flex;
+  margin-left: 30px;
+}
+
+.un-lg-bg .un-lg-login .un-lg-logo .un-lg-logo-left #un-lg-logo-left-img{
+  max-height: 47px;
+  max-width: 96px;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit {
+  width: 100%;
+  height: calc(100% - 77px);
+  background-color: #f8fafb;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: row;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-img-demo {
+  width: 438px;
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-img-demo #un-lg-img-demo-img {
+  margin-top: 100px;
+  margin-left: 40px;  
+  max-width: 80%;
+  max-height: 80%;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit {
+  height: 100%;
+  padding: 26px;
+  display: flex;
+  flex-direction: column;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-welcome-back {
+  font-size: 25px;
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 400;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-msg-extra {
+  font-size: 10px;
+  margin-top: 20px;
+  font-family: 'Roboto', sans-serif !important;
+  font-weight: 500;  
+  color: #768096;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-password,
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-login {
+  margin-top: 20px;
+  display: flex;
+  width: 100%;
+  background-color: #edf2f5;
+  height: 42px;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-password {
+  margin-top: 0px;
+  background-color: white;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-login {
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-login .un-lg-gp-login-left,
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-password .un-lg-gp-password-left {
+  width: 42px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-login .un-lg-gp-login-right,
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-password .un-lg-gp-password-right {
+  width: calc(100% - 42px);
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-password .un-lg-gp-lg-r-title,
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-login .un-lg-gp-lg-r-title {
+  font-family: 'Roboto', sans-serif !important;
+  color: #a4afc9;  
+  height: 16px;
+  font-size: 10px;
+  margin-top: 7px;
+  width: 100%;
+  margin-left: 0px;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-password input,
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-login input {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 11px;
+  border: none;
+  margin-top: -8px;
+  font-weight: 500;
+  height: calc(100% - 16px);
+  background-color: transparent;
+  caret-color: #63adf9;
+  width: 100%;
+  margin-left: -2px;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-password input:hover,
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-password input:active,
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-password input:focus,
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-login input:hover,
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-login input:active,
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-gp-login input:focus {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-rm-fp {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  margin-top: 10px;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-rm-fp .un-lg-remember-me  {
+  height: 100%;
+  width: 110px;
+  display: flex;
+  flex-direction: row;
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 11px;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-rm-fp .un-lg-remember-me  label {
+  margin-top: 8px;
+  color: #768096;
+}
+
+.un-lg-bg .un-lg-login .un-lg-forget-password {
+  height: 100%;
+  width: calc(100% - 110px);
+  display: flex;
+  flex-direction: row;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-rm-fp .un-lg-forget-password {
+  display: flex;
+  flex-direction: row;
+  justify-content: right;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-rm-fp .un-lg-forget-password .un-lg-action-forget-password {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 11px;
+  margin-top: 8px;
+  color: #768096;
+}
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-rm-fp .un-lg-remember-me label:hover,
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-rm-fp .un-lg-forget-password .un-lg-action-forget-password:hover {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 11px;
+  margin-top: 8px;
+  color: #2759c5;
+  cursor: pointer;
+}
+
+
+.un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit .un-lg-login-now-create-account {
+  display: flex;
+  flex-direction: row;
+  height: 30px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+#un-lg-create-account,
+#un-lg-login-now {
+  font-family: 'Roboto', sans-serif !important;
+  font-size: 11px;  
+  border-radius: 50px;
+  background-color: #3f89fa;
+  border: 1 solid #3e8afa;
+  cursor: pointer;
+  color: #fff;
+  height: 100%;
+  width: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  -webkit-box-shadow: 0px 2px 13px 2px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 2px 13px 2px rgba(0,0,0,0.1);
+  box-shadow: 0px 2px 13px 2px rgba(0,0,0,0.1);  
+}
+
+#un-lg-create-account {
+  background-color: #fff;
+  color: #768096;
+  -webkit-box-shadow: 0px 2px 13px 2px rgba(0,0,0,0.1);
+  -moz-box-shadow: 0px 2px 13px 2px rgba(0,0,0,0.1);
+  box-shadow: 0px 2px 13px 2px rgba(0,0,0,0.1);  
+  margin-left: 10px;
+}
+
+#un-lg-login-now:hover {
+  background-color: #3078e4;
+}
+
+#un-lg-create-account:hover {
+  background-color: #f7f7f7;
+}
+
+@media (min-width: 725px) {
+  .un-lg-bg .un-lg-login { 
+    width: 724px;
+    max-width: 100%;
+
+  }
+
+  .un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-img-demo {
+    display: block;
+  } 
+
+  .un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit {
+    width: calc(100% - 400px);
+    height: auto;
+  }    
+}
+
+@media (max-width: 724px) {
+  .un-lg-bg .un-lg-login {
+    width: 260px;
+  }
+
+  .un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-img-demo {
+    display: none;
+  } 
+  
+  .un-lg-bg .un-lg-login .un-lg-img-submit .un-lg-submit {
+    width: 100%;
+    height: auto;    
+  }  
+}

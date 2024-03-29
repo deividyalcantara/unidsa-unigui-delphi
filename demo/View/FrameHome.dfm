@@ -18,7 +18,6 @@ inherited FrHome: TFrHome
     ParentColor = False
     Color = clBtnFace
     TabOrder = 0
-    ExplicitWidth = 371
   end
   object UniLabel1: TUniLabel
     AlignWithMargins = True

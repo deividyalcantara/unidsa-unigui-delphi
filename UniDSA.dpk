@@ -30,153 +30,10 @@ package UniDSA;
 {$IMPLICITBUILD ON}
 
 requires
-  {$IFDEF VER360}  // Delphi 12 Athens
-    uniGUI29Core,
-    uniTools29,
-    uIndy29,
-    uniGUI29,
-  {$IFEND}
-
-  {$IFDEF VER350}  // Delphi 11.0 Alexandria / C++Builder 11.0 Alexandria
-    uniGUI28Core,
-    uniTools28,
-    uIndy28,
-    uniGUI28,
-  {$IFEND}
-
-  {$IFDEF VER340}  // Delphi 10.4 Sydney / C++Builder 10.4 Sydney
-    uniGUI27Core,
-    uniTools27,
-    uIndy27,
-    uniGUI27,
-  {$IFEND}
-
-  {$IFDEF VER330} // Delphi 10.3 Rio / C++Builder 10.3 Rio
-    uniGUI26Core,
-    uniTools26,
-    uIndy26,
-    uniGUI26,
-  {$IFEND}
-
-  {$IFDEF VER320} // Delphi 10.2 Tokyo / C++Builder 10.2 Tokyo
-    uniGUI25Core,
-    uniTools25,
-    uIndy25,
-    uniGUI25,
-  {$IFEND}
-
-  {$IFDEF VER310} // Delphi 10.1 Berlin / C++Builder 10.1 Berlin
-    uniGUI24Core,
-    uniTools24,
-    uIndy24,
-    uniGUI24,
-  {$IFEND}
-
-  {$IFDEF VER300} // 	Delphi 10 Seattle / C++Builder 10 Seattle
-    uniGUI23Core,
-    uniTools23,
-    uIndy23,
-    uniGUI23,
-  {$IFEND}
-
-  {$IFDEF VER290} // Delphi XE8 / C++Builder XE8
-    uniGUI22Core,
-    uniTools22,
-    uIndy22,
-    uniGUI22,
-  {$IFEND}
-
-  {$IFDEF VER280} // Delphi XE7 / C++Builder XE7
-    uniGUI21Core,
-    uniTools21,
-    uIndy21,
-    uniGUI21,
-  {$IFEND}
-
-  {$IFDEF VER270}  // Delphi XE6 / C++Builder XE6
-    uniGUI20Core,
-    uniTools20,
-    uIndy20,
-    uniGUI20,
-  {$IFEND}
-
-  {$IFDEF VER260} // Delphi XE5 / C++Builder XE5
-    uniGUI19Core,
-    uniTools19,
-    uIndy19,
-    uniGUI19,
-  {$IFEND}
-
-  {$IFDEF VER250} // Delphi XE4 / C++Builder XE4
-    uniGUI18Core,
-    uniTools18,
-    uIndy18,
-    uniGUI18,
-  {$IFEND}
-
-  {$IFDEF VER240} // Delphi XE3 / C++Builder XE3
-    uniGUI17Core,
-    uniTools17,
-    uIndy17,
-    uniGUI17,
-  {$IFEND}
-
-  {$IFDEF VER230} // Delphi XE2 / C++Builder XE2
-    uniGUI16Core,
-    uniTools16,
-    uIndy16,
-    uniGUI16,
-  {$IFEND}
-
-  {$IFDEF VER220} // Delphi XE / C++Builder XE
-    uniGUI15Core,
-    uniTools15,
-    uIndy15,
-    uniGUI15,
-  {$IFEND}
-
-  {$IFDEF VER210} // Delphi 2010 / C++Builder 2010
-    uniGUI14Core,
-    uniTools14,
-    uIndy14,
-    uniGUI14,
-  {$IFEND}
-
-  {$IFDEF VER200} // Delphi 2009 / C++Builder 2009
-    uniGUI12Core,
-    uniTools12,
-    uIndy12,
-    uniGUI12,
-  {$IFEND}
-
-  {$IFDEF VER190} // Delphi 2007 for .Net
-    uniGUI11Core,
-    uniTools11,
-    uIndy11,
-    uniGUI11,
-  {$IFEND}
-
-  {$IFDEF VER180} // Delphi 2007 / C++Builder 2007 for Win32
-    uniGUI11Core,
-    uniTools11,
-    uIndy11,
-    uniGUI11,
-  {$IFEND}
-
-  {$IFDEF VER185} // Delphi 2007 / C++Builder 2007 for Win32
-    uniGUI11Core,
-    uniTools11,
-    uIndy11,
-    uniGUI11,
-  {$IFEND}
-
-  {$IFDEF VER180}  // Delphi 2006 / C++Builder 2006
-    uniGUI10Core,
-    uniTools10,
-    uIndy10,
-    uniGUI10,
-  {$IFEND}
-
+  uniGUI29Core,
+  uniTools29,
+  uIndy29,
+  uniGUI29,
   rtl,
   soaprtl,
   dbrtl,
@@ -185,7 +42,8 @@ requires
   vclimg,
   vcl,
   vcldb,
-  vclwinx;
+  vclwinx,
+  vcledge;
 
 contains
   UniDSAExecuteFunction in 'sources\UniDSAExecuteFunction.pas',
@@ -198,9 +56,11 @@ contains
   UniDSAQrCodeReader in 'sources\UniDSAQrCodeReader.pas',
   UniDSABaseControl in 'sources\UniDSABaseControl.pas',
   UniDSAMenuLateral in 'sources\UniDSAMenuLateral.pas',
-  UniDSADiv in 'sources\UniDSADiv.pas';
+  UniDSADiv in 'sources\UniDSADiv.pas',
+  UniDSALogin in 'sources\UniDSALogin.pas',
+  UniDSAConst in 'sources\UniDSAConst.pas',
+  UniDSAControl in 'sources\UniDSAControl.pas';
 
 end.
-
 
 

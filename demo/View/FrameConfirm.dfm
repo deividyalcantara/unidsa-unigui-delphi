@@ -18,7 +18,6 @@ inherited FrConfirm: TFrConfirm
     ParentColor = False
     Color = clBtnFace
     TabOrder = 0
-    ExplicitWidth = 185
   end
   object UniLabel1: TUniLabel
     AlignWithMargins = True
@@ -39,13 +38,12 @@ inherited FrConfirm: TFrConfirm
     ParentColor = False
     Color = clBtnFace
     TabOrder = 1
-    ExplicitWidth = 51
   end
   object ugbMensagem: TUniGroupBox
     AlignWithMargins = True
     Left = 20
     Top = 80
-    Width = 600
+    Width = 584
     Height = 70
     Hint = ''
     Margins.Left = 20

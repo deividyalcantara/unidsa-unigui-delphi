@@ -4,12 +4,12 @@ interface
 
 uses
   Windows, Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FrameBase, UniDSAJQuery, uniGUIBaseClasses,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uniGUIFrame, uniGUIBaseClasses,
   uniGUIClasses, UniDSABase, UniDSAToast, uniButton, uniEdit, uniLabel, uniPanel,
-  uniGroupBox, uniScrollBox;
+  uniGroupBox, uniScrollBox, UniDSAExecuteFunction;
 
 type
-  TFrToast = class(TFrBase)
+  TFrToast = class(TUniFrame)
     Toast: TUniDSAToast;
     usbPrincipal: TUniScrollBox;
     ugbMensagem: TUniGroupBox;

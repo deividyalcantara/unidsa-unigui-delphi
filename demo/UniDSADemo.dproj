@@ -81,7 +81,7 @@
         <DCC_UsePackage>DataSnapServer;fmx;emshosting;DbxCommonDriver;bindengine;FireDACCommonODBC;emsclient;FireDACCommonDriver;IndyProtocols;dbxcds;RESTDWSocketIndy;emsedge;inetdb;FireDACSqliteDriver;DbxClientDriver;FireDACASADriver;soapmidas;dbexpress;FireDACInfxDriver;inet;DataSnapCommon;dbrtl;FireDACOracleDriver;CustomIPTransport;FireDACMSSQLDriver;TUniFalcon26;DataSnapIndy10ServerTransport;DataSnapConnectors;FireDACMongoDBDriver;IndySystem;FireDACTDataDriver;RESTDWShellServices;bindcomp;FireDACCommon;DataSnapServerMidas;FireDACODBCDriver;emsserverresource;IndyCore;RESTBackendComponents;rtl;FireDACMySQLDriver;FireDACADSDriver;RESTDWDriverFireDAC;RESTComponents;dsnapxml;DataSnapClient;DataSnapFireDAC;emsclientfiredac;FireDACPgDriver;FireDAC;xmlrtl;RESTDWCore;dsnap;CloudService;FireDACDb2Driver;DataSnapNativeClient;DatasnapConnectorsFreePascal;soaprtl;soapserver;FireDACIBDriver;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
-        <DCC_UsePackage>vclwinx;DataSnapServer;rbIDE2128;RESTDWWizards;dacvcl280;rbTC2128;dclRBADO2128;fmx;emshosting;vclie;DbxCommonDriver;bindengine;IndyIPCommon;VCLRESTComponents;DBXMSSQLDriver;FireDACCommonODBC;emsclient;FireDACCommonDriver;rbBDE2128;appanalytics;IndyProtocols;vclx;uniGUI28Chart;rbRIDE2128;IndyIPClient;dbxcds;vcledge;dac280;rbCIDE2128;bindcompvclwinx;uniGUI28;FmxTeeUI;RESTDWSocketIndy;uniGUI28Core;UniDSA;dclRBE2128;unidac280;emsedge;bindcompfmx;DBXFirebirdDriver;inetdb;rbFireDAC2128;FireDACSqliteDriver;DbxClientDriver;FireDACASADriver;Tee;soapmidas;vclactnband;TeeUI;fmxFireDAC;dbexpress;FireDACInfxDriver;dclRBDBE2128;DBXMySQLDriver;VclSmp;inet;DataSnapCommon;unidacvcl280;dacfmx280;uIndy28;vcltouch;fmxase;DBXOdbcDriver;dbrtl;FireDACDBXDriver;FireDACOracleDriver;fmxdae;TeeDB;FireDACMSAccDriver;CustomIPTransport;FireDACMSSQLDriver;rbDAD2128;TUniFalcon26;rbRCL2128;DataSnapIndy10ServerTransport;uniTools28;DataSnapConnectors;vcldsnap;DBXInterBaseDriver;FireDACMongoDBDriver;IndySystem;FireDACTDataDriver;vcldb;uSynEdit_R2024;RESTDWShellServices;rbRAP2128;vclFireDAC;vquery280;bindcomp;FireDACCommon;DataSnapServerMidas;FireDACODBCDriver;emsserverresource;unidacfmx280;rbDIDE2128;IndyCore;RESTBackendComponents;rbDBE2128;rbDB2128;bindcompdbx;rbCloudSC2128;rtl;FireDACMySQLDriver;FireDACADSDriver;RESTDWDriverFireDAC;rbUSERDesign2128;RESTComponents;DBXSqliteDriver;vcl;IndyIPServer;dsnapxml;dsnapcon;DataSnapClient;DataSnapProviderClient;adortl;rbRest2128;DBXSybaseASEDriver;uniGUI28VCL;rbTCUI2128;DBXDb2Driver;rbADO2128;vclimg;DataSnapFireDAC;emsclientfiredac;FireDACPgDriver;FireDAC;FireDACDSDriver;inetdbxpress;xmlrtl;tethering;rbUSER2128;RESTDWCore;crcontrols280;bindcompvcl;dsnap;rbRTL2128;CloudService;DBXSybaseASADriver;DBXOracleDriver;FireDACDb2Driver;DBXInformixDriver;fmxobj;bindcompvclsmp;DataSnapNativeClient;FMXTee;dclRBFireDAC2128;DatasnapConnectorsFreePascal;soaprtl;soapserver;FireDACIBDriver;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>vclwinx;DataSnapServer;rbIDE2128;RESTDWWizards;dacvcl280;rbTC2128;dclRBADO2128;fmx;emshosting;vclie;DbxCommonDriver;bindengine;IndyIPCommon;VCLRESTComponents;DBXMSSQLDriver;FireDACCommonODBC;emsclient;FireDACCommonDriver;rbBDE2128;appanalytics;IndyProtocols;vclx;uniGUI28Chart;rbRIDE2128;IndyIPClient;dbxcds;vcledge;dac280;rbCIDE2128;bindcompvclwinx;uniGUI28;FmxTeeUI;RESTDWSocketIndy;uniGUI28Core;dclRBE2128;unidac280;emsedge;bindcompfmx;DBXFirebirdDriver;inetdb;rbFireDAC2128;FireDACSqliteDriver;DbxClientDriver;FireDACASADriver;Tee;soapmidas;vclactnband;TeeUI;fmxFireDAC;dbexpress;FireDACInfxDriver;dclRBDBE2128;DBXMySQLDriver;VclSmp;inet;DataSnapCommon;unidacvcl280;dacfmx280;uIndy28;vcltouch;fmxase;DBXOdbcDriver;dbrtl;FireDACDBXDriver;FireDACOracleDriver;fmxdae;TeeDB;FireDACMSAccDriver;CustomIPTransport;FireDACMSSQLDriver;rbDAD2128;TUniFalcon26;rbRCL2128;DataSnapIndy10ServerTransport;uniTools28;DataSnapConnectors;vcldsnap;DBXInterBaseDriver;FireDACMongoDBDriver;IndySystem;FireDACTDataDriver;vcldb;uSynEdit_R2024;RESTDWShellServices;rbRAP2128;vclFireDAC;vquery280;bindcomp;FireDACCommon;DataSnapServerMidas;FireDACODBCDriver;emsserverresource;unidacfmx280;rbDIDE2128;IndyCore;RESTBackendComponents;rbDBE2128;rbDB2128;bindcompdbx;rbCloudSC2128;rtl;FireDACMySQLDriver;FireDACADSDriver;RESTDWDriverFireDAC;rbUSERDesign2128;RESTComponents;DBXSqliteDriver;vcl;IndyIPServer;dsnapxml;dsnapcon;DataSnapClient;DataSnapProviderClient;adortl;rbRest2128;DBXSybaseASEDriver;uniGUI28VCL;rbTCUI2128;DBXDb2Driver;rbADO2128;vclimg;DataSnapFireDAC;emsclientfiredac;FireDACPgDriver;FireDAC;FireDACDSDriver;inetdbxpress;xmlrtl;tethering;rbUSER2128;RESTDWCore;crcontrols280;bindcompvcl;dsnap;rbRTL2128;CloudService;DBXSybaseASADriver;DBXOracleDriver;FireDACDb2Driver;DBXInformixDriver;fmxobj;bindcompvclsmp;DataSnapNativeClient;FMXTee;dclRBFireDAC2128;DatasnapConnectorsFreePascal;soaprtl;soapserver;FireDACIBDriver;$(DCC_UsePackage)</DCC_UsePackage>
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>
         <BT_BuildType>Debug</BT_BuildType>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
@@ -151,11 +151,6 @@ $(PreBuildEvent)]]></PreBuildEvent>
             <FormType>dfm</FormType>
             <DesignClass>TUniForm</DesignClass>
         </DCCReference>
-        <DCCReference Include="View\FrameBase.pas">
-            <Form>FrBase</Form>
-            <FormType>dfm</FormType>
-            <DesignClass>TUniFrame</DesignClass>
-        </DCCReference>
         <DCCReference Include="View\FrameMenuLateral.pas">
             <Form>FrMenuLateral</Form>
             <FormType>dfm</FormType>
@@ -192,6 +187,11 @@ $(PreBuildEvent)]]></PreBuildEvent>
             <FormType>dfm</FormType>
             <DesignClass>TUniFrame</DesignClass>
         </DCCReference>
+        <DCCReference Include="Login.pas">
+            <Form>FormLogin</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TUniLoginForm</DesignClass>
+        </DCCReference>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
@@ -218,7 +218,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="4">
-                <DeployFile LocalName="Win32\Debug\UniDSADemo.exe" Configuration="Debug" Class="ProjectOutput">
+                <DeployFile LocalName="bin\Win32\Debug\UniDSADemo.exe" Configuration="Debug" Class="ProjectOutput">
                     <Platform Name="Win32">
                         <RemoteName>UniDSADemo.exe</RemoteName>
                         <Overwrite>true</Overwrite>

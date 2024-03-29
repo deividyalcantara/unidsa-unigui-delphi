@@ -6,7 +6,7 @@ uses
   uniGUIClasses, uniGUITypes;
 
 type
-  TTypeUniDSASource = (Toast, Confirm, MenuSiderbar, QrCodeReader, MenuLateral);
+  TTypeUniDSASource = (Toast, Confirm, MenuSiderbar, QrCodeReader, MenuLateral, Login);
 
 procedure GetLink(AComponent: TTypeUniDSASource);
 
@@ -34,13 +34,13 @@ begin
   else if AComponent = TTypeUniDSASource.QrCodeReader then begin
     UniAddJSLibrary(cFolder + '/qrcode_reader/js/qrcode_library.js', True, [upoFolderUni, upoPlatformBoth]);
   end
-  else if AComponent = TTypeUniDSASource.MenuSiderbar then begin
-    UniAddCSSLibrary(cFolder + '/menu/menu_1/style.css', True, [upoFolderUni, upoPlatformBoth]);
-    UniAddJSLibrary(cFolder + '/menu/menu_1/meuscript.js', True, [upoFolderUni, upoPlatformBoth]);
-  end
   else if AComponent = TTypeUniDSASource.MenuLateral then begin
     UniAddCSSLibrary(cFolder + '/menu_lateral/css/style.css', True, [upoFolderUni, upoPlatformBoth]);
     UniAddJSLibrary(cFolder + '/menu_lateral/js/script.js', True, [upoFolderUni, upoPlatformBoth]);
+  end
+  else if AComponent = TTypeUniDSASource.Login then begin
+    UniAddCSSLibrary(cFolder + '/login/css/style.css', True, [upoFolderUni, upoPlatformBoth]);
+    UniAddJSLibrary(cFolder + '/login/js/script.js', True, [upoFolderUni, upoPlatformBoth]);
   end;
 end;
 

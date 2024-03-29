@@ -1,19 +1,14 @@
 inherited FrLeitorQrCode: TFrLeitorQrCode
-  Width = 739
-  Height = 626
-  ExplicitWidth = 739
-  ExplicitHeight = 626
   object usbPrincipal: TUniScrollBox
     Left = 0
     Top = 0
-    Width = 739
-    Height = 626
+    Width = 624
+    Height = 441
     Hint = ''
     Align = alClient
     TabOrder = 0
     ExplicitWidth = 640
     ExplicitHeight = 480
-    ScrollHeight = 70
     object ugbMensagem: TUniGroupBox
       AlignWithMargins = True
       Left = 20

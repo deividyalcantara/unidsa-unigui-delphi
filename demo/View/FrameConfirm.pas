@@ -4,12 +4,12 @@ interface
 
 uses
   Windows, Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FrameBase, uniGUIBaseClasses, uniGUIClasses,
-  uniLabel, uniButton, uniEdit, uniPanel, uniGroupBox, UniDSAJQuery, UniDSABase,
-  UniDSAConfirm;
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uniGUIBaseClasses, uniGUIClasses,
+  uniLabel, uniButton, uniEdit, uniPanel, uniGroupBox, UniDSABase,
+  UniDSAConfirm, UniDSAExecuteFunction, uniGUIFrame;
 
 type
-  TFrConfirm = class(TFrBase)
+  TFrConfirm = class(TUniFrame)
     UniLabel2: TUniLabel;
     UniLabel1: TUniLabel;
     ugbMensagem: TUniGroupBox;

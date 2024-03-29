@@ -4,12 +4,12 @@ interface
 
 uses
   Windows, Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, FrameBase, uniGUIBaseClasses, uniGUIClasses, uniLabel,
+  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uniGUIFrame, uniGUIBaseClasses, uniGUIClasses, uniLabel,
   uniButton, uniPanel, UniDSAMenuLateral, uniTimer, MainModule, System.TypInfo, Funcoes, uniGroupBox,
   uniSpinEdit, uniEdit, uniCheckBox, uniScrollBox, UniDSAConfirm;
 
 type
-  TFrMenuLateral = class(TFrBase)
+  TFrMenuLateral = class(TUniFrame)
     lblSubTitulo: TUniLabel;
     lblTitulo: TUniLabel;
     ucpTemaBorda: TUniContainerPanel;
