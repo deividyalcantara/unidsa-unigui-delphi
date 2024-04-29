@@ -303,6 +303,27 @@ O componente TUniDSALogin é uma ferramenta versátil projetada para apresentar 
 - `OnPasswordEnter`  Acionado ao pressionar ENTER no input do password.
 - `OnRememberMe` Acionado ao clicar no lembrar da senha
 
+**Comando**
+
+Todos os formulários do UniGUI atualizam a largura do form de acordo o redmensionamento do usuário, exceto no Form do tipo Login. Por isso é preciso o uso do seguinte script na propriedade "**Script**" do seu "**FormLogin**".
+
+    window.onresize = function(){
+      if (typeof FormLogin !== 'undefined') {  
+        var getSize = Ext.getBody().getViewSize(),
+            winWidth = getSize.width,
+            winHeight = getSize.height,
+            left = (winWidth - FormLogin.window.width) / 2,
+            top = (winHeight - FormLogin.window.height) / 2;
+    
+        FormLogin.window.setPosition(left, top);
+      }
+    }
+
+Obs.: troque o nome pelo nome do seu form **FormLogin**.
+
+Vale lembrar que é recomendado o modo **mfPage** no **UniServerModule** para que sua aplicação fique o mais parecido com os estilos padrões de páginas web.
+
+
 #### Imagem:
 
 [![TUniDSALogin](https://i.ibb.co/RcwzzZW/TUni-DSALogin1.png "TUniDSALogin")](https://i.ibb.co/RcwzzZW/TUni-DSALogin1.png "TUniDSALogin")
