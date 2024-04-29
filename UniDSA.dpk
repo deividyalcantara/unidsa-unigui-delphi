@@ -185,8 +185,7 @@ requires
   vclimg,
   vcl,
   vcldb,
-  vclwinx,
-  vcledge;
+  vclwinx;
 
 contains
   UniDSAExecuteFunction in 'sources\UniDSAExecuteFunction.pas',
