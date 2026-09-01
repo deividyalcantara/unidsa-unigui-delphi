@@ -185,6 +185,7 @@ type
     FonContentReady: TNotifyEvent;
     FOnAction: TNotifyEvent;
     FEscapeKey: Boolean;
+    procedure Execute;
   protected
     procedure AJAXEvent(var EventName: string; var Params: TUniStrings); override;
   public
@@ -279,8 +280,11 @@ begin
   inherited;
   FResponse := Params.Values['Response'];
 
-  if EventName = 'UniDSAToastButtons' then begin
+  if EventName = 'UniDSAConfirmButtons' then begin
     LButtonItem := SearchButton(Params.Values['ButtonName']);
+
+    if not Assigned(LButtonItem) then
+      Exit;
 
     if Assigned(FOnButtonClick) then
       FOnButtonClick(LButtonItem.FText, response);
@@ -291,27 +295,27 @@ begin
     if Assigned(LButtonItem.OnClick) then
       LButtonItem.OnClick(LButtonItem);
   end
-  else if EventName = 'UniDSAToastOnContentReady' then begin
+  else if EventName = 'UniDSAConfirmOnContentReady' then begin
     if Assigned(FOnContentReady) then
       FOnContentReady(Self);
   end
-  else if EventName = 'UniDSAToastOnOpenBefore' then begin
+  else if EventName = 'UniDSAConfirmOnOpenBefore' then begin
     if Assigned(FOnOpenBefore) then
       FOnOpenBefore(Self);
   end
-  else if EventName = 'UniDSAToastOnOpen' then begin
+  else if EventName = 'UniDSAConfirmOnOpen' then begin
     if Assigned(FOnOpen) then
       FOnOpen(Self);
   end
-  else if EventName = 'UniDSAToastOnClose' then begin
+  else if EventName = 'UniDSAConfirmOnClose' then begin
     if Assigned(FOnClose) then
       FOnClose(Self);
   end
-  else if EventName = 'UniDSAToastOnDestroy' then begin
+  else if EventName = 'UniDSAConfirmOnDestroy' then begin
     if Assigned(FOnDestroy) then
       FOnDestroy(Self);
   end
-  else if EventName = 'UniDSAToastOnAction' then begin
+  else if EventName = 'UniDSAConfirmOnAction' then begin
     if Assigned(FOnAction) then
       FOnAction(Self);
   end
@@ -322,7 +326,7 @@ begin
   FTypeConfirm := TUniDSAConfirmTypeConfirm.Alert;
   Prepare;
   FConfirm.FunctionName('alert');
-  FConfirm.Execute;
+  Execute;
 end;
 
 procedure TUniDSAConfirm.Clear;
@@ -409,7 +413,6 @@ end;
 
 destructor TUniDSAConfirm.Destroy;
 begin
-  inherited;
   FreeAndNil(FClose);
   FreeAndNil(FTypes);
   FreeAndNil(FDismiss);
@@ -417,6 +420,7 @@ begin
   FreeAndNil(FButtons);
   FreeAndNil(FAnimation);
   FreeAndNil(FConfirm);
+  inherited;
 end;
 
 procedure TUniDSAConfirm.Dialog;
@@ -424,7 +428,55 @@ begin
   FTypeConfirm := TUniDSAConfirmTypeConfirm.Dialog;
   Prepare;
   FConfirm.FunctionName('dialog');
-  FConfirm.Execute;
+  Execute;
+end;
+
+procedure TUniDSAConfirm.Execute;
+begin
+  ExecuteJQuery(
+    '(function(runConfirm) {' +
+    '  if (window.jQuery && typeof window.jQuery.confirm === "function") {' +
+    '    runConfirm();' +
+    '    return;' +
+    '  }' +
+    '  var cssId = "unidsa-jquery-confirm-fallback-css";' +
+    '  if (!document.getElementById(cssId)) {' +
+    '    var css = document.createElement("link");' +
+    '    css.id = cssId;' +
+    '    css.rel = "stylesheet";' +
+    '    css.href = "https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.css";' +
+    '    document.head.appendChild(css);' +
+    '  }' +
+    '  var scriptId = "unidsa-jquery-confirm-fallback-js";' +
+    '  var script = document.getElementById(scriptId);' +
+    '  var loaded = function() {' +
+    '    if (window.jQuery && typeof window.jQuery.confirm === "function") {' +
+    '      runConfirm();' +
+    '    } else if (window.console) {' +
+    '      console.error("UniDSAConfirm: jquery-confirm foi carregado, mas $.confirm não está disponível.");' +
+    '    }' +
+    '  };' +
+    '  if (script) {' +
+    '    script.addEventListener("load", loaded);' +
+    '    return;' +
+    '  }' +
+    '  script = document.createElement("script");' +
+    '  script.id = scriptId;' +
+    '  script.src = "https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.4/jquery-confirm.min.js";' +
+    '  script.onload = loaded;' +
+    '  script.onerror = function() {' +
+    '    if (script.parentNode) {' +
+    '      script.parentNode.removeChild(script);' +
+    '    }' +
+    '    if (window.console) {' +
+    '      console.error("UniDSAConfirm: não foi possível carregar jquery-confirm. Publique a pasta dsa em files/dsa.");' +
+    '    }' +
+    '  };' +
+    '  document.head.appendChild(script);' +
+    '})(function() {' +
+      StringReplace(FConfirm.JQuery, '$.', 'window.jQuery.', []) +
+    '; });'
+  );
 end;
 
 procedure TUniDSAConfirm.Prepare;
@@ -458,7 +510,7 @@ var
            ', IsDisabled: ' + IIfStr(TUniDSAConfirmButtonItem(FButtons.Items[i]).IsDisabled, 'true', 'false') + ' ' +
            ', action: function() { ' +
            ' var name = this.$content.find(".name").val(); ' +
-           ' ajaxRequest(' +  IIfStr(Self.JSName = '', 'body', Self.JSName) + ', "UniDSAToastButtons", ' +
+           ' ajaxRequest(' +  IIfStr(Self.JSName = '', 'body', Self.JSName) + ', "UniDSAConfirmButtons", ' +
              '["ButtonName=" + "' + TUniDSAConfirmButtonItem(FButtons.Items[i]).FName + '", "Response=" + name]); ' +
            '} ' +
         '}'
@@ -618,7 +670,7 @@ begin
   FTypeConfirm := TUniDSAConfirmTypeConfirm.Prompt;
   Prepare;
   FConfirm.FunctionName('confirm');
-  FConfirm.Execute;
+  Execute;
 end;
 
 procedure TUniDSAConfirm.Show;
@@ -626,7 +678,7 @@ begin
   FTypeConfirm := TUniDSAConfirmTypeConfirm.Confirm;
   Prepare;
   FConfirm.FunctionName('confirm');
-  FConfirm.Execute;
+  Execute;
 end;
 
 { TUniDSAConfirmButtonItem }

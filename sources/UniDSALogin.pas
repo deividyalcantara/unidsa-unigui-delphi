@@ -145,7 +145,6 @@ end;
 
 destructor TUniDSALogin.Destroy;
 begin
-  inherited;
   FreeAndNil(FLoginNow);
   FreeAndNil(FCreateAccount);
   FreeAndNil(FRememberMe);
@@ -154,6 +153,7 @@ begin
   FreeAndNil(FPassword);
   FreeAndNil(FSlide);
   FreeAndNil(FLogo);
+  inherited;
 end;
 
 function TUniDSALogin.GetDescription: string;
@@ -265,7 +265,12 @@ begin
         Append('        <stop id="stop2" stop-color="rgba(145, 235, 228, 1)" offset="100%"></stop>');
         Append('        </linearGradient>');
         Append('        </defs>');
-        Append('        <path fill="url(#sw-gradient)" d="M25.7,-34.6C32.4,-30.6,36.1,-21.8,39.1,-12.6C42.2,-3.5,44.6,5.9,41.2,12.5C37.8,19.1,28.6,22.9,20.8,27.9C12.9,33,6.5,39.3,-0.2,39.6C-6.8,39.8,-13.7,34,-19.4,28.3C-25.2,22.6,-29.9,16.9,-33.7,9.8C-37.5,2.8,-40.4,-5.6,-38.1,-12.3C-35.8,-18.9,-28.3,-23.8,-21.1,-27.5C-13.9,-31.3,-6.9,-33.9,1.3,-35.7C9.6,-37.6,19.1,-38.5,25.7,-34.6Z" width="100%" height="100%" transform="translate(50 50)" stroke-width="0" style="transition: all 0.3s ease 0s;" stroke="url(#sw-gradient)"></path>');
+        Append('        <path fill="url(#sw-gradient)" d="' +
+          'M25.7,-34.6C32.4,-30.6,36.1,-21.8,39.1,-12.6C42.2,-3.5,44.6,5.9,41.2,12.5' +
+          'C37.8,19.1,28.6,22.9,20.8,27.9C12.9,33,6.5,39.3,-0.2,39.6C-6.8,39.8,-13.7,34,-19.4,28.3' +
+          'C-25.2,22.6,-29.9,16.9,-33.7,9.8C-37.5,2.8,-40.4,-5.6,-38.1,-12.3C-35.8,-18.9,-28.3,-23.8,-21.1,-27.5' +
+          'C-13.9,-31.3,-6.9,-33.9,1.3,-35.7C9.6,-37.6,19.1,-38.5,25.7,-34.6Z" width="100%" height="100%" ' +
+          'transform="translate(50 50)" stroke-width="0" style="transition: all 0.3s ease 0s;" stroke="url(#sw-gradient)"></path>');
         Append('        </svg>');
         Append('      </div>');
         Append('      <div class="un-lg-login">');
@@ -313,7 +318,17 @@ begin
 
         Append('            <div class="un-lg-gp-password">');
         Append('              <div class="un-lg-gp-password-left">');
-        Append('                <svg height="16" width="16px"  viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="#a4afc9"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M12 14.5V16.5M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 ');
+        Append('                <svg height="16" width="16px"  viewBox="0 0 24 24" fill="none" ' +
+          'xmlns="http://www.w3.org/2000/svg" stroke="#a4afc9"><g id="SVGRepo_bgCarrier" stroke-width="0"></g>' +
+          '<g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>' +
+          '<g id="SVGRepo_iconCarrier"> <path d="M12 14.5V16.5M7 10.0288C7.47142 10 8.05259 10 8.8 10H15.2' +
+          'C15.9474 10 16.5286 10 17 10.0288M7 10.0288C6.41168 10.0647 5.99429 10.1455 5.63803 10.327' +
+          'C5.07354 10.6146 4.6146 11.0735 4.32698 11.638C4 12.2798 4 13.1198 4 14.8V16.2' +
+          'C4 17.8802 4 18.7202 4.32698 19.362C4.6146 19.9265 5.07354 20.3854 5.63803 20.673' +
+          'C6.27976 21 7.11984 21 8.8 21H15.2C16.8802 21 17.7202 21 18.362 20.673' +
+          'C18.9265 20.3854 19.3854 19.9265 19.673 19.362C20 18.7202 20 17.8802 20 16.2V14.8' +
+          'C20 13.1198 20 12.2798 19.673 11.638C19.3854 11.0735 18.9265 10.6146 18.362 10.327' +
+          'C18.0057 10.1455 17.5883 10.0647 17 10.0288M7 10.0288V8C7 5.23858 9.23858 3 12 3C14.7614 3 ');
         Append(' 17 5.23858 17 8V10.0288" stroke="#a4afc9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path> </g></svg>');
         Append('              </div>');
         Append('              <div class="un-lg-gp-password-right">');

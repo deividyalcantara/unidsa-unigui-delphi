@@ -140,9 +140,9 @@ end;
 
 destructor TUniDSAQrCodeReader.Destroy;
 begin
-  inherited;
   FreeAndNil(FQrCodeReader);
   FreeAndNil(FSupportedFormats);
+  inherited;
 end;
 
 procedure TUniDSAQrCodeReader.InternalSetCaption(const Value: string);

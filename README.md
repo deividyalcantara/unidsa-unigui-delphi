@@ -1,330 +1,512 @@
-# Paleta de componentes UniDSA para UniGUI no Delphi
+# UniDSA para Delphi e uniGUI
+
+![Logotipo do UniDSA](https://i.ibb.co/VvFk21N/logo-unidsa.png)
 
-![](https://i.ibb.co/VvFk21N/logo-unidsa.png)
+O UniDSA é uma biblioteca de componentes visuais para aplicações web desenvolvidas com Delphi e uniGUI. O projeto reúne diálogos de confirmação, notificações, leitura de códigos, menu lateral e tela de login, com propriedades configuráveis tanto no Object Inspector quanto em tempo de execução.
 
-O **UniDSA** é uma paleta inovadora de componentes desenvolvida especificamente para aprimorar e estender as capacidades do **UniGUI no Delphi**. Composta por ferramentas altamente customizáveis, esta paleta visa oferecer soluções mais elegantes e eficazes para a construção de interfaces de usuário modernas.
+## Conteúdo
 
+- [Componentes](#componentes)
+- [Estrutura do repositório](#estrutura-do-repositório)
+- [Requisitos e compatibilidade](#requisitos-e-compatibilidade)
+- [Instalação no Delphi](#instalação-no-delphi)
+- [Publicação dos arquivos web](#publicação-dos-arquivos-web)
+- [Execução do projeto de demonstração](#execução-do-projeto-de-demonstração)
+- [Uso dos componentes](#uso-dos-componentes)
+- [Atualização da biblioteca](#atualização-da-biblioteca)
+- [Solução de problemas](#solução-de-problemas)
+- [Checklist de publicação](#checklist-de-publicação)
 
-**Componentes disponíveis**
+## Componentes
 
-> TUniDSAQrCodeReader
-> TUniDSAConfirm
-> TUniDSAToast
-> TUniDSAMenuLateral
-> TUniDSALogin
+| Componente | Finalidade |
+| --- | --- |
+| `TUniDSAConfirm` | Confirmações, alertas, diálogos e prompts com retorno por AJAX. |
+| `TUniDSAToast` | Notificações temporárias com posição, cores, ícones e eventos configuráveis. |
+| `TUniDSAQrCodeReader` | Leitura de QR Code e códigos de barras pela câmera do dispositivo. |
+| `TUniDSAMenuLateral` | Menu lateral responsivo com temas, pesquisa, perfil e notificações. |
+| `TUniDSALogin` | Interface responsiva para autenticação, recuperação de senha e criação de conta. |
 
-## [![TUniDSAQrCodeReader](https://i.ibb.co/rvfWQs8/TUni-DSAQr-Code-Reader.png "TUniDSAQrCodeReader")](https://i.ibb.co/rvfWQs8/TUni-DSAQr-Code-Reader.png "TUniDSAQrCodeReader")  TUniDSAQrCodeReader 
+## Estrutura do repositório
 
-Este é um componente avançado desenvolvido para aproveitar o poder do **HTML5** na leitura de uma ampla gama de** códigos de barras e QR codes**. Projetado para ser altamente flexível, o TUniDSAQrCodeReader oferece aos desenvolvedores a capacidade de personalizar exatamente quais tipos de códigos desejam ler, bem como a opção de escolher o dispositivo específico para leitura.
+```text
+unidsa-unigui-delphi/
+├── sources/                  Código-fonte dos componentes
+├── dsa/                      JavaScript, CSS e demais assets web
+│   ├── css/
+│   ├── dist/
+│   ├── js/
+│   ├── login/
+│   ├── menu_lateral/
+│   └── qrcode_reader/
+├── demo/                     Aplicação de demonstração
+├── images/                   Ícones usados na paleta do Delphi
+├── UniDSA.dproj              Pacote de runtime
+├── UniDSADesign.dproj        Pacote de design-time
+└── UniDSAGroup.groupproj     Grupo com os dois pacotes
+```
 
-#### Compatibilidade de Tipos de Códigos:
+O pacote `UniDSA` contém os componentes usados pela aplicação e os registra na paleta do Delphi. O pacote `UniDSADesign` é o complemento opcional que adiciona os editores e recursos de design dentro do IDE.
 
-| Tipo | Descrição |
-|------------- | -------------|
-|QR_CODE|  Permite a leitura de QR codes padrão.|
-|AZTEC| Suporte para leitura de códigos Aztec|
-|CODABAR| Identifica e lê códigos Codabar|
-|CODE_39, CODE_93, CODE_128| Leitura abrangente de códigos Code, cobrindo variações 39, 93 e 128.|
-|DATA_MATRIX| Habilitado para reconhecer e interpretar códigos Data Matrix.|
-|MAXICODE| Suporte para códigos MaxiCode.|
-|ITF| Compatível com códigos Interleaved 2 of 5 (ITF).|
-|EAN_13, EAN_8| Leitura de códigos EAN, incluindo as variações 13 e 8.|
-|PDF_417| Suporte para códigos PDF417.|
-|RSS_14, RSS_EXPANDED| Habilitado para códigos RSS, tanto na versão 14 quanto na versão expandida.|
-|UPC_A, UPC_E, UPC_EAN_EXTENSION| Compatível com variações UPC, incluindo extensões EAN.|
+## Requisitos e compatibilidade
 
-#### Características Principais:
+- Delphi com suporte a VCL.
+- uniGUI instalado e compilado para a mesma versão do Delphi.
+- Pacotes de runtime e design-time do uniGUI disponíveis no Library Path do IDE.
+- Permissão de câmera no navegador para usar `TUniDSAQrCodeReader`.
+- HTTPS ou `localhost` para acesso à câmera nos navegadores que exigem contexto seguro.
 
-+ Seleção de Tipo de Código: Os desenvolvedores têm a liberdade de marcar ou desmarcar tipos de códigos específicos para leitura, de acordo com as necessidades de sua aplicação.
+Os pacotes são separados por compatibilidade. `UniDSA` é o pacote principal e não depende do navegador de design. `UniDSADesign` é um complemento opcional: seus editores continuam compiláveis nas versões validadas, mas a pré-visualização integrada com `TEdgeBrowser/WebView2` está disponível somente a partir do Delphi 10.4. Nas versões anteriores, os componentes principais podem ser instalados e utilizados sem esse recurso de pré-visualização.
 
-+ Escolha do Dispositivo: Fornece a opção de selecionar o dispositivo específico para leitura, garantindo maior versatilidade na captação dos códigos.
+O arquivo `UniDSA.dpk` possui mapeamentos condicionais do Delphi 2006 ao Delphi 13. Cada compilador seleciona automaticamente a geração correspondente dos pacotes do uniGUI:
 
-#### Imagem:
+| Delphi | Símbolo | Pacotes uniGUI |
+| --- | --- | --- |
+| 13 | `VER370` | `uniGUI30Core`, `uniTools30`, `uIndy30`, `uniGUI30` |
+| 12 Athens | `VER360` | `uniGUI29Core`, `uniTools29`, `uIndy29`, `uniGUI29` |
+| 11 Alexandria | `VER350` | `uniGUI28Core`, `uniTools28`, `uIndy28`, `uniGUI28` |
+| 10.4 Sydney | `VER340` | `uniGUI27Core`, `uniTools27`, `uIndy27`, `uniGUI27` |
+| 10.3 Rio | `VER330` | `uniGUI26Core`, `uniTools26`, `uIndy26`, `uniGUI26` |
+| 10.2 Tokyo | `VER320` | `uniGUI25Core`, `uniTools25`, `uIndy25`, `uniGUI25` |
+| 10.1 Berlin | `VER310` | `uniGUI24Core`, `uniTools24`, `uIndy24`, `uniGUI24` |
+| 10 Seattle | `VER300` | `uniGUI23Core`, `uniTools23`, `uIndy23`, `uniGUI23` |
+| XE8 a 2006 | `VER290` a `VER180` | Gerações `uniGUI22` a `uniGUI10`, conforme o compilador |
 
-[![](https://i.ibb.co/NjD2Nvg/image.png)](https://i.ibb.co/NjD2Nvg/image.png)
+Para uma versão futura do Delphi, os nomes dos novos pacotes do uniGUI precisarão ser adicionados ao bloco `requires` antes da compilação.
 
-> Imagem ilustrativa, pois o componente pode ter opções de personalizações...
+As combinações Delphi 13/uniGUI 30 e Delphi XE8/uniGUI 22 foram validadas neste repositório com compilação Win32 dos pacotes de runtime e design-time e compilação Win64 do pacote de runtime. Os demais mapeamentos permanecem disponíveis, mas dependem da instalação da geração correspondente do uniGUI e devem ser recompilados no respectivo IDE.
 
+> A versão do Delphi, a versão do uniGUI e os arquivos DCU/DCP/BPL precisam pertencer à mesma combinação. Misturar arquivos de versões diferentes normalmente causa erros como `Required package not found` ou `Never-build package must be recompiled`.
 
-## [![TUniDSAConfirm](https://i.ibb.co/F7whv8F/TUni-DSAConfirm.png "TUniDSAConfirm")](https://i.ibb.co/F7whv8F/TUni-DSAConfirm.png "TUniDSAConfirm") TUniDSAConfirm
+## Instalação no Delphi
 
-O TUniDSAConfirm serve para criar e gerenciar janelas de diálogo modais para confirmações, alertas e prompts, sendo baseado no plugin disponível em [jquery-confirm](https://github.com/craftpip/jquery-confirm "jquery-confirm") . Este componente fornece uma ampla gama de propriedades e métodos que permitem uma personalização detalhada das janelas de diálogo, englobando desde o conteúdo exibido até aspectos estéticos e funcionais da janela.
+### 1. Obter o código
 
-#### Principais Propriedades e Métodos:
+```powershell
+git clone https://github.com/deividyalcantara/unidsa-unigui-delphi.git
+cd unidsa-unigui-delphi
+```
 
- **Gerais**:
+Se o repositório já existir, atualize-o somente depois de revisar e preservar suas alterações locais.
 
-+ `Title` Define o título da janela de diálogo.
-+ `Content` Define o conteúdo principal da janela de diálogo.
-+ `Icon` Permite definir um ícone para a janela de diálogo.
-+ `Theme` Define o tema da janela, permitindo personalização estética.
+### 2. Conferir a instalação do uniGUI
 
-**Controle de Janela:**
+Antes de abrir os pacotes do UniDSA:
 
-+ `Draggable` Controla se a janela pode ser arrastada.
+1. Confirme que o uniGUI abre e compila um projeto na mesma versão do Delphi.
+2. Verifique em **Tools > Options > Language > Delphi > Library** se os caminhos do uniGUI correspondem à versão atual do IDE.
+3. Remova caminhos antigos ou duplicados que apontem para outra instalação do uniGUI.
+4. Confirme que os pacotes `uniGUIxxCore`, `uniToolsxx`, `uIndyxx` e `uniGUIxx` esperados pelo `UniDSA.dpk` estão disponíveis.
 
-**Conteúdo:**
+### 3. Adicionar o código-fonte ao Library Path
 
-+ `ContentFile` Permite carregar o conteúdo da janela a partir de um arquivo externo.
-+ `SmoothContent` Habilita uma transição suave para o conteúdo.
+Adicione a pasta `sources` do repositório ao Library Path das plataformas que serão compiladas. Exemplo:
 
-**Botões:**
+```text
+C:\caminho\para\unidsa-unigui-delphi\sources
+```
 
-+ `Buttons` Define os botões disponíveis na janela de diálogo.
-+ `OnButtonClick` Evento acionado ao clicar em um botão.
+Evite adicionar pastas de saída como `bin`, `Win32` ou diretórios contendo DCUs de outra versão do Delphi.
 
-**Animações:**
+### 4. Executar Build e Install nos pacotes
 
-+ `Animation` Define o tipo de animação usado ao abrir e fechar a janela.
-+ `TypeAnimated` Define se a janela terá animação ao mudar de tipo.
+Abra `UniDSAGroup.groupproj` no Delphi e siga a ordem abaixo.
 
-**Layout e Estilo:**
+#### Pacote principal — obrigatório
 
-+ `BoxWidth` Define a largura da janela.
-+ `ColumnClass` `TitleClass` Permite definir classes customizadas para diferentes elementos da janela.
+1. Clique com o botão direito em `UniDSA` e escolha **Build**.
+2. Depois que a compilação terminar sem erros, clique novamente em `UniDSA` e escolha **Install**.
+3. Confirme a mensagem de instalação. Os componentes devem aparecer na paleta **UniDSA**.
 
-**Eventos:**
+#### Recursos de design-time — opcionais
 
-+ `OnOpen`, `OnClose`, `OnDestroy`, `OnAction`, `OnContentReady` Diversos eventos que permitem o controle detalhado do ciclo de vida da janela de diálogo.
+Se quiser os editores, menus de contexto e recursos de teste dentro do IDE:
 
-**Outras Propriedades:**
+1. Certifique-se de que `UniDSA` já foi compilado e instalado.
+2. Clique com o botão direito em `UniDSADesign` e escolha **Build**.
+3. Depois da compilação, clique novamente em `UniDSADesign` e escolha **Install**.
 
-+ `Type` Define o tipo de janela de diálogo (confirm, alert, etc.).
-+ `UseBootstrap` Define se o Bootstrap será usado para estilização.
-+ `RTL` Habilita o suporte a idiomas escritos da direita para a esquerda.
+A pré-visualização integrada usa `TEdgeBrowser/WebView2` e exige Delphi 10.4 ou superior. Em versões anteriores, instale apenas `UniDSA` se não precisar dos recursos opcionais de design-time.
 
-**Métodos Públicos:**
+> A ordem de instalação é obrigatória. Como `UniDSADesign` depende de `UniDSA`, instalar o complemento primeiro carrega o pacote principal apenas como dependência e pode impedir sua instalação posterior. Se `UniDSADesign` já estiver instalado, remova-o da lista de pacotes, reinicie o Delphi e instale primeiro `UniDSA`.
 
-+ `Show` Exibe a janela de diálogo.
-+ `Alert`, `Dialog`, `Prompt`, `Confirm` Exibem janelas de diálogo com características pré-definidas para diferentes finalidades.
-+ `Clear`, `ClearEvents` Métodos para limpar propriedades e eventos associados à janela.
+### 5. Recompilar depois de alterar o código
 
+Quando um arquivo de `sources` for atualizado:
 
-#### Imagem:
+1. Feche aplicações que estejam usando as BPLs antigas.
+2. Execute **Build** e **Install** em `UniDSA`.
+3. Se o complemento estiver instalado, execute **Build** e **Install** em `UniDSADesign`.
+4. Recompile a aplicação consumidora.
+5. Publique novamente a pasta `dsa` caso algum asset também tenha sido alterado.
 
-[![](https://i.ibb.co/PhvMbfb/image.png)](https://i.ibb.co/PhvMbfb/image.png)
+Se a aplicação estiver configurada para **Build with runtime packages**, publique também as BPLs exigidas pela aplicação. Quando essa opção não é usada, as unidades são incorporadas ao executável durante a compilação.
 
-> Imagem ilustrativa, pois o componente pode ter opções de personalizações...
+## Publicação dos arquivos web
 
+Os arquivos Pascal não incorporam automaticamente todos os JavaScripts, estilos e imagens utilizados no navegador. A pasta `dsa` precisa estar disponível dentro da pasta pública `files` da aplicação uniGUI.
 
-## [![TUniDSAToast](https://i.ibb.co/sKG9YDB/TUni-DSAToast.png "TUniDSAToast")](https://i.ibb.co/sKG9YDB/TUni-DSAToast.png "TUniDSAToast") TUniDSAToast
-
-O TUniDSAToast é uma classe que representa uma notificação simples e breve, frequentemente usada para fornecer feedback aos usuários sobre uma ação ou evento em uma aplicação. Baseado no plugin jquery-toast-plugin, este componente permite criar notificações toast estilizadas e personalizadas para aplicações UniGUI desenvolvidas em Delphi.
+### Estrutura esperada
 
-**Principais propriedades e métodos:**
+```text
+MinhaAplicacao/
+├── MinhaAplicacao.exe
+└── files/
+    └── dsa/
+        ├── css/
+        ├── dist/
+        ├── js/
+        ├── login/
+        ├── menu_lateral/
+        └── qrcode_reader/
+```
 
-**Gerais:**
+O diretório efetivo pode mudar quando `FilesFolder` é personalizado no `TUniServerModule`. Nesse caso, copie `dsa` para a pasta configurada, mantendo a URL pública `files/dsa/...` acessível pela aplicação.
 
-+ `Text` Define o texto principal da notificação.
-+ `Heading` Define o cabeçalho ou título da notificação.
-+ `Icon` Define um ícone para a notificação. Diferentes ícones podem ser usados para + indicar o tipo ou a importância da notificação.
+### Processo de publicação
 
-**Comportamento:**
+1. Localize a pasta `dsa` na raiz deste repositório.
+2. Localize o `FilesFolder` usado pela aplicação publicada.
+3. Copie a pasta inteira para `<FilesFolder>\dsa`.
+4. Preserve todas as subpastas e nomes dos arquivos.
+5. Reinicie somente a aplicação ou o serviço responsável pelo projeto, quando necessário.
+6. Limpe o cache do navegador após atualizar JavaScript ou CSS.
+7. Valide os arquivos diretamente pelo navegador ou pela guia **Network** das ferramentas de desenvolvimento.
 
-- `ShowHideTransition` Determina o tipo de transição usado ao mostrar ou esconder a notificação.
-- `HideAfter` Define o tempo (em milissegundos) após o qual a notificação será automaticamente escondida.
-- `AllowToastClose` Se True, permite que os usuários fechem a notificação manualmente.
-- `Stack` Define quantas notificações podem ser exibidas simultaneamente.
+### Assets utilizados
 
-**Estilo e Aparência:**
+| Componente | Arquivos principais |
+| --- | --- |
+| `TUniDSAConfirm` | `dist/jquery-confirm.min.js`, `dist/jquery-confirm.min.css` e `css/dsa.css` |
+| `TUniDSAToast` | `js/jquery.toast.js` e `css/jquery.toast.css` |
+| `TUniDSAQrCodeReader` | `qrcode_reader/js/qrcode_library.js` |
+| `TUniDSAMenuLateral` | `menu_lateral/js/script.js` e `menu_lateral/css/style.css` |
+| `TUniDSALogin` | `login/js/script.js` e `login/css/style.css` |
 
-- `BgColor` Define a cor de fundo da notificação.
-- `TextColor` Define a cor do texto da notificação.
-- `TextAlign` Define o alinhamento do texto na notificação.
-- `Position` Define a posição na tela onde a notificação aparecerá.
-- `Loader` Especifica o tipo e o comportamento do carregador mostrado nas notificações.
-
-**Eventos:**
-
-- `OnBeforeShow` Acionado antes da notificação ser exibida.
-- `OnAfterShown` Acionado após a notificação ser exibida.
-- `OnBeforeHide` Acionado antes da notificação ser escondida.
-- `OnAfterHidden` Acionado após a notificação ser escondida.
+### URLs de validação
 
-**Métodos Públicos:**
+Com a aplicação em execução, estas URLs devem responder com HTTP 200:
 
-- `Show` Exibe a notificação com as propriedades definidas.
-- `Clear` Limpa a notificação atual.
-- `Reset` Reinicializa a notificação para seus valores padrão.
+```text
+https://seu-servidor/files/dsa/dist/jquery-confirm.min.js
+https://seu-servidor/files/dsa/dist/jquery-confirm.min.css
+https://seu-servidor/files/dsa/js/jquery.toast.js
+https://seu-servidor/files/dsa/qrcode_reader/js/qrcode_library.js
+https://seu-servidor/files/dsa/menu_lateral/css/style.css
+https://seu-servidor/files/dsa/login/css/style.css
+```
 
-O componente **TUniDSAToast** proporciona uma maneira flexível e elegante de fornecer feedback para os usuários, sem ser intrusivo. Ao utilizar este componente em projetos Delphi com UniGUI, os desenvolvedores podem melhorar significativamente a experiência do usuário, fornecendo notificações contextuais relevantes em resposta a diversas ações e eventos.
+O `TUniDSAConfirm` tenta carregar o `jquery-confirm` 3.3.4 pelo cdnjs quando a cópia local não está disponível. Esse fallback depende de acesso à internet no navegador e não substitui uma publicação local correta. Os outros componentes continuam dependendo dos arquivos locais indicados na tabela.
 
-#### Imagem:
+## Execução do projeto de demonstração
 
-[![](https://i.ibb.co/HC6cC7h/image.png)](https://i.ibb.co/HC6cC7h/image.png)
+1. Abra `demo\UniDSADemo.dproj`.
+2. Confirme que o projeto encontra os fontes e pacotes do UniDSA.
+3. Copie `dsa` para a pasta pública configurada no `TUniServerModule` da demonstração.
+4. Compile e execute o projeto.
+5. Abra a URL apresentada pelo servidor standalone.
+6. Autorize a câmera quando testar o leitor de QR Code.
 
-> Imagem ilustrativa, pois o componente pode ter opções de personalizações...
+Se o demo abrir sem estilos ou apresentar erros JavaScript, valide primeiro as URLs da seção anterior.
 
-## [![TUniDSAMenuLateral](https://i.ibb.co/ScfMkHd/TUni-DSAMenu-Lateral.png "TUniDSAMenuLateral")](https://i.ibb.co/ScfMkHd/TUni-DSAMenu-Lateral.png "TUniDSAMenuLateral") TUniDSAMenuLateral
+## Uso dos componentes
 
-Este é um componente que representa um menu lateral, comumente usado em aplicações web para fornecer navegação e opções adicionais, normalmente situado no lado esquerdo ou direito da página.
+### TUniDSAConfirm
 
-**Principais propriedades e métodos:**
+Cria confirmações, alertas, diálogos e prompts usando `jquery-confirm`.
 
-**Gerais:**
+![Exemplo do TUniDSAConfirm](https://i.ibb.co/PhvMbfb/image.png)
 
-- `Logo`: Controla a aparência e comportamento do logotipo na parte superior do menu.
-1.   `UrlImage` Define a imagem do logo
-2.   `CompanyName` Define o nome do cliente/empresa
-- `Search`: Permite a pesquisa dentro do menu.
-1.   `Icon` Define o icone da área de pesquisa.
-2.   `TextPrompt` Define o texto informativo que será exibido na área da pesquisa, padrão "Pesquisar.."
-3.   `AutoComplete` Habilitar ou desabilitar a sugestão com bases nos textos já utilizados.
-4.   `Visible` Define se o pesquisar será exibido.
-5.   `SearchText` Texto pesquisado pelo usuário.
-- `Theme` Define o tema visual do menu.
-1.   `TitleLeft` Título do tema a esquerda.
-2.   `TitleRight` Título do tema a direita.
-3.   `StyleLeft` Estilo do tema a esquerda
-4.   `StyleRight` Estilo do tema a direita
-5.   `Visible` Define se ficará visível para o usuário a opção de mudança de temas
-- `Menu`: Controla os itens individuais dentro do menu.
-1.   `Icon` Define o icone do menu (Font Awesome 5.15.4)
-2.   `Caption` Descrição do menu
-3.   `NotificationCount` Quando maior que 0 será exibido ao lado do menu a quantidade de notificações.
-4.   `Visible` Define se o menu ficará visivel.
-5.   `Enabled` Define se o menu ficará ativo
-6.   `Hidden` Define se o menu ficará visível mantendo o local do mesmo.
-7.   `Separator` Define que o menu será um separador de menus
-8.   `Hint` Descrição do menu ao passar o mouse por cima.
-9.   `OnClick` Acionado ao clicar no menu
-10.   `OnClickNotification` Acionado ao clicar na notificação do menu.
-11.   `OnClickRef` Acionado ao clicar no menu (Usado em runtime)
-12.   `OnClickNotificationRef` Acionado ao clicar na notificação do menu (Usado em runtime)
-- `Profile` Permite exibir informações de perfil, como nome de usuário ou imagem, no menu.
-1.  `Name` Nome do usuário do sistema
-2.  `Email` E-mail do usuário do sistema
-3.  `ImageURL` Imagem do usuário do sistema
-4.  `Visible` Indica se o perfil do usuário será visível.
-- `Style` Controla o estilo visual geral do menu.
-1.   `PaddingTop` Similiar ao padding-top do CSS. Define o espaço interno no topo do elemento.
-2.   `PaddingLeft` Similar ao padding-left do CSS. Define o espaço interno à esquerda do elemento.
-3.   `PaddingRight` Similar ao padding-right do CSS. Define o espaço interno à direita do elemento.
-4.   `PaddingBottom` Similar ao padding-bottom do CSS. Define o espaço interno na parte inferior do elemento.
-5.   `BorderRadiusTopLeft` Similar ao border-top-left-radius do CSS. Define o raio da borda no canto superior esquerdo.
-6.   `BorderRadiusTopRight` Similar ao border-top-right-radius do CSS. Define o raio da borda no canto superior direito.
-7.   `BorderRadiusBottomLeft` Similar ao border-bottom-left-radius do CSS. Define o raio da borda no canto inferior esquerdo.
-8.   `BorderRadiusBottomRight` Similar ao border-bottom-right-radius do CSS. Define o raio da borda no canto inferior direito.
-9.   `BorderTop` Similar ao border-top do CSS. Define a espessura da borda superior do elemento.
-10.   `BorderLeft` Similar ao border-left do CSS. Define a espessura da borda à esquerda do elemento.
-11.   `BorderRight` Similar ao border-right do CSS. Define a espessura da borda à direita do elemento.
-12.   `BorderBottom` Similar ao border-bottom do CSS. Define a espessura da borda inferior do elemento.
+#### Propriedades principais
 
-**Comportamento:**
+| Propriedade | Descrição |
+| --- | --- |
+| `Title`, `Content`, `Icon` | Conteúdo principal do diálogo. |
+| `Buttons` | Coleção de botões e seus respectivos eventos. |
+| `Theme`, `Type`, `Types` | Tema, tipo visual e configuração de cores. |
+| `BoxWidth`, `ColumnClass`, `Container` | Dimensões e posicionamento. |
+| `Draggable`, `Dismiss`, `Close` | Arraste, fechamento pelo fundo e ícone de fechar. |
+| `Animation` | Animações de abertura e fechamento. |
+| `PromptCustom`, `Response` | Configuração e resultado de prompts. |
 
-- `MenuState` Define o estado atual do menu (por exemplo, minimizado ou maximizado).
-- `SelectedDiretionTheme` Determina a direção do tema selecionado.
-- `SelectedTheme` Especifica o tema de estilo selecionado.
-- `SelectedMenu` Indica qual item de menu foi selecionado.
-- `AjaxSecurity` Um booleano que determina se a segurança Ajax está habilitada ou não.
-
-**Métodos Públicos:**
-
-- `MinimizeMaximize` Alterna entre os estados minimizado e maximizado do menu.
-- `HideMenu` Oculta o menu.
-- `ShowMenu` Exibe o menu.
-- `SetTheme` Define o tema do menu.
+Os métodos `Show`, `Confirm`, `Alert`, `Dialog` e `Prompt` exibem as respectivas variações. `Clear` restaura as propriedades e remove os botões. `ClearEvents` remove os eventos gerais do componente.
 
-**Eventos:**
+#### O diálogo é assíncrono
 
-- `OnClickLogo` Acionado quando o logotipo é clicado.
-- `OnClickMenu` Acionado ao clicar em um item do menu.
-- `OnClickNotificationMenu` Acionado ao clicar em uma notificação no menu.
-- `OnAfterSelectTheme` Acionado após selecionar um tema.
-- `OnClickProfile` Acionado ao clicar no perfil.
-- `OnClickLogoff` Acionado ao clicar no botão de sair/logoff.
-- `OnSearchEnter` Acionado quando um termo de pesquisa é inserido.
-- `OnClickIconSearch` Acionado ao clicar no ícone de pesquisa.
+O servidor não pode bloquear uma requisição aguardando uma ação futura do navegador. O processo correto é:
 
-#### Imagem:
+1. O código Delphi configura o componente e chama `Show`.
+2. O uniGUI envia o JavaScript do diálogo ao navegador.
+3. `Show` retorna imediatamente e o método Delphi continua sua execução.
+4. O usuário escolhe um botão no navegador.
+5. O botão envia uma nova requisição AJAX ao servidor.
+6. O componente localiza o botão e executa os callbacks associados.
 
-[![](https://i.ibb.co/c1r46Bf/image.png)](https://i.ibb.co/c1r46Bf/image.png)
+Por isso, qualquer operação que dependa da resposta deve estar no `OnClick`, `OnClickRef` ou `OnButtonClick`. Código colocado depois de `Show` será executado antes da escolha do usuário.
 
-> Imagem ilustrativa, pois o componente pode ter opções de personalizações...
+#### Confirmação criada em tempo de execução
 
-## [![TUniDSALogin](https://i.ibb.co/fk69Jz7/TUni-DSALogin24.png "TUniDSAMenuLateral")](https://i.ibb.co/fk69Jz7/TUni-DSALogin24.png "TUniDSAMenuLateral") TUniDSALogin
+```pascal
+procedure TFormEmpresa.PCadastrar(Sender: TObject);
+begin
+  // Executado somente depois do clique em "Sim".
+  CadastrarEmpresa;
+end;
 
-O componente TUniDSALogin é uma ferramenta versátil projetada para apresentar elementos cruciais em uma tela de login, oferecendo uma experiência de usuário fluida e personalizável além de agilizar todo processo de criação dessa tela. A tela de login é responsiva, sendo assim se adaptará a diferentes tamnhos de tela.
+procedure TFormEmpresa.ConfirmarCadastro;
+begin
+  Confirmacoes.Clear;
+  Confirmacoes.Title := 'Cadastro de Empresa';
+  Confirmacoes.Content := 'Confirma o cadastro?';
 
-**Principais propriedades e métodos:**
+  with TUniDSAConfirmButtonItem(Confirmacoes.Buttons.Add) do begin
+    Text := 'Sim';
+    BtnClass := 'btn-green';
+    OnClick := PCadastrar;
+  end;
 
-**Gerais:**
+  with TUniDSAConfirmButtonItem(Confirmacoes.Buttons.Add) do begin
+    Text := 'Não';
+    BtnClass := 'btn-red';
+  end;
 
-- `Geral`: Propriedades gerais
-1.   `Title` Define o título da tela de login
-2.   `Description` Define a descrição da tela de login, texto fica logo abaixo do título
-3.   `TrimSpacesOnRememberMeForgetPassword` Para quem não for usar a opção de lembra da senha ou recuperar a senha, essa opção marcado irá remover o espaçamento entre os inputs de botões
+  Confirmacoes.Show;
 
-- `Logo`: Controla a aparência e comportamento do logotipo na parte superior do menu.
-1.   `Image` Define a imagem do logo de acordo a URL informada
-2.   `MarginLeft` Define a margem a partir do lado esquerdo
-3.   `MarginTop`Define a margem a partir do lado direito
+  // Não execute aqui uma operação que dependa da confirmação.
+end;
+```
 
-- `Slide`: Referente a imagem de slide inicial
-1.   `Image` Define a imagem do logo de acordo a URL informada
-2.   `MarginLeft` Define a margem a partir do lado esquerdo
-3.   `MarginTop`Define a margem a partir do lado direito
+Quando o próprio `TUniDSAConfirm` for criado em runtime, mantenha-o em um campo do formulário ou módulo e atribua um `Owner` com vida suficiente:
 
-- `Login`: Configurações do input de login
-1.   `Caption` Define o título do input, ex: e-mail, telefone
-2.   `Enabled` Define se o input ficará ativo ou inativo
-3.   `Value` Define ou pega o valor do campo login
+```pascal
+procedure TFormEmpresa.UniFormCreate(Sender: TObject);
+begin
+  FConfirmacoes := TUniDSAConfirm.Create(Self);
+end;
+```
 
-- `Password`: Configurações do input de senha
-1.   `Caption` Define o título do input
-2.   `Enabled` Define se o input ficará ativo ou inativo
-3.   `Value` Define ou pega o valor do campo login
+Não crie o componente em uma variável local para liberá-lo logo depois de `Show`; o callback AJAX ocorre posteriormente e ainda precisa acessar a instância e seus botões.
 
-- `RememberMe`: Configurações da opção de lembrar da senha
-1.   `Caption` Define o título
-2.   `Checked` Define ou verifica se o checkbox está marcado
-3.   `Visible` Define a visibilidade da opção
+Quando um botão é clicado, os callbacks são executados nesta ordem:
 
-- `ForgetPassword`: Configurações para recuperar a senha
-1.   `Caption` Define o título
-2.  `Visible` Define a visibilidade da opção
+1. `OnButtonClick` do componente;
+2. `OnClickRef` do item;
+3. `OnClick` do item.
 
-- `LoginNow`: Configurações do botão Entrar
-1.   `Caption` Define o título
-2.  `Visible` Define a visibilidade da opção
-3.  `Visible` Define a largura do botão
+Os eventos `OnContentReady`, `OnOpenBefore`, `OnOpen`, `OnClose`, `OnDestroy` e `OnAction` permitem acompanhar o ciclo de vida do diálogo.
 
-- `CreateAccount`: Configurações para criação de novas contas
-1.   `Caption` Define o título
-2.  `Visible` Define a visibilidade da opção
-3.  `Visible` Define a largura do botão
+### TUniDSAToast
 
-**Eventos:**
+Exibe notificações temporárias sem interromper o fluxo da aplicação.
 
-- `OnCreateAccount` Acionado ao clicar no botão de criação de conta .
-- `OnForgetPassword` Acionado ao clicar na opção de recuperar a senha.
-- `OnLoginEnter` Acionado ao pressionar enter no input de login.
-- `OnLoginNow` Acionado ao clicar no botão Entrar.
-- `OnPasswordEnter`  Acionado ao pressionar ENTER no input do password.
-- `OnRememberMe` Acionado ao clicar no lembrar da senha
+![Exemplo do TUniDSAToast](https://i.ibb.co/HC6cC7h/image.png)
 
-**Comando**
+```pascal
+procedure TMainForm.ExibirSucesso;
+begin
+  Toast.Clear;
+  Toast.Heading := 'Cadastro';
+  Toast.Text := 'Registro salvo com sucesso.';
+  Toast.Icon := TUniDSAToastTypeIcon.Success;
+  Toast.Position.Position := TUniDSAToastTypePosition.BottomRight;
+  Toast.HideAfter := 4000;
+  Toast.Show;
+end;
+```
 
-Todos os formulários do UniGUI atualizam a largura do form de acordo o redmensionamento do usuário, exceto no Form do tipo Login. Por isso é preciso o uso do seguinte script na propriedade "**Script**" do seu "**FormLogin**".
+| Grupo | Propriedades |
+| --- | --- |
+| Conteúdo | `Heading`, `Text`, `Icon` |
+| Comportamento | `ShowHideTransition`, `HideAfter`, `AllowToastClose`, `Stack` |
+| Aparência | `BgColor`, `TextColor`, `TextAlign`, `Position`, `Loader` |
+| Eventos | `OnBeforeShow`, `OnAfterShown`, `OnBeforeHide`, `OnAfterHidden` |
 
-    window.onresize = function(){
-      if (typeof FormLogin !== 'undefined') {  
-        var getSize = Ext.getBody().getViewSize(),
-            winWidth = getSize.width,
-            winHeight = getSize.height,
-            left = (winWidth - FormLogin.window.width) / 2,
-            top = (winHeight - FormLogin.window.height) / 2;
-    
-        FormLogin.window.setPosition(left, top);
-      }
-    }
+Use `Clear` para limpar a configuração atual e `Reset` para restaurar os valores padrão.
 
-Obs.: troque o nome pelo nome do seu form **FormLogin**.
+### TUniDSAQrCodeReader
 
-Vale lembrar que é recomendado o modo **mfPage** no **UniServerModule** para que sua aplicação fique o mais parecido com os estilos padrões de páginas web.
+Lê QR Code e códigos de barras usando a câmera disponível no navegador.
 
+![Exemplo do TUniDSAQrCodeReader](https://i.ibb.co/NjD2Nvg/image.png)
 
-#### Imagem:
+```pascal
+procedure TFormLeitura.IniciarLeitura;
+begin
+  QrReader.SupportedFormats.QR_CODE := True;
+  QrReader.SingleRead := True;
+  QrReader.FPS := 10;
+  QrReader.Start;
+end;
 
-[![TUniDSALogin](https://i.ibb.co/RcwzzZW/TUni-DSALogin1.png "TUniDSALogin")](https://i.ibb.co/RcwzzZW/TUni-DSALogin1.png "TUniDSALogin")
+procedure TFormLeitura.QrReaderAfterReading(Sender: TObject);
+begin
+  EdtResultado.Text := TUniDSAQrCodeReader(Sender).Result;
+end;
+```
 
+| Propriedade ou método | Descrição |
+| --- | --- |
+| `SupportedFormats` | Seleciona os formatos aceitos. |
+| `SingleRead` | Interrompe após uma leitura quando habilitado. |
+| `FPS` | Define a frequência de análise dos frames. |
+| `QrBox` | Define a área utilizada na leitura. |
+| `Result` | Retorna o último conteúdo lido. |
+| `Start`, `Stop` | Inicia ou encerra a câmera. |
+| `OnAfterReading` | Evento disparado após uma leitura válida. |
+
+Formatos disponíveis: `QR_CODE`, `AZTEC`, `CODABAR`, `CODE_39`, `CODE_93`, `CODE_128`, `DATA_MATRIX`, `MAXICODE`, `ITF`, `EAN_13`, `EAN_8`, `PDF_417`, `RSS_14`, `RSS_EXPANDED`, `UPC_A`, `UPC_E` e `UPC_EAN_EXTENSION`.
+
+### TUniDSAMenuLateral
+
+Fornece navegação lateral com logo, pesquisa, perfil, temas, notificações e eventos AJAX.
+
+![Exemplo do TUniDSAMenuLateral](https://i.ibb.co/c1r46Bf/image.png)
+
+```pascal
+with MenuLateral.Menu.AddItem do begin
+  Caption := 'Cadastros';
+  Icon := 'fas fa-address-card';
+  NotificationCount := 2;
+  OnClick := AbrirCadastros;
+end;
+```
+
+| Grupo | Recursos principais |
+| --- | --- |
+| `Logo` | `UrlImage`, `CompanyName`, `Visible` |
+| `Search` | `Icon`, `TextPrompt`, `AutoComplete`, `Visible`, `SearchText` |
+| `Theme` | Títulos, estilos esquerdo/direito e visibilidade do seletor |
+| `Profile` | `Name`, `Email`, `ImageURL`, `Visible` |
+| `Menu` | Ícone, texto, estado, separador, hint, notificações e callbacks |
+| `Style` | Padding, bordas e raios de cada lado |
+
+Métodos públicos: `MinimizeMaximize`, `HideMenu`, `ShowMenu` e `SetTheme`.
+
+Eventos gerais: `OnClickLogo`, `OnClickMenu`, `OnClickNotificationMenu`, `OnAfterSelectTheme`, `OnClickProfile`, `OnClickLogoff`, `OnSearchEnter` e `OnClickIconSearch`.
+
+Itens adicionados em runtime podem usar `OnClickRef` e `OnClickNotificationRef` com métodos anônimos. Assim como no `TUniDSAConfirm`, o componente e os itens precisam continuar vivos até o retorno AJAX.
+
+### TUniDSALogin
+
+Cria uma tela responsiva de autenticação com login, senha, opção de lembrar, recuperação de senha e criação de conta.
+
+![Exemplo do TUniDSALogin](https://i.ibb.co/RcwzzZW/TUni-DSALogin1.png)
+
+| Grupo | Propriedades principais |
+| --- | --- |
+| Geral | `Title`, `Description`, `TrimSpacesOnRememberMeForgetPassword` |
+| `Logo`, `Slide` | `Image`, `MarginLeft`, `MarginTop` |
+| `Login`, `Password` | `Caption`, `Value`, `Enabled`, `Clear`, `SetFocus` |
+| `RememberMe` | `Caption`, `Checked`, `Visible` |
+| `ForgetPassword` | `Caption`, `Visible` |
+| `LoginNow`, `CreateAccount` | `Caption`, `Visible`, `Width`, `SetFocus` |
+
+Eventos disponíveis: `OnLoginNow`, `OnCreateAccount`, `OnRememberMe`, `OnLoginEnter`, `OnPasswordEnter` e `OnForgetPassword`.
+
+Para que um formulário de login seja reposicionado durante o redimensionamento, adicione o script abaixo à propriedade `Script` do `FormLogin`:
+
+```javascript
+window.onresize = function () {
+  if (typeof FormLogin !== 'undefined') {
+    var size = Ext.getBody().getViewSize(),
+        left = (size.width - FormLogin.window.width) / 2,
+        top = (size.height - FormLogin.window.height) / 2;
+
+    FormLogin.window.setPosition(left, top);
+  }
+};
+```
+
+Substitua `FormLogin` pelo nome JavaScript do seu formulário. Para uma apresentação semelhante a uma página web, use `MainFormDisplayMode = mfPage` no `TUniServerModule`.
+
+## Atualização da biblioteca
+
+Ao atualizar o UniDSA:
+
+1. Revise `git status` e preserve alterações locais antes de atualizar o repositório.
+2. Obtenha a nova versão do código.
+3. Execute **Build** e **Install** em `UniDSA`.
+4. Se usar o complemento de design-time, execute **Build** e **Install** em `UniDSADesign`.
+5. Recompile a aplicação.
+6. Substitua a pasta publicada `files/dsa` pela versão correspondente ao código.
+7. Limpe o cache do navegador.
+8. Execute o checklist de publicação.
+
+Mantenha os fontes Pascal e a pasta `dsa` da mesma revisão. Usar um executável novo com JavaScript antigo pode causar propriedades ausentes, callbacks incompatíveis ou erros de função não encontrada.
+
+## Solução de problemas
+
+### `$.confirm is not a function`
+
+Esse erro indica que `jquery-confirm.min.js` não foi carregado no navegador ou que outra biblioteca substituiu o alias `$`.
+
+1. Abra diretamente `files/dsa/dist/jquery-confirm.min.js` pelo endereço da aplicação.
+2. Confirme HTTP 200 e conteúdo JavaScript, não uma página HTML de erro.
+3. Verifique o `FilesFolder` do `TUniServerModule`.
+4. Confirme que a pasta foi publicada como `files/dsa`, sem duplicação como `files/dsa/dsa`.
+5. Limpe o cache e recarregue a página.
+6. Verifique bloqueios de CSP, proxy ou firewall.
+7. Caso dependa do fallback, confirme acesso ao cdnjs no navegador do usuário.
+
+O componente também usa `window.jQuery` para reduzir conflitos com o alias `$`.
+
+### O código depois de `Show` é executado antes da resposta
+
+Esse é o comportamento esperado do uniGUI. `Show` é assíncrono. Mova o código dependente da resposta para `OnClick`, `OnClickRef` ou `OnButtonClick`.
+
+### O botão aparece, mas o evento não é executado
+
+- Confirme que o evento possui assinatura compatível com `TNotifyEvent`.
+- Não libere o componente depois de `Show`.
+- Não limpe a coleção de botões antes do retorno AJAX.
+- Recompile e reinstale os pacotes depois de atualizar `UniDSAConfirm.pas`.
+- Verifique no navegador se a requisição AJAX foi enviada e se retornou sem erro.
+
+### Assets retornam HTTP 404
+
+- Confirme a pasta física configurada em `FilesFolder`.
+- Preserve a estrutura interna da pasta `dsa`.
+- Revise a URL base quando a aplicação estiver atrás de proxy reverso ou diretório virtual.
+- Confirme permissões de leitura para a conta que executa o servidor.
+
+### `Required package 'uniGUIxxCore' not found`
+
+- Instale ou recompile o uniGUI para a mesma versão do Delphi.
+- Verifique se o número do pacote em `UniDSA.dpk` corresponde ao uniGUI instalado.
+- Remova Library Paths antigos que apontem para outra instalação.
+- Não reutilize DCUs compilados por outra versão do Delphi.
+
+### `Never-build package ... must be recompiled`
+
+O compilador encontrou fonte ou DCU incompatível com o DCP esperado. Corrija os caminhos do uniGUI, recompile os pacotes dele para o IDE atual e só então compile o UniDSA.
+
+### A câmera não abre
+
+- Use HTTPS ou `localhost`.
+- Autorize a câmera no navegador e no sistema operacional.
+- Verifique se outro aplicativo está usando o dispositivo.
+- Confirme que `qrcode_library.js` foi carregado.
+- Teste em um navegador com suporte à API de mídia.
+
+### O componente não aparece na paleta
+
+- Execute primeiro **Build** e depois **Install** em `UniDSA`; é esse pacote principal que registra os componentes na paleta.
+- Verifique se `UniDSA` está habilitado em **Component > Install Packages**.
+- Instale `UniDSADesign` separadamente apenas quando quiser os editores e recursos opcionais do IDE.
+- Reinicie o Delphi se a paleta não for atualizada.
+
+## Checklist de publicação
+
+- [ ] A aplicação foi compilada com a mesma versão de Delphi e uniGUI usada pelos pacotes.
+- [ ] As BPLs necessárias foram publicadas quando runtime packages estão habilitados.
+- [ ] A pasta inteira `dsa` foi copiada para o `FilesFolder` correto.
+- [ ] Os arquivos JavaScript e CSS principais respondem com HTTP 200.
+- [ ] O navegador não apresenta erros JavaScript no console.
+- [ ] O `TUniDSAConfirm` abre e executa o callback do botão correto.
+- [ ] O `TUniDSAToast` exibe uma notificação.
+- [ ] O leitor solicita permissão e consegue acessar a câmera.
+- [ ] O menu lateral carrega estilos, itens e eventos.
+- [ ] A tela de login permanece responsiva.
+- [ ] O cache do navegador foi limpo depois da atualização dos assets.
+
+Ao relatar um problema, informe a versão do Delphi, a versão do uniGUI, o tipo de servidor utilizado, o modo de compilação, a URL do asset que falhou e a mensagem completa do console ou do compilador.

@@ -117,10 +117,10 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <DCC_UsePackage>vcl;rtl;soaprtl;dbrtl;xmlrtl;inet;vclimg;vclwinx;vcledge;vcldb;UniDSA;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>vcl;rtl;soaprtl;dbrtl;xmlrtl;inet;vclimg;vcldb;UniDSA;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
-        <DCC_UsePackage>vcl;rtl;soaprtl;dbrtl;xmlrtl;inet;vclimg;vclwinx;vcledge;vcldb;$(DCC_UsePackage)</DCC_UsePackage>
+        <DCC_UsePackage>vcl;rtl;soaprtl;dbrtl;xmlrtl;inet;vclimg;vcldb;$(DCC_UsePackage)</DCC_UsePackage>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
@@ -144,7 +144,7 @@
         <DCC_DebugInformation>0</DCC_DebugInformation>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <PostBuildEvent><![CDATA[  copy /Y "E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\outros\WebView2Loader.dll" $(OUTPUTDIR)
+        <PostBuildEvent><![CDATA[  copy /Y "$(PROJECTDIR)\outros\WebView2Loader.dll" "$(OUTPUTDIR)"
 $(PostBuildEvent)]]></PostBuildEvent>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
@@ -153,7 +153,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="vcledge.dcp"/>
         <DCCReference Include="DesignIDE.dcp"/>
         <DCCReference Include="UniDSA.dcp"/>
         <DCCReference Include="rtl.dcp"/>
@@ -164,7 +163,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DCCReference Include="vclimg.dcp"/>
         <DCCReference Include="vcl.dcp"/>
         <DCCReference Include="vcldb.dcp"/>
-        <DCCReference Include="vclwinx.dcp"/>
         <DCCReference Include="sources\UniDSABrowser.pas">
             <Form>FormUniDSABrowser</Form>
         </DCCReference>
@@ -1088,7 +1086,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>  copy /Y &quot;E:\Embacadeiro\Repositorios\unidsa-unigui-delphi\outros\WebView2Loader.dll&quot; $(OUTPUTDIR)</PostBuildEvent>
+        <PostBuildEvent>  copy /Y &quot;$(PROJECTDIR)\outros\WebView2Loader.dll&quot; &quot;$(OUTPUTDIR)&quot;</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
 </Project>

@@ -28,6 +28,10 @@
 {$IMPLICITBUILD ON}
 
 requires
+  {$IFDEF VER370}  // Delphi 13
+    vcledge,
+  {$IFEND}
+
   {$IFDEF VER360}  // Delphi 12 Athens
     vcledge,
   {$IFEND}
@@ -43,15 +47,13 @@ requires
   DesignIDE,
   UniDSA,
   rtl,
-  DesignIDE,
   soaprtl,
   dbrtl,
   xmlrtl,
   inet,
   vclimg,
   vcl,
-  vcldb,
-  vclwinx;
+  vcldb;
 
 contains
   UniDSABrowser in 'sources\UniDSABrowser.pas' {FormUniDSABrowser},

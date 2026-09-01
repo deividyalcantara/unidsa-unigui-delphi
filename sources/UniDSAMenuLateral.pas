@@ -543,15 +543,14 @@ end;
 
 destructor TUniDSAMenuLateral.Destroy;
 begin
-  Menu.Clear;
-  inherited;
+  FreeAndNil(FMenu);
   FreeAndNil(FLogo);
   FreeAndNil(FSearch);
   FreeAndNil(FTheme);
   FreeAndNil(FProfile);
   FreeAndNil(FStyle);
-  FreeAndNil(FMenu);
   FreeAndNil(FMenuLateral);
+  inherited;
 end;
 
 function TUniDSAMenuLateral.GetMenuState: TMenuLateralMenuState;

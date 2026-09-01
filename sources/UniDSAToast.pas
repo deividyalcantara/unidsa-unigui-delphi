@@ -169,13 +169,13 @@ end;
 
 destructor TUniDSAToast.Destroy;
 begin
-  inherited Destroy;
   FreeAndNil(FStack);
   FreeAndNil(FPosition);
   FreeAndNil(FLoader);
   FreeAndNil(FToast);
   FreeAndNil(FBgColor);
   FreeAndNil(FTextColor);
+  inherited Destroy;
 end;
 
 procedure TUniDSAToast.Prepare;
@@ -300,6 +300,7 @@ end;
 destructor TUniDSAToastPosition.Destroy;
 begin
   FreeAndNil(FCustom);
+  inherited Destroy;
 end;
 
 initialization
