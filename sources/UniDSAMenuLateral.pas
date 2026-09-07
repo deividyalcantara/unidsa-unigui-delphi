@@ -5,11 +5,12 @@ interface
 uses
  System.SysUtils, System.Classes, uniGUIClasses, UniDSABaseControl, UniDSAExecuteFunction, uniGUITypes,
  System.TypInfo, UniDSALibrary, System.Variants, Vcl.Graphics, UniDSASource, Vcl.Controls,
- System.Types;
+ System.Types, UniDSAWebUtils;
 
 type
   TUniDSAMenuLateral = class;
   TUniDSAMenuLateralMenuItem = class;
+  TUniDSAMenuLateralMenu = class;
 
   TUniDSAMenuLateralSender = reference to procedure(Sender: TObject);
   TMenuLateralOnSearchEnter = procedure(Text: string) of object;
@@ -244,6 +245,8 @@ type
 
   TUniDSAMenuLateralMenuItem = class(TCollectionItem)
   private
+    FSubItems: TUniDSAMenuLateralMenu;
+    FExpanded: Boolean;
     FName: string;
     FNotificationCount: Integer;
     FIcon: string;
@@ -257,6 +260,11 @@ type
     FOnClickNotification: TNotifyEvent;
     FOnClickRef: TUniDSAMenuLateralSender;
     FOnClickNotificationRef: TUniDSAMenuLateralSender;
+    function GetParentItem: TUniDSAMenuLateralMenuItem;
+    function CanInteract: Boolean;
+    function BuildHtml(const AJSName: string): string;
+    procedure SetSubItems(const Value: TUniDSAMenuLateralMenu);
+    procedure SetExpanded(const Value: Boolean);
     function GetIcon: string;
     procedure SetIcon(const Value: string);
     function GetCaption: string;
@@ -276,13 +284,17 @@ type
   public
     constructor Create(Collection: TCollection); override;
     destructor Destroy; override;
+    procedure Assign(Source: TPersistent); override;
     procedure SetName;
+    property ParentItem: TUniDSAMenuLateralMenuItem read GetParentItem;
     property OnClickRef: TUniDSAMenuLateralSender read FOnClickRef write FOnClickRef;
     property OnClickNotificationRef: TUniDSAMenuLateralSender read FOnClickNotificationRef write FOnClickNotificationRef;
   published
     procedure IncNotification;
     procedure DecNotification;
     procedure ClearNotification;
+    property SubItems: TUniDSAMenuLateralMenu read FSubItems write SetSubItems;
+    property Expanded: Boolean read FExpanded write SetExpanded default False;
     property Icon: string read GetIcon write SetIcon;
     property Caption: string read GetCaption write SetCaption;
     property NotificationCount: Integer read GetNotificationCount write SetNotificationCount;
@@ -299,6 +311,10 @@ type
   private
     FIMenuParent: TUniDSAMenuLateral;
     procedure SetIMenuParent(const Value: TUniDSAMenuLateral);
+    function BuildHtml(const AJSName: string): string;
+    function FindByName(const AName: string): TUniDSAMenuLateralMenuItem;
+  protected
+    procedure Update(Item: TCollectionItem); override;
   public
     constructor Create(AOwner: TPersistent; ItemClass: TCollectionItemClass); overload;
     destructor Destroy; override;
@@ -331,6 +347,7 @@ type
     FSelectedMenu: TUniDSAMenuLateralMenuItem;
     FAjaxSecurity: Boolean;
     procedure PrepareHtml;
+    procedure RefreshMenu;
     procedure PrepareJS;
     procedure NovoCaption(const Value: string);
     procedure SetSearch(const Value: TUniDSAMenuLateralSearch);
@@ -392,26 +409,10 @@ end;
 procedure TUniDSAMenuLateral.JSEventHandler(AEventName: string; AParams: TUniStrings);
 var
   LMenu: TUniDSAMenuLateralMenuItem;
-  LMenuIndex: Integer;
-  LMenuCaption: string;
 
-  procedure SearchMenu(LName: string);
-  var
-    I: Integer;
+  procedure SearchMenu(const LName: string);
   begin
-    LMenu := nil;
-    LMenuIndex := -1;
-    LMenuCaption := '';
-
-    for I := 0 to Menu.Count - 1 do begin
-      if AParams.Values['menu'] <> TUniDSAMenuLateralMenuItem(Menu.Items[I]).FName then
-        Continue;
-
-      LMenuIndex := I;
-      LMenuCaption := TUniDSAMenuLateralMenuItem(Menu.Items[I]).Caption;
-      LMenu := TUniDSAMenuLateralMenuItem(Menu.Items[I]);
-      Break;
-    end;
+    LMenu := Menu.FindByName(LName);
   end;
 begin
   inherited;
@@ -419,20 +420,26 @@ begin
     if Assigned(FOnClickLogo) then
       FOnClickLogo(Self);
   end
+  else if AEventName = 'UniDSAMenuLateralToggleSubmenu' then begin
+    SearchMenu(AParams.Values['menu']);
+    if (LMenu = nil) then
+      Exit;
+    if not LMenu.CanInteract or (LMenu.SubItems.Count = 0) then
+      Exit;
+    LMenu.FExpanded := SameText(AParams.Values['expanded'], 'true');
+    if MenuState = mlmMinimize then
+      MenuState := mlmMaximize;
+  end
   else if AEventName = 'UniDSAMenuLateralOnClickMenu' then begin
     SearchMenu(AParams.Values['menu']);
 
     if LMenu = nil then
       Exit;
 
-    if
-      (AjaxSecurity) and
-      (
-        (LMenu.Visible = False) or
-        (LMenu.Hidden = True) or
-        (LMenu.Enabled = False)
-      )
-    then
+    if AjaxSecurity and not LMenu.CanInteract then
+      Exit;
+
+    if LMenu.Separator or (LMenu.SubItems.Count > 0) then
       Exit;
 
     SelectedMenu := LMenu;
@@ -452,14 +459,7 @@ begin
     if LMenu = nil then
       Exit;
 
-    if
-      (AjaxSecurity) and
-      (
-        (LMenu.Visible = False) or
-        (LMenu.Hidden = True) or
-        (LMenu.Enabled = False)
-      )
-    then
+    if AjaxSecurity and not LMenu.CanInteract then
       Exit;
 
     if Assigned(OnClickNotificationMenu) then
@@ -578,14 +578,7 @@ end;
 procedure TUniDSAMenuLateral.PrepareHtml;
 var
   LHTML: TStringBuilder;
-  I: Integer;
 
-  LMenuName: string;
-  LMenuHint: string;
-  LMenuIcon: string;
-  LMenuCaption: string;
-  LMenuNotification: string;
-  LMenuIndex: string;
 begin
   if WebMode then begin
     LHTML := TStringBuilder.Create;
@@ -622,37 +615,10 @@ begin
         // Bloco menu e grupo
         Append('    <div class="uni-ml-scroll-menu">');
 
-        if Menu.Count > 0 then begin
-          Append('      <span class="uni-ml-titulo-menu">Menu</span>');
-          Append('      <ul class="uni-ml-menu-lista">');
-
-          for I := 0 to Menu.Count - 1 do begin
-            LMenuName := TUniDSAMenuLateralMenuItem(Menu.Items[I]).FName;
-            LMenuHint := TUniDSAMenuLateralMenuItem(Menu.Items[I]).Hint;
-            LMenuIcon := TUniDSAMenuLateralMenuItem(Menu.Items[I]).Icon;
-            LMenuCaption := TUniDSAMenuLateralMenuItem(Menu.Items[I]).Caption;
-            LMenuNotification := IntToStr(TUniDSAMenuLateralMenuItem(Menu.Items[I]).NotificationCount);
-            LMenuIndex := IntToStr(TUniDSAMenuLateralMenuItem(Menu.Items[I]).Index);
-
-            if not TUniDSAMenuLateralMenuItem(Menu.Items[I]).Separator then begin
-              Append(
-                '<li id="uni-ml-item-menu-' + LMenuName + '" onclick="UniDSAMenuLateralOnClickMenu(' + JSName + ', ''' + LMenuName + ''')" style="order: ' + LMenuIndex + ';"> ' +
-                '  <a id="uni-ml-item-menu-link" title="' + LMenuHint + '"> ' +
-                '    <div class="uni-ml-item-icone"> ' +
-                '      <i id="uni-ml-item-icon-' + LMenuName + '" class="' + LMenuIcon + '"></i> ' +
-                '    </div> ' +
-                '    <span id="uni-ml-item-texto-' + LMenuName + '">' + LMenuCaption + '</span> ' +
-                '    <div class="uni-ml-item-menu-notif" id="uni-ml-item-menu-notif-' + LMenuName + '" onclick="UniDSAMenuLateralOnClickNotificationMenu(' + JSName + ', ''' + LMenuName + ''', event)">' + LMenuNotification + '</div> ' +
-                '  </a> ' +
-                '</li> '
-              );
-            end
-            else
-              Append('<div id="uni-ml-item-menu-' + LMenuName + '" class="uni-ml-item-menu-divisor" style="order: ' + LMenuIndex + ';"></div>');
-          end;
-
-          Append('      </ul>');
-        end;
+        Append('      <span class="uni-ml-titulo-menu">Menu</span>');
+        Append('      <ul id="' + JSName + '-menu-list" class="uni-ml-menu-lista">');
+        Append(Menu.BuildHtml(JSName));
+        Append('      </ul>');
 
         Append('    </div>');
 
@@ -693,16 +659,7 @@ begin
 end;
 
 procedure TUniDSAMenuLateral.PrepareJS;
-var
-  I: Integer;
 begin
-  for I := 0 to Menu.Count - 1 do begin
-    TUniDSAMenuLateralMenuItem(Menu.Items[I]).NotificationCount := TUniDSAMenuLateralMenuItem(Menu.Items[I]).NotificationCount;
-    TUniDSAMenuLateralMenuItem(Menu.Items[I]).Enabled := TUniDSAMenuLateralMenuItem(Menu.Items[I]).Enabled;
-    TUniDSAMenuLateralMenuItem(Menu.Items[I]).Hidden := TUniDSAMenuLateralMenuItem(Menu.Items[I]).Hidden;
-    TUniDSAMenuLateralMenuItem(Menu.Items[I]).Visible := TUniDSAMenuLateralMenuItem(Menu.Items[I]).Visible;
-  end;
-
   MenuState := MenuState;
 
   Logo.Visible := Logo.Visible;
@@ -735,7 +692,7 @@ end;
 
 procedure TUniDSAMenuLateral.SetMenu(const Value: TUniDSAMenuLateralMenu);
 begin
-  FMenu := Value;
+  FMenu.Assign(Value);
 end;
 
 procedure TUniDSAMenuLateral.SetMenuState(const Value: TMenuLateralMenuState);
@@ -1050,74 +1007,225 @@ begin
   FVisible := Value;
 end;
 
-{ TUniDSAMenuLateralMenuitem }
+{ TUniDSAMenuLateralMenuItem }
+
+constructor TUniDSAMenuLateralMenuItem.Create(Collection: TCollection);
+begin
+  inherited;
+  FIcon := 'fas fa-bars';
+  FCaption := 'Menu ' + IntToStr(Index + 1);
+  FVisible := True;
+  FEnabled := True;
+  SetName;
+  FSubItems := TUniDSAMenuLateralMenu.Create(Self, TUniDSAMenuLateralMenuItem);
+  Changed(False);
+end;
+
+destructor TUniDSAMenuLateralMenuItem.Destroy;
+var
+  LMenu: TUniDSAMenuLateral;
+begin
+  LMenu := TUniDSAMenuLateralMenu(Collection).IMenuParent;
+  if Assigned(LMenu) and (LMenu.SelectedMenu = Self) then
+    LMenu.SelectedMenu := nil;
+  FreeAndNil(FSubItems);
+  inherited;
+end;
+
+procedure TUniDSAMenuLateralMenuItem.Assign(Source: TPersistent);
+var
+  LItem: TUniDSAMenuLateralMenuItem;
+begin
+  if Source = Self then Exit;
+  if Source is TUniDSAMenuLateralMenuItem then begin
+    LItem := TUniDSAMenuLateralMenuItem(Source);
+    Collection.BeginUpdate;
+    try
+      FIcon := LItem.Icon;
+      FCaption := LItem.Caption;
+      FNotificationCount := LItem.NotificationCount;
+      FVisible := LItem.Visible;
+      FEnabled := LItem.Enabled;
+      FHidden := LItem.Hidden;
+      FSeparator := LItem.Separator;
+      FHint := LItem.Hint;
+      FExpanded := LItem.Expanded;
+      FOnClick := LItem.OnClick;
+      FOnClickNotification := LItem.OnClickNotification;
+      FOnClickRef := LItem.OnClickRef;
+      FOnClickNotificationRef := LItem.OnClickNotificationRef;
+      FSubItems.Assign(LItem.SubItems);
+      Changed(False);
+    finally
+      Collection.EndUpdate;
+    end;
+  end else
+    inherited;
+end;
+
+procedure TUniDSAMenuLateralMenuItem.SetName;
+var
+  LGuid: TGUID;
+begin
+  CreateGUID(LGuid);
+  FName := StringReplace(StringReplace(StringReplace(GUIDToString(LGuid),
+    '{', '', [rfReplaceAll]), '}', '', [rfReplaceAll]), '-', '', [rfReplaceAll]);
+end;
+
+function TUniDSAMenuLateralMenuItem.GetParentItem: TUniDSAMenuLateralMenuItem;
+begin
+  Result := nil;
+  if Assigned(Collection) and (Collection.Owner is TUniDSAMenuLateralMenuItem) then
+    Result := TUniDSAMenuLateralMenuItem(Collection.Owner);
+end;
+
+function TUniDSAMenuLateralMenuItem.CanInteract: Boolean;
+var
+  LItem: TUniDSAMenuLateralMenuItem;
+begin
+  Result := False;
+  LItem := Self;
+  while Assigned(LItem) do begin
+    if not LItem.Visible or LItem.Hidden or not LItem.Enabled or LItem.Separator then
+      Exit;
+    LItem := LItem.ParentItem;
+  end;
+  Result := True;
+end;
+
+procedure TUniDSAMenuLateralMenuItem.SetSubItems(const Value: TUniDSAMenuLateralMenu);
+begin
+  FSubItems.Assign(Value);
+end;
+
+procedure TUniDSAMenuLateralMenuItem.SetExpanded(const Value: Boolean);
+begin
+  if FExpanded = Value then Exit;
+  FExpanded := Value;
+  Changed(False);
+end;
+
+function TUniDSAMenuLateralMenuItem.BuildHtml(const AJSName: string): string;
+var
+  LStyle, LClass, LAction, LNotification: string;
+begin
+  Result := '';
+  if not Assigned(FSubItems) then Exit;
+  LStyle := 'order:' + IntToStr(Index) + ';';
+  if not Visible then LStyle := LStyle + 'display:none;';
+  LClass := 'uni-ml-menu-item';
+  if Hidden then LClass := LClass + ' uni-ml-hidden';
+  if not Enabled then LClass := LClass + ' uni-ml-desativado';
+  if Separator then begin
+    Result := '<li id="uni-ml-item-menu-' + FName + '" class="uni-ml-item-menu-divisor ' +
+      LClass + '" role="separator" style="' + LStyle + '"></li>';
+    Exit;
+  end;
+  LAction := UniDSAHtmlEncode('UniDSAMenuLateralActivate(' + AJSName + ', ' +
+    UniDSAJSString(FName) + ', event)');
+  Result := '<li id="uni-ml-item-menu-' + FName + '" class="' + LClass +
+    '" style="' + LStyle + '"><a id="uni-ml-item-menu-link-' + FName +
+    '" class="uni-ml-menu-row" role="button" tabindex="' + IIfStr(CanInteract, '0', '-1') +
+    '" aria-disabled="' + UniDSABoolJS(not CanInteract) + '" title="' + UniDSAHtmlEncode(Hint) +
+    '" onclick="' + LAction + '" onkeydown="' +
+    UniDSAHtmlEncode('UniDSAMenuLateralItemKeyDown(' + AJSName + ', ' + UniDSAJSString(FName) + ', event)') + '"';
+  if SubItems.Count > 0 then
+    Result := Result + ' aria-expanded="' + UniDSABoolJS(Expanded) +
+      '" aria-controls="uni-ml-submenu-' + FName + '"';
+  Result := Result + '><div class="uni-ml-item-icone"><i id="uni-ml-item-icon-' + FName +
+    '" class="' + UniDSAHtmlEncode(Icon) + '"></i></div><span id="uni-ml-item-texto-' +
+    FName + '">' + UniDSAHtmlEncode(Caption) + '</span>';
+  if NotificationCount > 99 then LNotification := '+99'
+  else LNotification := IntToStr(NotificationCount);
+  Result := Result + '<div class="uni-ml-item-menu-notif" id="uni-ml-item-menu-notif-' +
+    FName + '" role="button" tabindex="' + IIfStr(CanInteract and (NotificationCount > 0), '0', '-1') +
+    '" aria-label="' + UniDSAHtmlEncode('Notificacoes: ' + Caption) + '" style="' +
+    IIfStr(NotificationCount > 0, '', 'display:none;') + '" onclick="' +
+    UniDSAHtmlEncode('UniDSAMenuLateralOnClickNotificationMenu(' + AJSName + ', ' + UniDSAJSString(FName) + ', event)') +
+    '" onkeydown="' + UniDSAHtmlEncode('UniDSAMenuLateralNotificationKeyDown(' + AJSName + ', ' + UniDSAJSString(FName) + ', event)') +
+    '">' + LNotification + '</div>';
+  if SubItems.Count > 0 then
+    Result := Result + '<i class="fas fa-chevron-right uni-ml-submenu-arrow" aria-hidden="true"></i>';
+  Result := Result + '</a>';
+  if SubItems.Count > 0 then
+    Result := Result + '<ul id="uni-ml-submenu-' + FName + '" class="uni-ml-submenu"' +
+      IIfStr(Expanded, '', ' hidden') + '>' + SubItems.BuildHtml(AJSName) + '</ul>';
+  Result := Result + '</li>';
+end;
 
 procedure TUniDSAMenuLateralMenuItem.ClearNotification;
 begin
-  try
-    NotificationCount := 0;
-  except
-  end;
+  NotificationCount := 0;
 end;
 
-constructor TUniDSAMenuLateralMenuitem.Create(Collection: TCollection);
-var
-  LMenuHTML: string;
-  LJSName: string;
+procedure TUniDSAMenuLateralMenuItem.IncNotification;
 begin
-  inherited;
-  Icon := 'fas fa-bars';
-  Caption := 'Menu ' + IntToStr(Self.Index + 1);
-  NotificationCount := 0;
-  Visible := True;
-  Enabled := True;
-  Separator := False;
-  FHidden := False;
-  Hint := '';
-  SetName;
-
-  if Assigned(TUniDSAMenuLateralMenu(Collection).FIMenuParent) then begin
-    LJSName := TUniDSAMenuLateralMenu(Collection).FIMenuParent.JSName;
-
-    LMenuHTML :=
-      '<li id="uni-ml-item-menu-' + FName + '" onclick="UniDSAMenuLateralOnClickMenu(' + LJSName + ', ''' + Trim(FName) + ''')" style="order: ' + IntToStr(Self.Index) + ';"> ' +
-      '  <a id="uni-ml-item-menu-link" title="' + Hint + '"> ' +
-      '    <div class="uni-ml-item-icone"> ' +
-      '      <i id="uni-ml-item-icon-' + FName + '" class="' + Icon + '"></i> ' +
-      '    </div> ' +
-      '    <span id="uni-ml-item-texto-' + FName + '">' + FCaption + '</span> ' +
-      '    <div class="uni-ml-item-menu-notif" id="uni-ml-item-menu-notif-' + FName + '" onclick="UniDSAMenuLateralOnClickNotificationMenu(' + LJSName + ', ''' + FName + ''', event)">' + IntToStr(FNotificationCount) + '</div> ' +
-      '  </a> ' +
-      '</li> ';
-
-    with TUniDSAMenuLateralMenu(Collection).FIMenuParent do begin
-      JS('$(".uni-ml-menu-lista").append($(`' + LMenuHTML + '`));');
-      JS('$("#uni-ml-item-menu-notif-' + FName + '").hide();');
-    end;
-  end;
+  NotificationCount := NotificationCount + 1;
 end;
 
 procedure TUniDSAMenuLateralMenuItem.DecNotification;
 begin
-  try
-    NotificationCount := NotificationCount - 1;
-  except
-  end;
+  if NotificationCount > 0 then NotificationCount := NotificationCount - 1;
 end;
 
-destructor TUniDSAMenuLateralMenuitem.Destroy;
+function TUniDSAMenuLateralMenuItem.GetIcon: string;
 begin
-  if Assigned(TUniDSAMenuLateralMenu(Collection).FIMenuParent) then begin
-    with TUniDSAMenuLateralMenu(Collection).FIMenuParent do
-      JS('$("#uni-ml-item-menu-' + FName + '").remove();');
-  end;
-
-  inherited;
+  Result := FIcon;
 end;
 
-function TUniDSAMenuLateralMenuitem.GetEnabled: Boolean;
+procedure TUniDSAMenuLateralMenuItem.SetIcon(const Value: string);
+begin
+  if FIcon = Value then Exit;
+  FIcon := RemoverTagFontAwesome(Value);
+  Changed(False);
+end;
+
+function TUniDSAMenuLateralMenuItem.GetCaption: string;
+begin
+  Result := FCaption;
+end;
+
+procedure TUniDSAMenuLateralMenuItem.SetCaption(const Value: string);
+begin
+  if FCaption = Value then Exit;
+  FCaption := Value;
+  Changed(False);
+end;
+
+function TUniDSAMenuLateralMenuItem.GetNotificationCount: Integer;
+begin
+  Result := FNotificationCount;
+end;
+
+procedure TUniDSAMenuLateralMenuItem.SetNotificationCount(const Value: Integer);
+begin
+  if FNotificationCount = Value then Exit;
+  FNotificationCount := Value;
+  Changed(False);
+end;
+
+function TUniDSAMenuLateralMenuItem.GetVisible: Boolean;
+begin
+  Result := FVisible;
+end;
+
+procedure TUniDSAMenuLateralMenuItem.SetVisible(const Value: Boolean);
+begin
+  if FVisible = Value then Exit;
+  FVisible := Value;
+  Changed(False);
+end;
+
+function TUniDSAMenuLateralMenuItem.GetEnabled: Boolean;
 begin
   Result := FEnabled;
+end;
+
+procedure TUniDSAMenuLateralMenuItem.SetEnabled(const Value: Boolean);
+begin
+  if FEnabled = Value then Exit;
+  FEnabled := Value;
+  Changed(False);
 end;
 
 function TUniDSAMenuLateralMenuItem.GetHidden: Boolean;
@@ -1125,243 +1233,132 @@ begin
   Result := FHidden;
 end;
 
-function TUniDSAMenuLateralMenuitem.GetHint: string;
+procedure TUniDSAMenuLateralMenuItem.SetHidden(const Value: Boolean);
 begin
-  Result := FHint;
+  if FHidden = Value then Exit;
+  FHidden := Value;
+  Changed(False);
 end;
 
-function TUniDSAMenuLateralMenuitem.GetIcon: string;
-begin
-  Result := FIcon;
-end;
-
-function TUniDSAMenuLateralMenuitem.GetNotificationCount: Integer;
-begin
-  Result := FNotificationCount;
-end;
-
-function TUniDSAMenuLateralMenuitem.GetSeparator: Boolean;
+function TUniDSAMenuLateralMenuItem.GetSeparator: Boolean;
 begin
   Result := FSeparator;
 end;
 
-function TUniDSAMenuLateralMenuitem.GetCaption: string;
+procedure TUniDSAMenuLateralMenuItem.SetSeparator(const Value: Boolean);
 begin
-  Result := FCaption;
-end;
-
-function TUniDSAMenuLateralMenuitem.GetVisible: Boolean;
-begin
-  Result := FVisible;
-end;
-
-procedure TUniDSAMenuLateralMenuItem.IncNotification;
-begin
-  try
-    NotificationCount := NotificationCount + 1;
-  except
-  end;
-end;
-
-procedure TUniDSAMenuLateralMenuitem.SetEnabled(const Value: Boolean);
-begin
-  if Assigned(TUniDSAMenuLateralMenu(Collection).FIMenuParent) then begin
-    with TUniDSAMenuLateralMenu(Collection).FIMenuParent do begin
-      if Value then
-        JS('$("#uni-ml-item-menu-' + FName + '").removeClass("uni-ml-desativado");')
-      else
-        JS('$("#uni-ml-item-menu-' + FName + '").addClass("uni-ml-desativado");');
-    end;
-  end;
-
-  FEnabled := Value;
-end;
-
-procedure TUniDSAMenuLateralMenuItem.SetHidden(const Value: Boolean);
-begin
-  if Assigned(TUniDSAMenuLateralMenu(Collection).FIMenuParent) then begin
-    with TUniDSAMenuLateralMenu(Collection).FIMenuParent do begin
-      if Value then
-        JS('$("#uni-ml-item-menu-' + FName + '").css("visibility","hidden");')
-      else
-        JS('$("#uni-ml-item-menu-' + FName + '").css("visibility","visible");');
-    end;
-  end;
-
-  FHidden := Value;
-end;
-
-procedure TUniDSAMenuLateralMenuitem.SetHint(const Value: string);
-begin
-  if Assigned(TUniDSAMenuLateralMenu(Collection).FIMenuParent) then begin
-    with TUniDSAMenuLateralMenu(Collection).FIMenuParent do
-      JS('$("#uni-ml-item-menu-link-' + FName + '").attr("title","' + Value + '");');
-  end;
-
-  FHint := Value;
-end;
-
-procedure TUniDSAMenuLateralMenuitem.SetIcon(const Value: string);
-begin
-  if Assigned(TUniDSAMenuLateralMenu(Collection).FIMenuParent) then begin
-    with TUniDSAMenuLateralMenu(Collection).FIMenuParent do begin
-      JS('$("#uni-ml-item-icon-' + FName + '").removeClass().addClass("' + RemoverTagFontAwesome(Value) + '");');
-    end;
-  end;
-
-  FIcon := RemoverTagFontAwesome(Value);
-end;
-
-procedure TUniDSAMenuLateralMenuitem.SetName;
-var
-  LNameInvalid: Boolean;
-  LGeneratedName: string;
-
-  function ExistingButton(name: string): Boolean;
-  var
-    i: Integer;
-
-  begin
-    Result := False;
-
-    for i := 0 to Collection.Count - 1 do begin
-      if TUniDSAMenuLateralMenuitem(Collection.Items[i]).FName = name then begin
-        Result := True;
-        Break;
-      end;
-    end;
-  end;
-begin
-  LNameInvalid := True;
-  repeat
-    LGeneratedName := SortName;
-  until LNameInvalid;
-
-  FName := LGeneratedName;
-end;
-
-procedure TUniDSAMenuLateralMenuitem.SetNotificationCount(const Value: Integer);
-begin
-  if Assigned(TUniDSAMenuLateralMenu(Collection).FIMenuParent) then begin
-    with TUniDSAMenuLateralMenu(Collection).FIMenuParent do begin
-      if Value > 99 then begin
-        JS('$("#uni-ml-item-menu-notif-' + FName + '").text("+99");');
-        JS('$("#uni-ml-item-menu-notif-' + FName + '").show();');
-      end
-      else if Value > 0 then begin
-        JS('$("#uni-ml-item-menu-notif-' + FName + '").text("' + IntToStr(Value) + '");');
-        JS('$("#uni-ml-item-menu-notif-' + FName + '").show();');
-      end
-      else begin
-        JS('$("#uni-ml-item-menu-notif-' + FName + '").text("");');
-        JS('$("#uni-ml-item-menu-notif-' + FName + '").hide();');
-      end;
-    end;
-  end;
-
-  FNotificationCount := Value;
-end;
-
-procedure TUniDSAMenuLateralMenuitem.SetSeparator(const Value: Boolean);
-var
-  LMenuHTML: string;
-begin
-  if Value <> FSeparator then begin
-    if Value then begin
-      if Assigned(TUniDSAMenuLateralMenu(Collection).FIMenuParent) then begin
-        with TUniDSAMenuLateralMenu(Collection).FIMenuParent do begin
-          JS('$("#uni-ml-item-menu-' + FName + '").remove();');
-          LMenuHTML := '<div id="uni-ml-item-menu-' + FName + '" class="uni-ml-item-menu-divisor" style="order: ' + IntToStr(Self.Index) + ';"></div>';
-          JS('$(".uni-ml-menu-lista").append($(`' + LMenuHTML + '`));');
-        end;
-      end;
-    end
-    else begin
-      if Assigned(TUniDSAMenuLateralMenu(Collection).FIMenuParent) then begin
-        with TUniDSAMenuLateralMenu(Collection).FIMenuParent do begin
-          JS('$("#uni-ml-item-menu-' + FName + '").remove();');
-
-          LMenuHTML :=
-            '<li id="uni-ml-item-menu-' + FName + '" onclick="UniDSAMenuLateralOnClickMenu(' + JSName + ', ''' + Trim(FName) + ''')" style="order: ' + IntToStr(Self.Index) + ';"> ' +
-            '  <a id="uni-ml-item-menu-link" title="' + Hint + '"> ' +
-            '    <div class="uni-ml-item-icone"> ' +
-            '      <i id="uni-ml-item-icon-x" class="' + Icon + '"></i> ' +
-            '    </div> ' +
-            '    <span id="uni-ml-item-texto-' + FName + '">' + FCaption + '</span> ' +
-            '    <div class="uni-ml-item-menu-notif" id="uni-ml-item-menu-notif-' + FName + '" onclick="UniDSAMenuLateralOnClickNotificationMenu(' + JSName + ', ''' + FName + ''', event)">' + IntToStr(FNotificationCount) + '</div> ' +
-            '  </a> ' +
-            '</li> ';
-
-          JS('$(".uni-ml-menu-lista").append($(`' + LMenuHTML + '`));');
-
-          if NotificationCount <= 0 then
-            JS('$("#uni-ml-item-menu-notif-' + FName + '").hide();');
-        end;
-      end;
-    end;
-  end;
-
+  if FSeparator = Value then Exit;
   FSeparator := Value;
+  Changed(False);
 end;
 
-procedure TUniDSAMenuLateralMenuitem.SetCaption(const Value: string);
+function TUniDSAMenuLateralMenuItem.GetHint: string;
 begin
-  if Assigned(TUniDSAMenuLateralMenu(Collection).FIMenuParent) then begin
-    with TUniDSAMenuLateralMenu(Collection).FIMenuParent do
-      JS('$("#uni-ml-item-texto-' + FName + '").text("' + Value + '");');
-  end;
-
-  FCaption := Value;
+  Result := FHint;
 end;
 
-procedure TUniDSAMenuLateralMenuitem.SetVisible(const Value: Boolean);
+procedure TUniDSAMenuLateralMenuItem.SetHint(const Value: string);
 begin
-  if Assigned(TUniDSAMenuLateralMenu(Collection).FIMenuParent) then begin
-    with TUniDSAMenuLateralMenu(Collection).FIMenuParent do begin
-      if Value then
-        JS('$("#uni-ml-item-menu-' + FName + '").show();')
-      else
-        JS('$("#uni-ml-item-menu-' + FName + '").hide();');
-    end;
-  end;
-
-  FVisible := Value;
+  if FHint = Value then Exit;
+  FHint := Value;
+  Changed(False);
 end;
 
 { TUniDSAMenuLateralMenu }
+
+constructor TUniDSAMenuLateralMenu.Create(AOwner: TPersistent; ItemClass: TCollectionItemClass);
+begin
+  inherited;
+  if AOwner is TUniDSAMenuLateral then
+    FIMenuParent := TUniDSAMenuLateral(AOwner)
+  else if AOwner is TUniDSAMenuLateralMenuItem then
+    FIMenuParent := TUniDSAMenuLateralMenu(TUniDSAMenuLateralMenuItem(AOwner).Collection).IMenuParent;
+end;
+
+destructor TUniDSAMenuLateralMenu.Destroy;
+begin
+  BeginUpdate;
+  inherited;
+end;
+
+procedure TUniDSAMenuLateralMenu.Update(Item: TCollectionItem);
+begin
+  inherited;
+  if UpdateCount > 0 then Exit;
+  if Owner is TUniDSAMenuLateralMenuItem then begin
+    TUniDSAMenuLateralMenu(TUniDSAMenuLateralMenuItem(Owner).Collection).Update(Item);
+    Exit;
+  end;
+  if Assigned(FIMenuParent) then FIMenuParent.RefreshMenu;
+end;
 
 function TUniDSAMenuLateralMenu.AddItem: TUniDSAMenuLateralMenuItem;
 begin
   Result := TUniDSAMenuLateralMenuItem(Add);
 end;
 
-constructor TUniDSAMenuLateralMenu.Create(AOwner: TPersistent; ItemClass: TCollectionItemClass);
+function TUniDSAMenuLateralMenu.BuildHtml(const AJSName: string): string;
+var
+  I: Integer;
+  LHtml: TStringBuilder;
 begin
-  inherited;
+  LHtml := TStringBuilder.Create;
+  try
+    for I := 0 to Count - 1 do
+      LHtml.Append(TUniDSAMenuLateralMenuItem(Items[I]).BuildHtml(AJSName));
+    Result := LHtml.ToString;
+  finally
+    LHtml.Free;
+  end;
 end;
 
-destructor TUniDSAMenuLateralMenu.Destroy;
+function TUniDSAMenuLateralMenu.FindByName(const AName: string): TUniDSAMenuLateralMenuItem;
+var
+  I: Integer;
+  LItem: TUniDSAMenuLateralMenuItem;
 begin
-  inherited;
+  Result := nil;
+  for I := 0 to Count - 1 do begin
+    LItem := TUniDSAMenuLateralMenuItem(Items[I]);
+    if LItem.FName = AName then Exit(LItem);
+    if Assigned(LItem.SubItems) then begin
+      Result := LItem.SubItems.FindByName(AName);
+      if Assigned(Result) then Exit;
+    end;
+  end;
 end;
 
 function TUniDSAMenuLateralMenu.IndexOf(ACaptionItem: string): TUniDSAMenuLateralMenuItem;
 var
   I: Integer;
+  LItem: TUniDSAMenuLateralMenuItem;
 begin
   Result := nil;
-  for I := 0 to Self.Count - 1 do begin
-    if TUniDSAMenuLateralMenuItem(Self.Items[I]).Caption <> ACaptionItem then
-      Continue;
-
-    Result := TUniDSAMenuLateralMenuItem(Self.Items[I]);
-    Break;
+  for I := 0 to Count - 1 do begin
+    LItem := TUniDSAMenuLateralMenuItem(Items[I]);
+    if LItem.Caption = ACaptionItem then Exit(LItem);
+    if Assigned(LItem.SubItems) then begin
+      Result := LItem.SubItems.IndexOf(ACaptionItem);
+      if Assigned(Result) then Exit;
+    end;
   end;
 end;
 
 procedure TUniDSAMenuLateralMenu.SetIMenuParent(const Value: TUniDSAMenuLateral);
+var
+  I: Integer;
 begin
   FIMenuParent := Value;
+  for I := 0 to Count - 1 do
+    TUniDSAMenuLateralMenuItem(Items[I]).SubItems.IMenuParent := Value;
+end;
+
+procedure TUniDSAMenuLateral.RefreshMenu;
+begin
+  if not Assigned(FMenu) or not WebMode or IsLoading or IsDesigning or
+    (csDestroying in ComponentState) then Exit;
+  JS('UniDSAMenuLateralRender(' + UniDSAJSString(JSName + '-menu-list') + ', ' +
+    UniDSAJSString(FMenu.BuildHtml(JSName)) + ');');
 end;
 
 { TUniDSAMenuStyle }

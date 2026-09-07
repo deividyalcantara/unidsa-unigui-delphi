@@ -402,6 +402,43 @@ Eventos gerais: `OnClickLogo`, `OnClickMenu`, `OnClickNotificationMenu`, `OnAfte
 
 Itens adicionados em runtime podem usar `OnClickRef` e `OnClickNotificationRef` com métodos anônimos. Assim como no `TUniDSAConfirm`, o componente e os itens precisam continuar vivos até o retorno AJAX.
 
+Cada item possui uma coleção `SubItems`, editável no Object Inspector, e a propriedade
+`Expanded` (padrão `False`). É possível criar submenus em vários níveis. Clicar em um
+grupo expande/recolhe seus filhos; clicar em um item final dispara os eventos de menu
+existentes. O clique na notificação continua independente. Enter/Espaço ativam o item,
+e as setas direita/esquerda abrem/fecham grupos. No modo minimizado, clicar em um grupo
+maximiza o menu para mostrar os filhos.
+
+```pascal
+var
+  Grupo: TUniDSAMenuLateralMenuItem;
+begin
+  mlMenu.Menu.BeginUpdate;
+  try
+    Grupo := mlMenu.Menu.AddItem;
+    Grupo.Caption := 'Vendas';
+    Grupo.Icon := 'fas fa-shopping-cart';
+    Grupo.Expanded := True;
+    with Grupo.SubItems.AddItem do begin
+      Caption := 'Pedidos';
+      OnClick := AbrirPedidos;
+    end;
+  finally
+    mlMenu.Menu.EndUpdate;
+  end;
+end;
+```
+
+`Menu.IndexOf('Pedidos')` também procura nos submenus e retorna a primeira ocorrência.
+`ParentItem` informa o item pai. Com `AjaxSecurity=True`, o servidor verifica o estado
+do item e dos seus ancestrais antes de executar eventos. No demo, o grupo **Componentes**
+é preenchido em `TMainForm.ConfigurarMenuComponentes`, durante a criação do formulário,
+para preservar a navegação mesmo ao abrir o DFM com um pacote antigo instalado na IDE.
+Os botões **Padrão** e **Administrativo** da tela Menu
+Lateral demonstram a criação em runtime, incluindo um terceiro nível em
+**Gestão de Vendas → Faturamento e Cobrança**. Publique também os novos arquivos
+`dsa/menu_lateral` junto com a aplicação recompilada.
+
 ### TUniDSALogin
 
 Cria uma tela responsiva de autenticação com login, senha, opção de lembrar, recuperação de senha e criação de conta.

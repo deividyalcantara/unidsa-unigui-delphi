@@ -144,6 +144,7 @@ function Tema2() {
 
 function MenuLateralMinimizado() {
   LUniDSAMenuLateralMinimizado = 'S';
+  $(".uni-ml").addClass("uni-ml-minimized");
 
   document.documentElement.style.setProperty('--var-ml-tamanho', LUniDSAMenuLateralTamanhoMenuMinimizado + 'px');
   $("#uni-ml-logo-nome-empresa").hide();
@@ -186,6 +187,7 @@ function MenuLateralMinimizado() {
 
 function MenuLateralMaximizado() {
   LUniDSAMenuLateralMinimizado = 'N';
+  $(".uni-ml").removeClass("uni-ml-minimized");
 
   document.documentElement.style.setProperty('--var-ml-tamanho', LUniDSAMenuLateralTamanhoMenuNormal + 'px');
   $("#uni-ml-logo-nome-empresa").show();
@@ -232,9 +234,65 @@ function UniDSAMenuLateralOnClickMenu(AJSName, ANomeMenu) {
 };
 
 function UniDSAMenuLateralOnClickNotificationMenu(AJSName, ANomeMenu, AEvent) {
-  ajaxRequest(AJSName, 'UniDSAMenuLateralOnClickNotificationMenu', ["menu=" + ANomeMenu]);
+  AEvent.preventDefault();
   AEvent.stopPropagation();
+  if (!UniDSAMenuLateralCanInteract(ANomeMenu)) return;
+  ajaxRequest(AJSName, 'UniDSAMenuLateralOnClickNotificationMenu', ["menu=" + ANomeMenu]);
 };
+
+function UniDSAMenuLateralCanInteract(name) {
+  var item = document.getElementById('uni-ml-item-menu-' + name);
+  return !!item && !item.closest('.uni-ml-desativado, .uni-ml-hidden') &&
+    item.getClientRects().length > 0;
+}
+
+function UniDSAMenuLateralActivate(component, name, event) {
+  event.preventDefault();
+  event.stopPropagation();
+  if (!UniDSAMenuLateralCanInteract(name)) return;
+  var submenu = document.getElementById('uni-ml-submenu-' + name);
+  if (submenu) {
+    // Expanding the uniGUI control itself is confirmed by the server.
+    var expanded = submenu.hidden || LUniDSAMenuLateralMinimizado === 'S';
+    submenu.hidden = !expanded;
+    document.getElementById('uni-ml-item-menu-link-' + name)
+      .setAttribute('aria-expanded', String(expanded));
+    ajaxRequest(component, 'UniDSAMenuLateralToggleSubmenu',
+      ['menu=' + name, 'expanded=' + expanded]);
+  } else {
+    UniDSAMenuLateralOnClickMenu(component, name);
+  }
+}
+
+function UniDSAMenuLateralItemKeyDown(component, name, event) {
+  if (event.target !== event.currentTarget) return;
+  var submenu = document.getElementById('uni-ml-submenu-' + name);
+  if (event.key === 'Enter' || event.key === ' ' ||
+      (submenu && ((event.key === 'ArrowRight' && submenu.hidden) ||
+                   (event.key === 'ArrowLeft' && !submenu.hidden)))) {
+    UniDSAMenuLateralActivate(component, name, event);
+  }
+}
+
+function UniDSAMenuLateralNotificationKeyDown(component, name, event) {
+  if (event.key === 'Enter' || event.key === ' ') {
+    UniDSAMenuLateralOnClickNotificationMenu(component, name, event);
+  }
+}
+
+function UniDSAMenuLateralRender(listId, html) {
+  var list = document.getElementById(listId);
+  if (!list) return;
+  var scroll = list.closest('.uni-ml-scroll-menu');
+  var top = scroll ? scroll.scrollTop : 0;
+  var focused = list.contains(document.activeElement) ? document.activeElement.id : '';
+  list.innerHTML = html;
+  if (focused) {
+    var target = document.getElementById(focused);
+    if (target && target.getClientRects().length) target.focus({preventScroll: true});
+  }
+  if (scroll) scroll.scrollTop = top;
+}
 
 function UniDSAMenuLateralOnAfterSelectTheme(AJSName, AEvent) {
   var LOpcao = AEvent.target.getAttribute("option");

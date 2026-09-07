@@ -337,9 +337,13 @@ begin
 end;
 
 procedure TFrMenuLateral.btnNotificacoesClick(Sender: TObject);
+var
+  LItem: TUniDSAMenuLateralMenuItem;
 begin
   inherited;
-  MainForm.mlMenu.Menu.IndexOf('Gestão de Vendas').IncNotification
+  LItem := MainForm.mlMenu.Menu.IndexOf('Gestão de Vendas');
+  if Assigned(LItem) then
+    LItem.IncNotification;
 end;
 
 procedure TFrMenuLateral.btnOcultarMenuClick(Sender: TObject);
@@ -424,317 +428,357 @@ begin
 end;
 
 procedure TFrMenuLateral.ConfigurarMenus(AUsuarioAdmin: Boolean);
+var
+  LGroup, LSubGroup: TUniDSAMenuLateralMenuItem;
 begin
   btnNotificacoes.Enabled := True;
 
-  MainForm.mlMenu.Menu.Clear;
+  MainForm.mlMenu.Menu.BeginUpdate;
+  try
+    MainForm.mlMenu.Menu.Clear;
+    LGroup := MainForm.mlMenu.Menu.AddItem;
 
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Gestão de Vendas';
-    Icon := 'fas fa-shopping-cart';
-    Hint := 'Menu para ' + Caption;
-    NotificationCount := 0;
-    Visible := True;
-    Enabled := True;
-    Separator := False;
-    Hidden := False;
-    OnClickRef := procedure (Sender: TObject)
-    begin
-      with MainForm.Confirm do begin
-        Clear;
-        ClearEvents;
-        Theme := Bootstrap;
-        Title := 'Menu';
-        Draggable := False;
-        Content := '<span style=''font-size:14px;''>O Menu <b style=''color: #3498db;''>' + TUniDSAMenuLateralMenuItem(Sender).Caption + '</b> foi selecionado.</span>';
-        BoxWidth := '30%';
+    with LGroup do begin
+      Caption := 'Gestão de Vendas';
+      Icon := 'fas fa-shopping-cart';
+      Expanded := True;
+      Hint := 'Menu para ' + Caption;
+      NotificationCount := 0;
+      Visible := True;
+      Enabled := True;
+      Separator := False;
+      Hidden := False;
+      OnClickRef := procedure (Sender: TObject)
+      begin
+        with MainForm.Confirm do begin
+          Clear;
+          ClearEvents;
+          Theme := Bootstrap;
+          Title := 'Menu';
+          Draggable := False;
+          Content := '<span style=''font-size:14px;''>O Menu <b style=''color: #3498db;''>' + TUniDSAMenuLateralMenuItem(Sender).Caption + '</b> foi selecionado.</span>';
+          BoxWidth := '30%';
 
-        with Buttons.AddItem do begin
-          Text := 'OK';
-          BtnClass := 'btn-default';
+          with Buttons.AddItem do begin
+            Text := 'OK';
+            BtnClass := 'btn-default';
+          end;
+
+          Show;
         end;
+      end;
+      OnClickNotificationRef := procedure (Sender: TObject)
+      begin
+        TUniDSAMenuLateralMenuItem(Sender).ClearNotification;
 
-        Show;
+        with MainForm.Confirm do begin
+          Clear;
+          ClearEvents;
+          Theme := Bootstrap;
+          Title := TUniDSAMenuLateralMenuItem(Sender).Caption;
+          Draggable := False;
+          Content := '<span style=''font-size:14px;''>Notificações lidas.</span>';
+          BoxWidth := '30%';
+
+          with Buttons.AddItem do begin
+            Text := 'OK';
+            BtnClass := 'btn-default';
+          end;
+
+          Show;
+        end;
       end;
     end;
-    OnClickNotificationRef := procedure (Sender: TObject)
-    begin
-      ClearNotification;
-
-      with MainForm.Confirm do begin
-        Clear;
-        ClearEvents;
-        Theme := Bootstrap;
-        Title := Caption;
-        Draggable := False;
-        Content := '<span style=''font-size:14px;''>Notificações lidas.</span>';
-        BoxWidth := '30%';
-
-        with Buttons.AddItem do begin
-          Text := 'OK';
-          BtnClass := 'btn-default';
-        end;
-
-        Show;
-      end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Pedidos de Vendas';
+      Icon := 'fas fa-clipboard-list';
+      OnClickRef := LGroup.OnClickRef;
     end;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Pedidos de Vendas';
-    Icon := 'fas fa-clipboard-list';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Orçamentos';
-    Icon := 'fas fa-file-invoice-dollar';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Faturamento e Cobrança';
-    Icon := 'fas fa-file-invoice';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Orçamentos';
+      Icon := 'fas fa-file-invoice-dollar';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Faturamento e Cobrança';
+      Icon := 'fas fa-file-invoice';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    LSubGroup := TUniDSAMenuLateralMenuItem(LGroup.SubItems.Items[LGroup.SubItems.Count - 1]);
+    LSubGroup.OnClick := nil;
+    with LSubGroup.SubItems.AddItem do begin
+      Caption := 'Notas fiscais';
+      Icon := 'fas fa-file-invoice';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LSubGroup.SubItems.AddItem do begin
+      Caption := 'Boletos';
+      Icon := 'fas fa-barcode';
+      NotificationCount := 3;
+      OnClickNotificationRef := LGroup.OnClickNotificationRef;
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
 
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Separator := True;
-  end;
 
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Cadastro de Produtos';
-    Icon := 'fas fa-cube';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Controle de Estoque';
-    Icon := 'fas fa-boxes';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Preços e Promoções';
-    Icon := 'fas fa-tags';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Separator := True;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Cadastro de Clientes';
-    Icon := 'fas fa-user';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Histórico de Compras';
-    Icon := 'fas fa-history';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Gerenciamento de Contas';
-    Icon := 'fas fa-briefcase';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Separator := True;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Compras';
-    Icon := 'fas fa-shopping-bag';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Pedidos de Compra';
-    Icon := 'fas fa-shopping-bag';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Fornecedores';
-    Icon := 'fas fa-truck';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Controle de Recebimento de Mercadorias';
-    Icon := 'fas fa-clipboard-check';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Separator := True;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Recursos Humanos';
-    Icon := 'fas fa-users';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Cadastro de Funcionários';
-    Icon := 'fas fa-users';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Folha de Pagamento';
-    Icon := 'fas fa-money-check';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Gerenciamento de Ponto';
-    Icon := 'fas fa-clock';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Separator := True;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Contabilidade e Finanças';
-    Icon := 'fas fa-money-bill-wave';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Contas a Pagar';
-    Icon := 'fas fa-file-invoice-dollar';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Contas a Receber';
-    Icon := 'fas fa-file-invoice';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Balanço Patrimonial';
-    Icon := 'fas fa-balance-scale';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Separator := True;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Gestão de Estoques';
-    Icon := 'fas fa-archive';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Movimentação de Estoque';
-    Icon := 'fas fa-exchange-alt';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Controle de Lotes';
-    Icon := 'fas fa-cubes';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Reabastecimento';
-    Icon := 'fas fa-retweet';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Separator := True;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Produção';
-    Icon := 'fas fa-industry';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Ordens de Produção';
-    Icon := 'fas fa-industry';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Controle de Processos';
-    Icon := 'fas fa-cogs';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Controle de Qualidade';
-    Icon := 'fas fa-check-circle';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Separator := True;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Logística e Transporte';
-    Icon := 'fas fa-truck';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Rastreamento de Cargas';
-    Icon := 'fas fa-map-marked-alt';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Gerenciamento de Rotas';
-    Icon := 'fas fa-route';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Controle de Entregas';
-    Icon := 'fas fa-truck';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Separator := True;
-  end;
-
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Relatórios e Análises';
-    Icon := 'fas fa-chart-bar';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Relatórios de Desempenho';
-    Icon := 'fas fa-chart-bar';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Análise de Vendas';
-    Icon := 'fas fa-chart-line';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-  with MainForm.mlMenu.Menu.AddItem do begin
-    Caption := 'Análise Financeira';
-    Icon := 'fas fa-chart-pie';
-    OnClick := FrameMenuLateralOnMenuClick;
-  end;
-
-  if AUsuarioAdmin then begin
     with MainForm.mlMenu.Menu.AddItem do begin
       Separator := True;
     end;
 
-    with MainForm.mlMenu.Menu.AddItem do begin
-      Caption := 'Configurações e Administração';
-      Icon := 'fas fa-cog';
+    LGroup := MainForm.mlMenu.Menu.AddItem;
+    with LGroup do begin
+      Caption := 'Produtos';
+      Icon := 'fas fa-cube';
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Cadastro de Produtos';
+      Icon := LGroup.Icon;
       OnClick := FrameMenuLateralOnMenuClick;
     end;
-    with MainForm.mlMenu.Menu.AddItem do begin
-      Caption := 'Configurações do Sistema';
-      Icon := 'fas fa-cog';
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Controle de Estoque';
+      Icon := 'fas fa-boxes';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
-    with MainForm.mlMenu.Menu.AddItem do begin
-      Caption := 'Gerenciamento de Usuários';
-      Icon := 'fas fa-users-cog';
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Preços e Promoções';
+      Icon := 'fas fa-tags';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
-    with MainForm.mlMenu.Menu.AddItem do begin
-      Caption := 'Configurações de Segurança';
-      Icon := 'fas fa-lock';
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Cadastro de NCM';
+      Icon := 'fas fa-tags';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
+
+    with MainForm.mlMenu.Menu.AddItem do begin
+      Separator := True;
+    end;
+
+    LGroup := MainForm.mlMenu.Menu.AddItem;
+    with LGroup do begin
+      Caption := 'Clientes';
+      Icon := 'fas fa-user';
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Cadastro de Clientes';
+      Icon := LGroup.Icon;
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Histórico de Compras';
+      Icon := 'fas fa-history';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Gerenciamento de Contas';
+      Icon := 'fas fa-briefcase';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+
+    with MainForm.mlMenu.Menu.AddItem do begin
+      Separator := True;
+    end;
+
+    LGroup := MainForm.mlMenu.Menu.AddItem;
+    with LGroup do begin
+      Caption := 'Compras';
+      Icon := 'fas fa-shopping-bag';
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Pedidos de Compra';
+      Icon := 'fas fa-shopping-bag';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Fornecedores';
+      Icon := 'fas fa-truck';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Controle de Recebimento de Mercadorias';
+      Icon := 'fas fa-clipboard-check';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+
+    with MainForm.mlMenu.Menu.AddItem do begin
+      Separator := True;
+    end;
+
+    LGroup := MainForm.mlMenu.Menu.AddItem;
+    with LGroup do begin
+      Caption := 'Recursos Humanos';
+      Icon := 'fas fa-users';
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Cadastro de Funcionários';
+      Icon := 'fas fa-users';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Folha de Pagamento';
+      Icon := 'fas fa-money-check';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Gerenciamento de Ponto';
+      Icon := 'fas fa-clock';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+
+    with MainForm.mlMenu.Menu.AddItem do begin
+      Separator := True;
+    end;
+
+    LGroup := MainForm.mlMenu.Menu.AddItem;
+    with LGroup do begin
+      Caption := 'Contabilidade e Finanças';
+      Icon := 'fas fa-money-bill-wave';
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Contas a Pagar';
+      Icon := 'fas fa-file-invoice-dollar';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Contas a Receber';
+      Icon := 'fas fa-file-invoice';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Balanço Patrimonial';
+      Icon := 'fas fa-balance-scale';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+
+    with MainForm.mlMenu.Menu.AddItem do begin
+      Separator := True;
+    end;
+
+    LGroup := MainForm.mlMenu.Menu.AddItem;
+    with LGroup do begin
+      Caption := 'Gestão de Estoques';
+      Icon := 'fas fa-archive';
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Movimentação de Estoque';
+      Icon := 'fas fa-exchange-alt';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Controle de Lotes';
+      Icon := 'fas fa-cubes';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Reabastecimento';
+      Icon := 'fas fa-retweet';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+
+    with MainForm.mlMenu.Menu.AddItem do begin
+      Separator := True;
+    end;
+
+    LGroup := MainForm.mlMenu.Menu.AddItem;
+    with LGroup do begin
+      Caption := 'Produção';
+      Icon := 'fas fa-industry';
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Ordens de Produção';
+      Icon := 'fas fa-industry';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Controle de Processos';
+      Icon := 'fas fa-cogs';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Controle de Qualidade';
+      Icon := 'fas fa-check-circle';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+
+    with MainForm.mlMenu.Menu.AddItem do begin
+      Separator := True;
+    end;
+
+    LGroup := MainForm.mlMenu.Menu.AddItem;
+    with LGroup do begin
+      Caption := 'Logística e Transporte';
+      Icon := 'fas fa-truck';
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Rastreamento de Cargas';
+      Icon := 'fas fa-map-marked-alt';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Gerenciamento de Rotas';
+      Icon := 'fas fa-route';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Controle de Entregas';
+      Icon := 'fas fa-truck';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+
+    with MainForm.mlMenu.Menu.AddItem do begin
+      Separator := True;
+    end;
+
+    LGroup := MainForm.mlMenu.Menu.AddItem;
+    with LGroup do begin
+      Caption := 'Relatórios e Análises';
+      Icon := 'fas fa-chart-bar';
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Relatórios de Desempenho';
+      Icon := 'fas fa-chart-bar';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Análise de Vendas';
+      Icon := 'fas fa-chart-line';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+    with LGroup.SubItems.AddItem do begin
+      Caption := 'Análise Financeira';
+      Icon := 'fas fa-chart-pie';
+      OnClick := FrameMenuLateralOnMenuClick;
+    end;
+
+    if AUsuarioAdmin then begin
+      with MainForm.mlMenu.Menu.AddItem do begin
+        Separator := True;
+      end;
+
+      LGroup := MainForm.mlMenu.Menu.AddItem;
+      with LGroup do begin
+        Caption := 'Configurações e Administração';
+        Icon := 'fas fa-cog';
+        OnClick := FrameMenuLateralOnMenuClick;
+      end;
+      with LGroup.SubItems.AddItem do begin
+        Caption := 'Configurações do Sistema';
+        Icon := 'fas fa-cog';
+        OnClick := FrameMenuLateralOnMenuClick;
+      end;
+      with LGroup.SubItems.AddItem do begin
+        Caption := 'Gerenciamento de Usuários';
+        Icon := 'fas fa-users-cog';
+        OnClick := FrameMenuLateralOnMenuClick;
+      end;
+      with LGroup.SubItems.AddItem do begin
+        Caption := 'Configurações de Segurança';
+        Icon := 'fas fa-lock';
+        OnClick := FrameMenuLateralOnMenuClick;
+      end;
+    end;
+  finally
+    MainForm.mlMenu.Menu.EndUpdate;
   end;
 end;
 

@@ -46,65 +46,13 @@ object MainForm: TMainForm
         OnClick = mlMenuMenu0Click
       end
       item
-        Icon = 'fas fa-bars'
-        Caption = 'Menu Lateral'
+        Icon = 'fas fa-layer-group'
+        Caption = 'Componentes'
         NotificationCount = 0
         Visible = True
         Enabled = True
         Hidden = False
         Separator = False
-        OnClick = mlMenuMenu1Click
-        OnClickNotification = mlMenuMenu1ClickNotification
-      end
-      item
-        Icon = 'fas fa-bell'
-        Caption = 'Toast'
-        NotificationCount = 0
-        Visible = True
-        Enabled = True
-        Hidden = False
-        Separator = False
-        OnClick = mlMenuMenu2Click
-      end
-      item
-        Icon = 'fas fa-check-square'
-        Caption = 'Confirm'
-        NotificationCount = 0
-        Visible = True
-        Enabled = True
-        Hidden = False
-        Separator = False
-        OnClick = mlMenuMenu3Click
-      end
-      item
-        Icon = 'fas fa-qrcode'
-        Caption = 'QrCode Reader'
-        NotificationCount = 0
-        Visible = True
-        Enabled = True
-        Hidden = False
-        Separator = False
-        OnClick = mlMenuMenu4Click
-      end
-      item
-        Icon = 'fas fa-columns'
-        Caption = 'Kanban'
-        NotificationCount = 0
-        Visible = True
-        Enabled = True
-        Hidden = False
-        Separator = False
-        OnClick = mlMenuKanbanClick
-      end
-      item
-        Icon = 'fas fa-th-large'
-        Caption = 'FlexPanel'
-        NotificationCount = 0
-        Visible = True
-        Enabled = True
-        Hidden = False
-        Separator = False
-        OnClick = mlMenuFlexClick
       end
       item
         Icon = 'fas fa-bars'

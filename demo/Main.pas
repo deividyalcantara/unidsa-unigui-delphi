@@ -33,6 +33,7 @@ type
   private
     FFrame: TUniFrame;
 
+    procedure ConfigurarMenuComponentes;
     procedure MostrarMenu(ATipoFrame: TUniFrameClass);
   end;
 
@@ -169,15 +170,14 @@ end;
 
 procedure TMainForm.mlMenuSearchEnter(Text: string);
 begin
-  if mlMenu.SelectedMenu = mlMenu.Menu.IndexOf('Menu Lateral') then begin
+  if FFrame is TFrMenuLateral then begin
     TFrMenuLateral(FFrame).edtMenuValorPesquisado.Text := Text;
   end;
 end;
 
 procedure TMainForm.MostrarMenu(ATipoFrame: TUniFrameClass);
 begin
-  if Assigned(FFrame) then
-    FFrame.Free;
+  FreeAndNil(FFrame);
 
   FFrame := TUniFrameClass(ATipoFrame).Create(Self);
   FFrame.Parent := Self;
@@ -185,8 +185,12 @@ begin
 end;
 
 procedure TMainForm.ToastAfterHidden(Sender: TObject);
+var
+  LItem: TUniDSAMenuLateralMenuItem;
 begin
-  mlMenu.Menu.IndexOf('Menu Lateral').IncNotification;
+  LItem := mlMenu.Menu.IndexOf('Menu Lateral');
+  if Assigned(LItem) then
+    LItem.IncNotification;
 end;
 
 procedure TMainForm.UniFormAfterShow(Sender: TObject);
@@ -202,8 +206,46 @@ begin
   end;
 end;
 
+procedure TMainForm.ConfigurarMenuComponentes;
+var
+  LGroup: TUniDSAMenuLateralMenuItem;
+
+  procedure AddComponent(const ACaption, AIcon: string; AOnClick: TNotifyEvent);
+  var
+    LItem: TUniDSAMenuLateralMenuItem;
+  begin
+    LItem := LGroup.SubItems.AddItem;
+    LItem.Caption := ACaption;
+    LItem.Icon := AIcon;
+    LItem.OnClick := AOnClick;
+  end;
+begin
+  // Build here so opening the demo with an older IDE package cannot erase its navigation.
+  mlMenu.Menu.BeginUpdate;
+  try
+    LGroup := mlMenu.Menu.IndexOf('Componentes');
+    if not Assigned(LGroup) then begin
+      LGroup := mlMenu.Menu.AddItem;
+      LGroup.Caption := 'Componentes';
+    end;
+    LGroup.Icon := 'fas fa-layer-group';
+    LGroup.Expanded := True;
+    LGroup.SubItems.Clear;
+    AddComponent('Menu Lateral', 'fas fa-bars', mlMenuMenu1Click);
+    LGroup.SubItems.IndexOf('Menu Lateral').OnClickNotification := mlMenuMenu1ClickNotification;
+    AddComponent('Toast', 'fas fa-bell', mlMenuMenu2Click);
+    AddComponent('Confirm', 'fas fa-check-square', mlMenuMenu3Click);
+    AddComponent('QrCode Reader', 'fas fa-qrcode', mlMenuMenu4Click);
+    AddComponent('Kanban', 'fas fa-columns', mlMenuKanbanClick);
+    AddComponent('FlexPanel', 'fas fa-th-large', mlMenuFlexClick);
+  finally
+    mlMenu.Menu.EndUpdate;
+  end;
+end;
+
 procedure TMainForm.UniFormCreate(Sender: TObject);
 begin
+  ConfigurarMenuComponentes;
   MostrarMenu(TFrHome);
 end;
 

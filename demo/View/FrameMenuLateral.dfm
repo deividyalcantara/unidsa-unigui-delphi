@@ -1,5 +1,10 @@
-inherited FrMenuLateral: TFrMenuLateral
+object FrMenuLateral: TFrMenuLateral
+  Left = 0
+  Top = 0
+  Width = 758
+  Height = 691
   OnCreate = UniFrameCreate
+  TabOrder = 0
   object usbPrincipal: TUniScrollBox
     Left = 0
     Top = 0
@@ -1071,7 +1076,7 @@ inherited FrMenuLateral: TFrMenuLateral
       Margins.Top = 0
       Margins.Right = 20
       Margins.Bottom = 0
-      Caption = 'Componente de navega'#231#227'o vertical'
+      Caption = 'Navega'#231#227'o com submenus em v'#225'rios n'#237'veis'
       Align = alTop
       ParentFont = False
       Font.Color = clGray

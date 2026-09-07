@@ -122,12 +122,13 @@
 }
 
 .uni-ml-scroll-menu ul li {
-  height: var(--var-ml-altura-itens);
+  height: auto;
   min-height: var(--var-ml-altura-itens);
   width: 100%;
   background-color: transparent;
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: stretch;
   cursor: pointer;
   margin-top: 5px;
 }
@@ -150,7 +151,8 @@
   width: calc(100% - 76px);
 }
 
-.uni-ml-scroll-menu ul li:hover {
+.uni-ml-scroll-menu ul li > a:hover,
+.uni-ml-scroll-menu ul li > a:focus-visible {
   background-color: var(--var-uni-ml-cor-itens-fundo);
   border-radius: 8px;
 }
@@ -160,15 +162,39 @@
   border-radius: 8px;
 }
 
-.uni-ml-scroll-menu ul li:hover span {
+.uni-ml-scroll-menu ul li > a:hover > span {
   color: var(--var-uni-ml-cor-icones);
 }
 
 .uni-ml-scroll-menu ul li a {
   display: flex;
+  min-height: var(--var-ml-altura-itens);
   align-items: center;
   flex-direction: row;
   margin-right: 8px;
+}
+
+.uni-ml-scroll-menu { min-height: 0; }
+.uni-ml-scroll-menu ul { flex-shrink: 0; overflow: visible; }
+.uni-ml-scroll-menu ul.uni-ml-submenu {
+  margin: 0 0 0 16px;
+  padding-left: 8px;
+  border-left: 1px solid var(--var-uni-ml-cor-borda);
+}
+.uni-ml-scroll-menu ul.uni-ml-submenu > li { width: 100%; }
+.uni-ml-scroll-menu .uni-ml-submenu[hidden],
+.uni-ml-minimized .uni-ml-submenu,
+.uni-ml-minimized .uni-ml-submenu-arrow,
+.uni-ml-minimized .uni-ml-menu-row > span { display: none !important; }
+.uni-ml-hidden, .uni-ml-hidden * { visibility: hidden !important; }
+.uni-ml-menu-row > .uni-ml-submenu-arrow { flex: 0 0 20px; transition: transform .15s; }
+.uni-ml-menu-row[aria-expanded="true"] > .uni-ml-submenu-arrow { transform: rotate(90deg); }
+.uni-ml-menu-row > .uni-ml-item-icone { flex-shrink: 0; }
+.uni-ml-menu-row > span { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.uni-ml-menu-row > .uni-ml-item-menu-notif { flex-shrink: 0; margin-right: 6px; }
+.uni-ml-scroll-menu ul li.uni-ml-item-menu-divisor { height: 1px; min-height: 1px; }
+.uni-ml-minimized .uni-ml-menu-row > .uni-ml-item-menu-notif {
+  position: absolute; margin-top: 20px; margin-left: 18px; width: 18px; border-radius: 50px;
 }
 
 .uni-ml-scroll-menu ul li a .uni-ml-item-icone,
