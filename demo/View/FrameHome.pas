@@ -6,7 +6,7 @@ uses
   Windows, Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uniGUIFrame, uniGUIBaseClasses,
   uniGUIClasses, UniDSABase, UniDSAToast, uniButton, uniEdit, uniLabel, uniPanel,
-  uniGroupBox, uniScrollBox;
+  uniGroupBox, uniScrollBox, UniDSABaseControl, UniDSAKanban, UniDSAFlexPanel, UniDSAExecuteFunction;
 
 type
   TFrHome = class(TUniFrame)

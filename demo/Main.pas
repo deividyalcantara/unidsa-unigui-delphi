@@ -7,7 +7,8 @@ uses
   Controls, Forms, uniGUITypes, uniGUIAbstractClasses, FormContribuicoes,
   uniGUIClasses, uniGUIForm, UniDSAMenuLateral, uniGUIBaseClasses, UniDSABaseControl,
   UniDSABase, UniDSAConfirm, FrameToast, FrameLeitorQRCode,
-  UniDSAToast, FrameHome, FrameMenuLateral, uniPanel, uniGUIRegClasses, FrameConfirm, UniDSAExecuteFunction;
+  UniDSAToast, FrameHome, FrameMenuLateral, uniPanel, uniGUIRegClasses,
+  FrameConfirm, FrameKanban, FrameFlexPanel, UniDSAExecuteFunction;
 
 type
   TMainForm = class(TUniForm)
@@ -27,6 +28,8 @@ type
     procedure mlMenuMenu2Click(Sender: TObject);
     procedure mlMenuMenu4Click(Sender: TObject);
     procedure mlMenuMenu3Click(Sender: TObject);
+    procedure mlMenuKanbanClick(Sender: TObject);
+    procedure mlMenuFlexClick(Sender: TObject);
   private
     FFrame: TUniFrame;
 
@@ -147,6 +150,16 @@ end;
 procedure TMainForm.mlMenuMenu4Click(Sender: TObject);
 begin
   MostrarMenu(TFrLeitorQrCode);
+end;
+
+procedure TMainForm.mlMenuKanbanClick(Sender: TObject);
+begin
+  MostrarMenu(TFrKanban);
+end;
+
+procedure TMainForm.mlMenuFlexClick(Sender: TObject);
+begin
+  MostrarMenu(TFrFlexPanel);
 end;
 
 procedure TMainForm.mlMenuMenu6Click(Sender: TObject);

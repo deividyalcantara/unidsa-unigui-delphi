@@ -1,4 +1,9 @@
-inherited FrHome: TFrHome
+object FrHome: TFrHome
+  Left = 0
+  Top = 0
+  Width = 946
+  Height = 680
+  TabOrder = 0
   object UniLabel2: TUniLabel
     AlignWithMargins = True
     Left = 20

@@ -6,7 +6,7 @@ uses
   uniGUIClasses, uniGUITypes;
 
 type
-  TTypeUniDSASource = (Toast, Confirm, MenuSiderbar, QrCodeReader, MenuLateral, Login);
+  TTypeUniDSASource = (Toast, Confirm, MenuSiderbar, QrCodeReader, MenuLateral, Login, Kanban, Tour, Flex, FormStyle);
 
 procedure GetLink(AComponent: TTypeUniDSASource);
 
@@ -41,6 +41,22 @@ begin
   else if AComponent = TTypeUniDSASource.Login then begin
     UniAddCSSLibrary(cFolder + '/login/css/style.css', True, [upoFolderUni, upoPlatformBoth]);
     UniAddJSLibrary(cFolder + '/login/js/script.js', True, [upoFolderUni, upoPlatformBoth]);
+  end
+  else if AComponent = TTypeUniDSASource.Kanban then begin
+    UniAddCSSLibrary(cFolder + '/kanban/css/style.css?v=1.0.5', True, [upoFolderUni, upoPlatformBoth]);
+    UniAddJSLibrary(cFolder + '/kanban/js/script.js', True, [upoFolderUni, upoPlatformBoth]);
+  end
+  else if AComponent = TTypeUniDSASource.Tour then begin
+    UniAddCSSLibrary(cFolder + '/tour/css/style.css', True, [upoFolderUni, upoPlatformBoth]);
+    UniAddJSLibrary(cFolder + '/tour/js/script.js', True, [upoFolderUni, upoPlatformBoth]);
+  end
+  else if AComponent = TTypeUniDSASource.FormStyle then begin
+    UniAddCSSLibrary(cFolder + '/form-style/css/style.css?v=4', True, [upoFolderUni, upoPlatformDesktop]);
+    UniAddJSLibrary(cFolder + '/form-style/js/script.js?v=4', True, [upoFolderUni, upoPlatformDesktop]);
+  end
+  else if AComponent = TTypeUniDSASource.Flex then begin
+    UniAddCSSLibrary(cFolder + '/flex/css/unidsa-flex.css?v=1.0.5', True, [upoFolderUni, upoPlatformDesktop]);
+    UniAddJSLibrary(cFolder + '/flex/js/unidsa-flex.js?v=1.0.5', True, [upoFolderUni, upoPlatformDesktop]);
   end;
 end;
 

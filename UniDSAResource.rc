@@ -1,5 +1,8 @@
+TUniDSAFormStyle BITMAP "images\\TUniDSAFormStyle.bmp"
 TUniDSAConfirm BITMAP "images\\TUniDSAConfirm.bmp"
 TUniDSALogin BITMAP "images\\TUniDSALogin.bmp"
 TUniDSAQrCodeReader BITMAP "images\\TUniDSAQrCodeReader.bmp"
 TUniDSAToast BITMAP "images\\TUniDSAToast.bmp"
 TUniDSAMenuLateral BITMAP "images\\TUniDSAMenuLateral.bmp"
+TUniDSAFlexPanel BITMAP "images\\TUniDSAFlexPanel.bmp"
+TUniDSAKanban BITMAP "images\\TUniDSAKanban.bmp"

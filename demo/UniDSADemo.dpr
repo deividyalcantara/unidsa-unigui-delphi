@@ -13,6 +13,8 @@ uses
   FrameLeitorQRCode in 'View\FrameLeitorQRCode.pas' {FrLeitorQrCode: TUniFrame},
   FormLeitorQrCode in 'View\FormLeitorQrCode.pas' {FrmLeitorQrCode: TUniForm},
   FrameConfirm in 'View\FrameConfirm.pas' {FrConfirm: TUniFrame},
+  FrameKanban in 'View\FrameKanban.pas' {FrKanban: TUniFrame},
+  FrameFlexPanel in 'View\FrameFlexPanel.pas' {FrFlexPanel: TUniFrame},
   Login in 'Login.pas' {FormLogin: TUniLoginForm};
 
 {$R *.res}

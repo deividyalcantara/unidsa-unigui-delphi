@@ -1,0 +1,43 @@
+.dsa-flex-inner {
+  box-sizing: border-box;
+  min-width: 0;
+  width: 100%;
+}
+
+.dsa-flex-auto-height {
+  height: auto !important;
+}
+
+.dsa-flex-auto-width {
+  max-width: 100%;
+  width: fit-content !important;
+}
+
+.dsa-flex-wrapper {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.dsa-flex-wrapper.dsa-flex-auto-width {
+  width: fit-content !important;
+}
+
+.dsa-flex-inner > .dsa-flex-item {
+  box-sizing: border-box;
+  left: auto !important;
+  min-height: 0;
+  min-width: 0;
+  position: relative !important;
+  top: auto !important;
+}
+
+.dsa-flex-inner > .dsa-flex-item-managed-width {
+  width: auto !important;
+}
+
+.dsa-flex-inner > .dsa-flex-item-stretch-width {
+  max-width: 100% !important;
+  width: auto !important;
+}

@@ -57,9 +57,9 @@ requires
 
 contains
   UniDSABrowser in 'sources\UniDSABrowser.pas' {FormUniDSABrowser},
-  UniDSAMenu in 'sources\UniDSAMenu.pas';
+  UniDSAMenu in 'sources\UniDSAMenu.pas',
+  UniDSAFlexPanelDesign in 'sources\UniDSAFlexPanelDesign.pas';
 
 end.
-
 
 

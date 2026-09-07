@@ -87,6 +87,26 @@ object MainForm: TMainForm
         OnClick = mlMenuMenu4Click
       end
       item
+        Icon = 'fas fa-columns'
+        Caption = 'Kanban'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+        OnClick = mlMenuKanbanClick
+      end
+      item
+        Icon = 'fas fa-th-large'
+        Caption = 'FlexPanel'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+        OnClick = mlMenuFlexClick
+      end
+      item
         Icon = 'fas fa-bars'
         Caption = 'Menu 5'
         NotificationCount = 0

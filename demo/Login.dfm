@@ -4,6 +4,7 @@ object FormLogin: TFormLogin
   ClientHeight = 677
   ClientWidth = 904
   Caption = 'FormLogin'
+  OnShow = UniLoginFormShow
   BorderStyle = bsNone
   WindowState = wsMaximized
   OldCreateOrder = False
@@ -70,5 +71,16 @@ object FormLogin: TFormLogin
     Padding = 20
     Left = 584
     Top = 416
+  end
+  object UniDSATour1: TUniDSATour
+    Version = '1.1.0'
+    Steps = <>
+    OverlayOpacity = 0.620000000000000000
+    BackCaption = 'Voltar'
+    NextCaption = 'Pr'#243'ximo'
+    FinishCaption = 'Concluir'
+    SkipCaption = 'Pular'
+    Left = 304
+    Top = 304
   end
 end

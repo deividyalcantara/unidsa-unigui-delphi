@@ -197,10 +197,14 @@ contains
   UniDSAQrCodeReader in 'sources\UniDSAQrCodeReader.pas',
   UniDSABaseControl in 'sources\UniDSABaseControl.pas',
   UniDSAMenuLateral in 'sources\UniDSAMenuLateral.pas',
-  UniDSADiv in 'sources\UniDSADiv.pas',
+  UniDSAFlexPanel in 'sources\UniDSAFlexPanel.pas',
   UniDSALogin in 'sources\UniDSALogin.pas',
   UniDSAConst in 'sources\UniDSAConst.pas',
-  UniDSAControl in 'sources\UniDSAControl.pas';
+  UniDSAControl in 'sources\UniDSAControl.pas',
+  UniDSAWebUtils in 'sources\UniDSAWebUtils.pas',
+  UniDSAKanban in 'sources\UniDSAKanban.pas',
+  UniDSATour in 'sources\UniDSATour.pas',
+  UniDSAFormStyle in 'sources\UniDSAFormStyle.pas';
 
 end.
 

@@ -1,8 +1,8 @@
-# UniDSA para Delphi e uniGUI
+﻿# UniDSA para Delphi e uniGUI
 
-![Logotipo do UniDSA](https://i.ibb.co/VvFk21N/logo-unidsa.png)
+![Logotipo do UniDSA](images/logo-unidsa.png)
 
-O UniDSA é uma biblioteca de componentes visuais para aplicações web desenvolvidas com Delphi e uniGUI. O projeto reúne diálogos de confirmação, notificações, leitura de códigos, menu lateral e tela de login, com propriedades configuráveis tanto no Object Inspector quanto em tempo de execução.
+O UniDSA é uma biblioteca de componentes para aplicações web desenvolvidas com Delphi e uniGUI. O projeto reúne diálogos de confirmação, notificações, leitura de códigos, menu lateral, tela de login, quadro Kanban, formulários em etapas e tours guiados, com propriedades configuráveis tanto no Object Inspector quanto em tempo de execução.
 
 ## Conteúdo
 
@@ -26,6 +26,9 @@ O UniDSA é uma biblioteca de componentes visuais para aplicações web desenvol
 | `TUniDSAQrCodeReader` | Leitura de QR Code e códigos de barras pela câmera do dispositivo. |
 | `TUniDSAMenuLateral` | Menu lateral responsivo com temas, pesquisa, perfil e notificações. |
 | `TUniDSALogin` | Interface responsiva para autenticação, recuperação de senha e criação de conta. |
+| `TUniDSAFlexPanel` | Contêiner visual com Flexbox, breakpoints e composição por filhos diretamente no Delphi. |
+| `TUniDSAKanban` | Quadro Kanban responsivo com colunas, cartões, limite WIP e drag-and-drop. |
+| `TUniDSATour` | Apresentação guiada da interface com spotlight, posicionamento automático e navegação acessível. |
 
 ## Estrutura do repositório
 
@@ -35,10 +38,13 @@ unidsa-unigui-delphi/
 ├── dsa/                      JavaScript, CSS e demais assets web
 │   ├── css/
 │   ├── dist/
+│   ├── flex/
 │   ├── js/
+│   ├── kanban/
 │   ├── login/
 │   ├── menu_lateral/
-│   └── qrcode_reader/
+│   ├── qrcode_reader/
+│   └── tour/
 ├── demo/                     Aplicação de demonstração
 ├── images/                   Ícones usados na paleta do Delphi
 ├── UniDSA.dproj              Pacote de runtime
@@ -155,10 +161,13 @@ MinhaAplicacao/
     └── dsa/
         ├── css/
         ├── dist/
+        ├── flex/
         ├── js/
+        ├── kanban/
         ├── login/
         ├── menu_lateral/
-        └── qrcode_reader/
+        ├── qrcode_reader/
+        └── tour/
 ```
 
 O diretório efetivo pode mudar quando `FilesFolder` é personalizado no `TUniServerModule`. Nesse caso, copie `dsa` para a pasta configurada, mantendo a URL pública `files/dsa/...` acessível pela aplicação.
@@ -182,6 +191,9 @@ O diretório efetivo pode mudar quando `FilesFolder` é personalizado no `TUniSe
 | `TUniDSAQrCodeReader` | `qrcode_reader/js/qrcode_library.js` |
 | `TUniDSAMenuLateral` | `menu_lateral/js/script.js` e `menu_lateral/css/style.css` |
 | `TUniDSALogin` | `login/js/script.js` e `login/css/style.css` |
+| `TUniDSAFlexPanel` | `flex/js/unidsa-flex.js` e `flex/css/unidsa-flex.css` |
+| `TUniDSAKanban` | `kanban/js/script.js` e `kanban/css/style.css` |
+| `TUniDSATour` | `tour/js/script.js` e `tour/css/style.css` |
 
 ### URLs de validação
 
@@ -194,6 +206,10 @@ https://seu-servidor/files/dsa/js/jquery.toast.js
 https://seu-servidor/files/dsa/qrcode_reader/js/qrcode_library.js
 https://seu-servidor/files/dsa/menu_lateral/css/style.css
 https://seu-servidor/files/dsa/login/css/style.css
+https://seu-servidor/files/dsa/flex/js/unidsa-flex.js
+https://seu-servidor/files/dsa/flex/css/unidsa-flex.css
+https://seu-servidor/files/dsa/kanban/js/script.js
+https://seu-servidor/files/dsa/tour/js/script.js
 ```
 
 O `TUniDSAConfirm` tenta carregar o `jquery-confirm` 3.3.4 pelo cdnjs quando a cópia local não está disponível. Esse fallback depende de acesso à internet no navegador e não substitui uma publicação local correta. Os outros componentes continuam dependendo dos arquivos locais indicados na tabela.
@@ -419,6 +435,186 @@ window.onresize = function () {
 
 Substitua `FormLogin` pelo nome JavaScript do seu formulário. Para uma apresentação semelhante a uma página web, use `MainFormDisplayMode = mfPage` no `TUniServerModule`.
 
+
+### TUniDSAKanban
+
+![Demonstração do TUniDSAKanban](images/TUniDSAKanban-preview.png)
+
+Cria um quadro Kanban responsivo. `Columns` e `Cards` são coleções persistentes; cada cartão aponta para a coluna por `ColumnID`. A movimentação é feita no navegador e confirmada no servidor por AJAX.
+
+Principais recursos: limite WIP por coluna, colunas somente leitura para drop, cartões habilitados/desabilitados, clique de cartão, ordenação persistente, drag-and-drop com mouse e toque e movimentação por teclado. `OnCardMove` ocorre antes de confirmar a mudança e permite vetá-la; `OnCardMoved` ocorre depois que o estado interno foi atualizado.
+
+```pascal
+procedure TMainForm.ConfigurarKanban;
+var
+  Col: TUniDSAKanbanColumn;
+  Card: TUniDSAKanbanCard;
+begin
+  UniDSAKanban1.Columns.BeginUpdate;
+  UniDSAKanban1.Cards.BeginUpdate;
+  try
+    UniDSAKanban1.Columns.Clear;
+    UniDSAKanban1.Cards.Clear;
+
+    Col := UniDSAKanban1.Columns.Add;
+    Col.ID := 'backlog';
+    Col.Caption := 'Backlog';
+
+    Col := UniDSAKanban1.Columns.Add;
+    Col.ID := 'doing';
+    Col.Caption := 'Em andamento';
+    Col.WIPLimit := 3;
+
+    Card := UniDSAKanban1.Cards.Add;
+    Card.ID := 'task_1001';
+    Card.ColumnID := 'backlog';
+    Card.Caption := 'Revisar cadastro';
+    Card.Description := 'Validar regras antes da publicação';
+  finally
+    UniDSAKanban1.Cards.EndUpdate;
+    UniDSAKanban1.Columns.EndUpdate;
+  end;
+end;
+
+procedure TMainForm.UniDSAKanban1CardMove(Sender: TObject;
+  ACard: TUniDSAKanbanCard; ASourceColumn, ATargetColumn: TUniDSAKanbanColumn;
+  AOldIndex, ANewIndex: Integer; var AAllow: Boolean);
+begin
+  AAllow := UsuarioPodeMover(ACard.ID, ATargetColumn.ID);
+end;
+```
+
+Depois de `OnCardMoved`, use `Card.ColumnID` e `Card.SortOrder` para persistir a posição definitiva no banco. O componente revalida no servidor o cartão, a origem, o destino, `ReadOnly`, `AllowDrop` e o limite WIP para não confiar somente no estado enviado pelo navegador.
+
+### Edição das coleções no Delphi IDE
+
+`TUniDSAKanban.Columns`, `TUniDSAKanban.Cards` e `TUniDSATour.Steps` usam
+`TCollection`/`TOwnedCollection` padrão. Não dependem do
+pacote `UniDSADesign`. Selecione o componente no formulário, localize a propriedade
+no Object Inspector e clique no botão `...` (ou dê duplo clique no valor) para abrir
+o Collection Editor fornecido pelo próprio Delphi.
+
+Na janela **Structure**, o nó `Steps`/`Columns`/`Cards` representa apenas o objeto
+coleção; selecioná-lo pode deixar o Object Inspector vazio. Depois de adicionar um
+item pelo Collection Editor, o item pode ser selecionado na Structure para editar
+suas propriedades.
+
+### TUniDSATour
+
+Cria tours guiados sem dependência JavaScript externa. Cada passo pode apontar diretamente para um `TUniControl` em `Target` ou usar `TargetSelector` quando o alvo é um elemento HTML/CSS específico. O popover escolhe automaticamente uma posição disponível e o spotlight acompanha redimensionamento e rolagem.
+
+```pascal
+procedure TMainForm.ConfigurarTour;
+var
+  Step: TUniDSATourStep;
+begin
+  UniDSATour1.Steps.Clear;
+
+  Step := UniDSATour1.Steps.Add;
+  Step.Caption := 'Pesquisa';
+  Step.Content := 'Use este campo para localizar registros.';
+  Step.Target := edtPesquisa;
+
+  Step := UniDSATour1.Steps.Add;
+  Step.Caption := 'Ações';
+  Step.Content := 'As ações disponíveis para o registro aparecem aqui.';
+  Step.Target := pnlAcoes;
+
+  UniDSATour1.Start;
+end;
+```
+
+`AllowInteraction=True` permite usar o controle destacado durante um passo. Quando a interação é bloqueada, o popover funciona como diálogo modal, contém o foco e pode ser encerrado com `Esc` se `AllowSkip` e `CloseOnEscape` estiverem habilitados. `ShowProgress`, `KeyboardNavigation`, `ScrollToTarget`, `OverlayOpacity`, `SpotlightPadding` e `BorderRadius` permitem ajustar a experiência.
+
+O Tour aguarda alvos criados dinamicamente. `WaitForTarget=True` faz cada passo
+esperar até `TargetWaitTimeout` milissegundos, verificando a cada
+`TargetWaitInterval`. A implementação usa `MutationObserver` quando disponível e
+mantém polling como fallback. Se o timeout expirar, `OnTargetNotFound` é disparado e
+o passo continua centralizado, permitindo diagnosticar seletores incorretos sem
+travar o tour.
+
+Para um elemento HTML interno de outro componente, `ID` continua sendo apenas o
+identificador lógico do passo. Use `TargetSelector` para o seletor CSS. Exemplo com
+o campo de login do `TUniDSALogin`:
+
+```pascal
+with UniDSATour1.Steps.Add do
+begin
+  ID := 'login_usuario';
+  Caption := 'Usuário';
+  Content := 'Informe seu usuário ou e-mail.';
+  Target := dsaLogin;                         // opcional: limita o contexto
+  TargetSelector := '#un-lg-lg-login';       // alvo HTML efetivo
+  Placement := tpAuto;
+  AllowInteraction := True;
+end;
+```
+
+Quando `Target` e `TargetSelector` são informados juntos, o Tour procura primeiro o
+seletor dentro do DOM do `Target` e depois no documento inteiro. Isso permite apontar
+para elementos internos gerados pelo próprio componente. `AutoStart` também aguarda
+a biblioteca JavaScript do Tour estar disponível antes de iniciar.
+
+### TUniDSAFlexPanel
+
+![Demonstração do TUniDSAFlexPanel](images/TUniDSAFlexPanel-preview.png)
+
+`TUniDSAFlexPanel` é um contêiner real do uniGUI: controles podem ser soltos dentro dele no
+designer, inclusive outros `TUniDSAFlexPanel`. No navegador, os filhos são organizados por
+CSS Flexbox; na IDE, o componente aproxima o mesmo layout para permitir montar e
+revisar a tela sem executá-la.
+
+No contêiner, configure `Flex.Direction`, `Flex.Wrap`, `Flex.JustifyContent`,
+`Flex.AlignItems`, `Flex.Gap`, `Flex.Padding`, `Flex.Columns`, `Flex.AutoHeight` e
+`Flex.AutoWidth`. Quando `AutoHeight` está ativo, a altura do painel acompanha o conteúdo
+e as novas linhas criadas por `Wrap`; ao desativá-lo, volta a valer o `Height` definido pelo
+uniGUI. De forma equivalente, `AutoWidth` ajusta a largura do painel ao conteúdo, limitada
+pela largura disponível no contêiner pai. As duas opções são desativadas por padrão.
+
+Em cada filho que também for `TUniDSAFlexPanel`, continue usando `FlexItem` para `Grow`,
+`Shrink`, `Basis`, `Order` e `AlignSelf`, e `Responsive.XS` até `Responsive.XXL` para
+definir quantas colunas ele ocupa em cada largura.
+
+Para configurar qualquer filho direto, inclusive controles nativos como `TUniEdit`,
+`TUniButton` e `TUniLabel`, use a coleção `FlexItems` do painel pai. Cada entrada aponta
+para o controle em `Control` e oferece as mesmas propriedades de item, além de
+`Responsive.XS` até `Responsive.XXL`. Quando um controle possui uma entrada nessa coleção,
+ela prevalece sobre o `FlexItem`/`Responsive` do próprio filho. Sem uma entrada, FlexPanels
+aninhados mantêm integralmente o comportamento anterior. Em todos os spans, o valor `0`
+herda o último breakpoint definido ou usa `Flex.DefaultSpan` quando nenhum foi definido.
+
+```pascal
+with Container.FlexItems.Add do
+begin
+  Control := BotaoPesquisar;
+  Order := 2;
+  AlignSelf := fasCenter;
+  Responsive.XS.Span := 12;
+  Responsive.MD.Span := 3;
+end;
+```
+
+No Object Inspector, abra `FlexItems`, adicione uma entrada e selecione o filho em
+`Control`; não é necessário criar uma classe herdada do componente uniGUI.
+
+Exemplo para duas colunas que empilham no celular:
+
+```pascal
+Container.Flex.Columns := 12;
+Container.Flex.Wrap := fwWrap;
+Container.Flex.Gap := 16;
+
+ColunaA.Responsive.XS.Span := 12;
+ColunaA.Responsive.MD.Span := 6;
+ColunaB.Responsive.XS.Span := 12;
+ColunaB.Responsive.MD.Span := 6;
+```
+
+Ao instalar `UniDSADesign`, o menu de contexto do componente cria um filho ou grades
+de 2, 3 e 4 colunas e alterna a prévia entre celular, tablet, desktop e tela ampla.
+Os breakpoints são calculados pela largura do próprio contêiner, portanto um layout
+aninhado responde ao espaço realmente disponível, sem depender apenas da janela.
+
 ## Atualização da biblioteca
 
 Ao atualizar o UniDSA:
@@ -497,6 +693,8 @@ O compilador encontrou fonte ou DCU incompatível com o DCP esperado. Corrija os
 
 ## Checklist de publicação
 
+- [ ] `flex`, `kanban` e `tour` foram publicados dentro de `files/dsa`.
+
 - [ ] A aplicação foi compilada com a mesma versão de Delphi e uniGUI usada pelos pacotes.
 - [ ] As BPLs necessárias foram publicadas quando runtime packages estão habilitados.
 - [ ] A pasta inteira `dsa` foi copiada para o `FilesFolder` correto.
@@ -510,3 +708,10 @@ O compilador encontrou fonte ou DCU incompatível com o DCP esperado. Corrija os
 - [ ] O cache do navegador foi limpo depois da atualização dos assets.
 
 Ao relatar um problema, informe a versão do Delphi, a versão do uniGUI, o tipo de servidor utilizado, o modo de compilação, a URL do asset que falhou e a mensagem completa do console ou do compilador.
+
+## Janelas com visual web — TUniDSAFormStyle
+
+Componente não visual para TUniForm: cantos arredondados, sombra, cabeçalho e X
+personalizáveis, fundo modal e dimensões responsivas. Arraste da paleta UniDSA;
+para altura natural, selecione ContentControl e, se houver, FooterControl.
+Configuração, publicação e instalação em [docs/FormStyle.md](docs/FormStyle.md).

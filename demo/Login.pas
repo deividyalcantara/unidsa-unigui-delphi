@@ -5,12 +5,13 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
-  uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniGUIBaseClasses, UniDSABaseControl, UniDSALogin, UniDSAExecuteFunction, UniDSABase, UniDSAConfirm, uniSweetAlert;
+  uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniGUIBaseClasses, UniDSABaseControl, UniDSALogin, UniDSAExecuteFunction, UniDSABase, UniDSAConfirm, uniSweetAlert, UniDSATour;
 
 type
   TFormLogin = class(TUniLoginForm)
     dsaLogin: TUniDSALogin;
     saAlerta: TUniSweetAlert;
+    UniDSATour1: TUniDSATour;
     function IfThenStr(ACondicao: Boolean; AVerdadeiro: string; AFalso: string): string;
     procedure dsaLoginLoginNow(Sender: TObject);
     procedure dsaLoginRememberMe(Sender: TObject);
@@ -22,6 +23,7 @@ type
     procedure ProcedimentoAposEsquecerSenha(Sender: TObject);
     procedure UniLoginFormCreate(Sender: TObject);
     procedure dsaLoginCreateAccount(Sender: TObject);
+    procedure UniLoginFormShow(Sender: TObject);
   private
     FTentativaLogin: Integer;
     FAdminHabilitado: Boolean;
@@ -164,6 +166,12 @@ procedure TFormLogin.UniLoginFormCreate(Sender: TObject);
 begin
   FTentativaLogin := 1;
   FAdminHabilitado := False;
+end;
+
+procedure TFormLogin.UniLoginFormShow(Sender: TObject);
+begin
+  dsaLogin.Login.Value := 'convidado';
+  dsaLogin.Password.Value := 'convidado';
 end;
 
 initialization
