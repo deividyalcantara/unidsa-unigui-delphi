@@ -1,122 +1,128 @@
-unit FrameMenuLateral;
+Ôªøunit FrameMenuLateral;
 
 interface
 
 uses
   Windows, Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uniGUIFrame, uniGUIBaseClasses, uniGUIClasses, uniLabel,
-  uniButton, uniPanel, UniDSAMenuLateral, uniTimer, MainModule, System.TypInfo, Funcoes, uniGroupBox,
-  uniSpinEdit, uniEdit, uniCheckBox, uniScrollBox, UniDSAConfirm;
+  uniButton, uniPanel, UniDSAMenuLateral, uniTimer, MainModule, System.TypInfo, Funcoes,
+  uniSpinEdit, uniEdit, uniCheckBox, UniDSAConfirm, DemoUI, UniDSAFlexPanel;
 
 type
   TFrMenuLateral = class(TUniFrame)
+    flexDemoPage: TUniDSAFlexPanel;
+    lblSectionugbTema: TUniLabel;
+    lblSectionugbPesquisa: TUniLabel;
+    lblSectionugbLogo: TUniLabel;
+    lblSectionugbPerfil: TUniLabel;
+    lblSectionugbMenu: TUniLabel;
     lblSubTitulo: TUniLabel;
     lblTitulo: TUniLabel;
-    ucpTemaBorda: TUniContainerPanel;
+    ucpTemaBorda: TUniDSAFlexPanel;
     TimeTema: TUniTimer;
-    ugbTema: TUniGroupBox;
-    b2: TUniContainerPanel;
+    ugbTema: TUniDSAFlexPanel;
+    b2: TUniDSAFlexPanel;
     edtMenuBordaTopo: TUniSpinEdit;
     UniLabel3: TUniLabel;
-    b3: TUniContainerPanel;
+    b3: TUniDSAFlexPanel;
     edtMenuBordaEsquerda: TUniSpinEdit;
     UniLabel4: TUniLabel;
-    b4: TUniContainerPanel;
+    b4: TUniDSAFlexPanel;
     edtMenuBordaDireita: TUniSpinEdit;
     UniLabel5: TUniLabel;
-    b5: TUniContainerPanel;
+    b5: TUniDSAFlexPanel;
     edtMenuBordaInferior: TUniSpinEdit;
     UniLabel6: TUniLabel;
-    ucpTemaBotoes: TUniContainerPanel;
+    ucpTemaBotoes: TUniDSAFlexPanel;
     btnVisualizarTemas: TUniButton;
     btnMenuPesquisa: TUniButton;
     btnOcultarTema: TUniButton;
     btnOcultarPerfil: TUniButton;
-    ucpTemaArredondamento: TUniContainerPanel;
-    c2: TUniContainerPanel;
+    ucpTemaArredondamento: TUniDSAFlexPanel;
+    c2: TUniDSAFlexPanel;
     edtMenuArredondarTopoEsquerda: TUniSpinEdit;
     UniLabel7: TUniLabel;
-    c3: TUniContainerPanel;
+    c3: TUniDSAFlexPanel;
     edtMenuArredondarTopoDireita: TUniSpinEdit;
     UniLabel8: TUniLabel;
-    c4: TUniContainerPanel;
+    c4: TUniDSAFlexPanel;
     edtMenuArredondarInferiorEsquerda: TUniSpinEdit;
     UniLabel9: TUniLabel;
-    c5: TUniContainerPanel;
+    c5: TUniDSAFlexPanel;
     edtMenuArredondarInferiorDireita: TUniSpinEdit;
     UniLabel10: TUniLabel;
-    b1: TUniContainerPanel;
+    b1: TUniDSAFlexPanel;
     UniLabel11: TUniLabel;
-    c1: TUniContainerPanel;
+    c1: TUniDSAFlexPanel;
     UniLabel12: TUniLabel;
-    UniPanel2: TUniPanel;
-    UniPanel3: TUniPanel;
-    ugbLogo: TUniGroupBox;
-    UniContainerPanel14: TUniContainerPanel;
-    f2: TUniContainerPanel;
-    f3: TUniContainerPanel;
+    UniPanel2: TUniDSAFlexPanel;
+    UniPanel3: TUniDSAFlexPanel;
+    ugbLogo: TUniDSAFlexPanel;
+    UniContainerPanel14: TUniDSAFlexPanel;
+    f2: TUniDSAFlexPanel;
+    f3: TUniDSAFlexPanel;
     UniLabel14: TUniLabel;
     edtMenuEmpresa: TUniEdit;
     btnMudarImagem: TUniButton;
-    f1: TUniContainerPanel;
+    f1: TUniDSAFlexPanel;
     UniLabel13: TUniLabel;
     edtMenuImagem: TUniEdit;
-    f4: TUniContainerPanel;
+    f4: TUniDSAFlexPanel;
     UniButton1: TUniButton;
-    f5: TUniContainerPanel;
+    f5: TUniDSAFlexPanel;
     edtMenuLogoRedefinir: TUniButton;
-    f6: TUniPanel;
-    ugbPesquisa: TUniGroupBox;
-    UniContainerPanel20: TUniContainerPanel;
-    e1: TUniContainerPanel;
+    f6: TUniDSAFlexPanel;
+    ugbPesquisa: TUniDSAFlexPanel;
+    UniContainerPanel20: TUniDSAFlexPanel;
+    e1: TUniDSAFlexPanel;
     UniLabel16: TUniLabel;
     edtMenuValorPesquisado: TUniEdit;
-    e4: TUniContainerPanel;
+    e4: TUniDSAFlexPanel;
     ckbMenuPesquisaAutoCompletar: TUniCheckBox;
-    e2: TUniContainerPanel;
+    e2: TUniDSAFlexPanel;
     UniLabel15: TUniLabel;
     edtMenuTextPrompt: TUniEdit;
-    e3: TUniContainerPanel;
+    e3: TUniDSAFlexPanel;
     btnMenuTextPrompt: TUniButton;
-    e5: TUniContainerPanel;
+    e5: TUniDSAFlexPanel;
     btnMenuPesquisaFoco: TUniButton;
-    ucpTemaDescricao: TUniContainerPanel;
-    d3: TUniContainerPanel;
+    ucpTemaDescricao: TUniDSAFlexPanel;
+    d3: TUniDSAFlexPanel;
     btnMenuDescricaoTemaEsquerda: TUniButton;
-    d4: TUniContainerPanel;
+    d4: TUniDSAFlexPanel;
     UniLabel19: TUniLabel;
     edtMenuDescricaoTemaDireita: TUniEdit;
-    d2: TUniContainerPanel;
+    d2: TUniDSAFlexPanel;
     lblDescricaoTemaEsquerda: TUniLabel;
     edtMenuDescricaoTemaEsquerda: TUniEdit;
-    d5: TUniContainerPanel;
+    d5: TUniDSAFlexPanel;
     btnDescricaoTemaDireita: TUniButton;
-    d6: TUniContainerPanel;
+    d6: TUniDSAFlexPanel;
     btnRedefinirDescricao: TUniButton;
-    d7: TUniPanel;
-    UniPanel4: TUniPanel;
-    d1: TUniContainerPanel;
+    d7: TUniDSAFlexPanel;
+    UniPanel4: TUniDSAFlexPanel;
+    d1: TUniDSAFlexPanel;
     UniLabel17: TUniLabel;
-    usbPrincipal: TUniScrollBox;
-    ugbPerfil: TUniGroupBox;
-    UniContainerPanel27: TUniContainerPanel;
-    g2: TUniContainerPanel;
+    usbPrincipal: TUniDSAFlexPanel;
+    ugbPerfil: TUniDSAFlexPanel;
+    UniContainerPanel27: TUniDSAFlexPanel;
+    g2: TUniDSAFlexPanel;
     btnMenuImagemPerfil: TUniButton;
-    g3: TUniContainerPanel;
+    g3: TUniDSAFlexPanel;
     UniLabel18: TUniLabel;
     edtMenuNomePerfil: TUniEdit;
-    g1: TUniContainerPanel;
+    g1: TUniDSAFlexPanel;
     UniLabel20: TUniLabel;
     edtMenuImagemPerfil: TUniEdit;
-    g4: TUniContainerPanel;
+    g4: TUniDSAFlexPanel;
     btnMenuNomePerfil: TUniButton;
-    g5: TUniContainerPanel;
+    g5: TUniDSAFlexPanel;
     UniLabel21: TUniLabel;
     edtMenuEmailPerfil: TUniEdit;
-    g6: TUniContainerPanel;
+    g6: TUniDSAFlexPanel;
     btnMenuEmailPerfil: TUniButton;
-    ugbMenu: TUniGroupBox;
-    UniContainerPanel40: TUniContainerPanel;
+    ugbMenu: TUniDSAFlexPanel;
+    UniContainerPanel40: TUniDSAFlexPanel;
     btnMenuAdministrativo: TUniButton;
     btnMenuPadrao: TUniButton;
     btnTemaAnterior: TUniButton;
@@ -196,7 +202,7 @@ begin
   MainForm.mlMenu.Style.BorderTop := edtMenuBordaTopo.Value;
   MainForm.mlMenu.Style.BorderLeft := edtMenuBordaEsquerda.Value;
   MainForm.mlMenu.Style.BorderRight := edtMenuBordaDireita.Value;
-  MainForm.mlMenu.Style.BorderBottom := edtMenuBordaInferior.Value;  
+  MainForm.mlMenu.Style.BorderBottom := edtMenuBordaInferior.Value;
 end;
 
 procedure TFrMenuLateral.edtMenuLogoRedefinirClick(Sender: TObject);
@@ -214,7 +220,7 @@ begin
     Title := 'Menu';
     Draggable := False;
     Content := '<span style=''font-size:14px;''>O Menu <b style=''color: #3498db;''>' + TUniDSAMenuLateralMenuItem(Sender).Caption + '</b> foi selecionado.</span>';
-    BoxWidth := '30%';
+    BoxWidth := 'min(480px, calc(100vw - 32px))';
 
     with Buttons.AddItem do begin
       Text := 'OK';
@@ -315,7 +321,7 @@ procedure TFrMenuLateral.btnMenuPesquisaClick(Sender: TObject);
 begin
   inherited;
   MainForm.mlMenu.Search.Visible := not MainForm.mlMenu.Search.Visible;
-  TFuncoes.AlternarLegendaBotao(btnMenuPesquisa, 'Ocultar Pesquisa...', 'Habilitar Pesquisa...');   
+  TFuncoes.AlternarLegendaBotao(btnMenuPesquisa, 'Ocultar Pesquisa...', 'Habilitar Pesquisa...');
 end;
 
 procedure TFrMenuLateral.btnMenuPesquisaFocoClick(Sender: TObject);
@@ -341,7 +347,7 @@ var
   LItem: TUniDSAMenuLateralMenuItem;
 begin
   inherited;
-  LItem := MainForm.mlMenu.Menu.IndexOf('Gest„o de Vendas');
+  LItem := MainForm.mlMenu.Menu.IndexOf('Gest√£o de Vendas');
   if Assigned(LItem) then
     LItem.IncNotification;
 end;
@@ -364,7 +370,7 @@ procedure TFrMenuLateral.btnOcultarTemaClick(Sender: TObject);
 begin
   inherited;
   MainForm.mlMenu.Theme.Visible := not MainForm.mlMenu.Theme.Visible;
-  TFuncoes.AlternarLegendaBotao(btnOcultarTema, 'Ocultar escolha tema', 'Habilitar escolha tema');   
+  TFuncoes.AlternarLegendaBotao(btnOcultarTema, 'Ocultar escolha tema', 'Habilitar escolha tema');
 end;
 
 procedure TFrMenuLateral.btnRedefinirDescricaoClick(Sender: TObject);
@@ -385,7 +391,7 @@ var
   LNovoTema: TUniDSAMenuLateralStyleTheme;
 begin
   inherited;
-  btnVisualizarTemas.Caption := 'Iniciar visualizaÁ„o';
+  btnVisualizarTemas.Caption := 'Iniciar visualiza√ß√£o';
   TimeTema.Enabled := False;
 
   LNovoTema := TUniDSAMenuLateralStyleTheme(Integer(MainForm.mlMenu.SelectedTheme) - 1);
@@ -402,7 +408,7 @@ var
   LNovoTema: TUniDSAMenuLateralStyleTheme;
 begin
   inherited;
-  btnVisualizarTemas.Caption := 'Iniciar visualizaÁ„o';
+  btnVisualizarTemas.Caption := 'Iniciar visualiza√ß√£o';
   TimeTema.Enabled := False;
 
   LNovoTema := TUniDSAMenuLateralStyleTheme(Integer(MainForm.mlMenu.SelectedTheme) + 1);
@@ -418,7 +424,7 @@ procedure TFrMenuLateral.btnVisualizarTemasClick(Sender: TObject);
 begin
   inherited;
   TimeTema.Enabled := not TimeTema.Enabled;
-  TFuncoes.AlternarLegendaBotao(btnVisualizarTemas, 'Iniciar visualizaÁ„o', 'Parar visualizaÁ„o'); 
+  TFuncoes.AlternarLegendaBotao(btnVisualizarTemas, 'Iniciar visualiza√ß√£o', 'Parar visualiza√ß√£o');
 end;
 
 procedure TFrMenuLateral.ckbMenuPesquisaAutoCompletarClick(Sender: TObject);
@@ -429,17 +435,22 @@ end;
 
 procedure TFrMenuLateral.ConfigurarMenus(AUsuarioAdmin: Boolean);
 var
-  LGroup, LSubGroup: TUniDSAMenuLateralMenuItem;
+  LGroup, LSubGroup, LExample: TUniDSAMenuLateralMenuItem;
 begin
   btnNotificacoes.Enabled := True;
 
   MainForm.mlMenu.Menu.BeginUpdate;
   try
-    MainForm.mlMenu.Menu.Clear;
-    LGroup := MainForm.mlMenu.Menu.AddItem;
+    LExample := MainForm.mlMenu.Menu.IndexOf('Exemplo de navega√ß√£o');
+    if Assigned(LExample) then LExample.Free;
+    LExample := MainForm.mlMenu.Menu.AddItem;
+    LExample.Caption := 'Exemplo de navega√ß√£o';
+    LExample.Icon := 'fas fa-sitemap';
+    LExample.Expanded := True;
+    LGroup := LExample.SubItems.AddItem;
 
     with LGroup do begin
-      Caption := 'Gest„o de Vendas';
+      Caption := 'Gest√£o de Vendas';
       Icon := 'fas fa-shopping-cart';
       Expanded := True;
       Hint := 'Menu para ' + Caption;
@@ -457,7 +468,7 @@ begin
           Title := 'Menu';
           Draggable := False;
           Content := '<span style=''font-size:14px;''>O Menu <b style=''color: #3498db;''>' + TUniDSAMenuLateralMenuItem(Sender).Caption + '</b> foi selecionado.</span>';
-          BoxWidth := '30%';
+          BoxWidth := 'min(480px, calc(100vw - 32px))';
 
           with Buttons.AddItem do begin
             Text := 'OK';
@@ -477,8 +488,8 @@ begin
           Theme := Bootstrap;
           Title := TUniDSAMenuLateralMenuItem(Sender).Caption;
           Draggable := False;
-          Content := '<span style=''font-size:14px;''>NotificaÁıes lidas.</span>';
-          BoxWidth := '30%';
+          Content := '<span style=''font-size:14px;''>Notifica√ß√µes lidas.</span>';
+          BoxWidth := 'min(480px, calc(100vw - 32px))';
 
           with Buttons.AddItem do begin
             Text := 'OK';
@@ -495,12 +506,12 @@ begin
       OnClickRef := LGroup.OnClickRef;
     end;
     with LGroup.SubItems.AddItem do begin
-      Caption := 'OrÁamentos';
+      Caption := 'Or√ßamentos';
       Icon := 'fas fa-file-invoice-dollar';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
     with LGroup.SubItems.AddItem do begin
-      Caption := 'Faturamento e CobranÁa';
+      Caption := 'Faturamento e Cobran√ßa';
       Icon := 'fas fa-file-invoice';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
@@ -520,11 +531,11 @@ begin
     end;
 
 
-    with MainForm.mlMenu.Menu.AddItem do begin
+    with LExample.SubItems.AddItem do begin
       Separator := True;
     end;
 
-    LGroup := MainForm.mlMenu.Menu.AddItem;
+    LGroup := LExample.SubItems.AddItem;
     with LGroup do begin
       Caption := 'Produtos';
       Icon := 'fas fa-cube';
@@ -540,7 +551,7 @@ begin
       OnClick := FrameMenuLateralOnMenuClick;
     end;
     with LGroup.SubItems.AddItem do begin
-      Caption := 'PreÁos e PromoÁıes';
+      Caption := 'Pre√ßos e Promo√ß√µes';
       Icon := 'fas fa-tags';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
@@ -550,11 +561,11 @@ begin
       OnClick := FrameMenuLateralOnMenuClick;
     end;
 
-    with MainForm.mlMenu.Menu.AddItem do begin
+    with LExample.SubItems.AddItem do begin
       Separator := True;
     end;
 
-    LGroup := MainForm.mlMenu.Menu.AddItem;
+    LGroup := LExample.SubItems.AddItem;
     with LGroup do begin
       Caption := 'Clientes';
       Icon := 'fas fa-user';
@@ -565,7 +576,7 @@ begin
       OnClick := FrameMenuLateralOnMenuClick;
     end;
     with LGroup.SubItems.AddItem do begin
-      Caption := 'HistÛrico de Compras';
+      Caption := 'Hist√≥rico de Compras';
       Icon := 'fas fa-history';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
@@ -575,11 +586,11 @@ begin
       OnClick := FrameMenuLateralOnMenuClick;
     end;
 
-    with MainForm.mlMenu.Menu.AddItem do begin
+    with LExample.SubItems.AddItem do begin
       Separator := True;
     end;
 
-    LGroup := MainForm.mlMenu.Menu.AddItem;
+    LGroup := LExample.SubItems.AddItem;
     with LGroup do begin
       Caption := 'Compras';
       Icon := 'fas fa-shopping-bag';
@@ -600,17 +611,17 @@ begin
       OnClick := FrameMenuLateralOnMenuClick;
     end;
 
-    with MainForm.mlMenu.Menu.AddItem do begin
+    with LExample.SubItems.AddItem do begin
       Separator := True;
     end;
 
-    LGroup := MainForm.mlMenu.Menu.AddItem;
+    LGroup := LExample.SubItems.AddItem;
     with LGroup do begin
       Caption := 'Recursos Humanos';
       Icon := 'fas fa-users';
     end;
     with LGroup.SubItems.AddItem do begin
-      Caption := 'Cadastro de Funcion·rios';
+      Caption := 'Cadastro de Funcion√°rios';
       Icon := 'fas fa-users';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
@@ -625,13 +636,13 @@ begin
       OnClick := FrameMenuLateralOnMenuClick;
     end;
 
-    with MainForm.mlMenu.Menu.AddItem do begin
+    with LExample.SubItems.AddItem do begin
       Separator := True;
     end;
 
-    LGroup := MainForm.mlMenu.Menu.AddItem;
+    LGroup := LExample.SubItems.AddItem;
     with LGroup do begin
-      Caption := 'Contabilidade e FinanÁas';
+      Caption := 'Contabilidade e Finan√ßas';
       Icon := 'fas fa-money-bill-wave';
     end;
     with LGroup.SubItems.AddItem do begin
@@ -645,22 +656,22 @@ begin
       OnClick := FrameMenuLateralOnMenuClick;
     end;
     with LGroup.SubItems.AddItem do begin
-      Caption := 'BalanÁo Patrimonial';
+      Caption := 'Balan√ßo Patrimonial';
       Icon := 'fas fa-balance-scale';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
 
-    with MainForm.mlMenu.Menu.AddItem do begin
+    with LExample.SubItems.AddItem do begin
       Separator := True;
     end;
 
-    LGroup := MainForm.mlMenu.Menu.AddItem;
+    LGroup := LExample.SubItems.AddItem;
     with LGroup do begin
-      Caption := 'Gest„o de Estoques';
+      Caption := 'Gest√£o de Estoques';
       Icon := 'fas fa-archive';
     end;
     with LGroup.SubItems.AddItem do begin
-      Caption := 'MovimentaÁ„o de Estoque';
+      Caption := 'Movimenta√ß√£o de Estoque';
       Icon := 'fas fa-exchange-alt';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
@@ -675,17 +686,17 @@ begin
       OnClick := FrameMenuLateralOnMenuClick;
     end;
 
-    with MainForm.mlMenu.Menu.AddItem do begin
+    with LExample.SubItems.AddItem do begin
       Separator := True;
     end;
 
-    LGroup := MainForm.mlMenu.Menu.AddItem;
+    LGroup := LExample.SubItems.AddItem;
     with LGroup do begin
-      Caption := 'ProduÁ„o';
+      Caption := 'Produ√ß√£o';
       Icon := 'fas fa-industry';
     end;
     with LGroup.SubItems.AddItem do begin
-      Caption := 'Ordens de ProduÁ„o';
+      Caption := 'Ordens de Produ√ß√£o';
       Icon := 'fas fa-industry';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
@@ -700,13 +711,13 @@ begin
       OnClick := FrameMenuLateralOnMenuClick;
     end;
 
-    with MainForm.mlMenu.Menu.AddItem do begin
+    with LExample.SubItems.AddItem do begin
       Separator := True;
     end;
 
-    LGroup := MainForm.mlMenu.Menu.AddItem;
+    LGroup := LExample.SubItems.AddItem;
     with LGroup do begin
-      Caption := 'LogÌstica e Transporte';
+      Caption := 'Log√≠stica e Transporte';
       Icon := 'fas fa-truck';
     end;
     with LGroup.SubItems.AddItem do begin
@@ -725,54 +736,54 @@ begin
       OnClick := FrameMenuLateralOnMenuClick;
     end;
 
-    with MainForm.mlMenu.Menu.AddItem do begin
+    with LExample.SubItems.AddItem do begin
       Separator := True;
     end;
 
-    LGroup := MainForm.mlMenu.Menu.AddItem;
+    LGroup := LExample.SubItems.AddItem;
     with LGroup do begin
-      Caption := 'RelatÛrios e An·lises';
+      Caption := 'Relat√≥rios e An√°lises';
       Icon := 'fas fa-chart-bar';
     end;
     with LGroup.SubItems.AddItem do begin
-      Caption := 'RelatÛrios de Desempenho';
+      Caption := 'Relat√≥rios de Desempenho';
       Icon := 'fas fa-chart-bar';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
     with LGroup.SubItems.AddItem do begin
-      Caption := 'An·lise de Vendas';
+      Caption := 'An√°lise de Vendas';
       Icon := 'fas fa-chart-line';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
     with LGroup.SubItems.AddItem do begin
-      Caption := 'An·lise Financeira';
+      Caption := 'An√°lise Financeira';
       Icon := 'fas fa-chart-pie';
       OnClick := FrameMenuLateralOnMenuClick;
     end;
 
     if AUsuarioAdmin then begin
-      with MainForm.mlMenu.Menu.AddItem do begin
+      with LExample.SubItems.AddItem do begin
         Separator := True;
       end;
 
-      LGroup := MainForm.mlMenu.Menu.AddItem;
+      LGroup := LExample.SubItems.AddItem;
       with LGroup do begin
-        Caption := 'ConfiguraÁıes e AdministraÁ„o';
+        Caption := 'Configura√ß√µes e Administra√ß√£o';
         Icon := 'fas fa-cog';
         OnClick := FrameMenuLateralOnMenuClick;
       end;
       with LGroup.SubItems.AddItem do begin
-        Caption := 'ConfiguraÁıes do Sistema';
+        Caption := 'Configura√ß√µes do Sistema';
         Icon := 'fas fa-cog';
         OnClick := FrameMenuLateralOnMenuClick;
       end;
       with LGroup.SubItems.AddItem do begin
-        Caption := 'Gerenciamento de Usu·rios';
+        Caption := 'Gerenciamento de Usu√°rios';
         Icon := 'fas fa-users-cog';
         OnClick := FrameMenuLateralOnMenuClick;
       end;
       with LGroup.SubItems.AddItem do begin
-        Caption := 'ConfiguraÁıes de SeguranÁa';
+        Caption := 'Configura√ß√µes de Seguran√ßa';
         Icon := 'fas fa-lock';
         OnClick := FrameMenuLateralOnMenuClick;
       end;

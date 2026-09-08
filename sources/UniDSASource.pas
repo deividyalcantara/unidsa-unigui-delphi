@@ -6,7 +6,8 @@ uses
   uniGUIClasses, uniGUITypes;
 
 type
-  TTypeUniDSASource = (Toast, Confirm, MenuSiderbar, QrCodeReader, MenuLateral, Login, Kanban, Tour, Flex, FormStyle);
+  TTypeUniDSASource = (Toast, Confirm, MenuSiderbar, QrCodeReader, MenuLateral,
+    Login, Kanban, Tour, Flex, FormStyle, ResponsivePageControl);
 
 procedure GetLink(AComponent: TTypeUniDSASource);
 
@@ -58,6 +59,10 @@ begin
   else if AComponent = TTypeUniDSASource.Flex then begin
     UniAddCSSLibrary(cFolder + '/flex/css/unidsa-flex.css?v=1.0.5', True, [upoFolderUni, upoPlatformDesktop]);
     UniAddJSLibrary(cFolder + '/flex/js/unidsa-flex.js?v=1.0.5', True, [upoFolderUni, upoPlatformDesktop]);
+  end
+  else if AComponent = TTypeUniDSASource.ResponsivePageControl then begin
+    UniAddCSSLibrary(cFolder + '/responsive-page-control/css/style.css?v=1.1.3', True, [upoFolderUni, upoPlatformDesktop]);
+    UniAddJSLibrary(cFolder + '/responsive-page-control/js/script.js?v=1.1.2', True, [upoFolderUni, upoPlatformDesktop]);
   end;
 end;
 

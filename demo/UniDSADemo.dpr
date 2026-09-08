@@ -7,6 +7,7 @@ uses
   Main in 'Main.pas' {MainForm: TUniForm},
   FrameMenuLateral in 'View\FrameMenuLateral.pas' {FrMenuLateral: TUniFrame},
   Funcoes in 'Library\Funcoes.pas',
+  DemoUI in 'Library\DemoUI.pas',
   FrameHome in 'View\FrameHome.pas' {FrHome: TUniFrame},
   FormContribuicoes in 'View\FormContribuicoes.pas' {FrmContribuicoes: TUniForm},
   FrameToast in 'View\FrameToast.pas' {FrToast: TUniFrame},

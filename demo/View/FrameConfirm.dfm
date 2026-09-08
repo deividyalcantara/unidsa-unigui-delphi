@@ -1,182 +1,232 @@
-inherited FrConfirm: TFrConfirm
-  object UniLabel2: TUniLabel
-    AlignWithMargins = True
-    Left = 20
-    Top = 50
-    Width = 352
-    Height = 20
-    Hint = ''
-    Margins.Left = 20
-    Margins.Top = 0
-    Margins.Right = 20
-    Margins.Bottom = 0
-    Caption = 'Componente para exibi'#231#227'o de mensagem e dialogos'
-    Align = alTop
-    ParentFont = False
-    Font.Color = clGray
-    Font.Height = -15
-    ParentColor = False
-    Color = clBtnFace
-    TabOrder = 0
-  end
-  object UniLabel1: TUniLabel
-    AlignWithMargins = True
-    Left = 20
-    Top = 20
-    Width = 80
-    Height = 30
-    Hint = ''
-    Margins.Left = 20
-    Margins.Top = 20
-    Margins.Right = 20
-    Margins.Bottom = 0
-    Caption = 'Confirm'
-    Align = alTop
-    ParentFont = False
-    Font.Height = 30
-    Font.Style = [fsBold]
-    ParentColor = False
-    Color = clBtnFace
-    TabOrder = 1
-  end
-  object ugbMensagem: TUniGroupBox
-    AlignWithMargins = True
-    Left = 20
-    Top = 80
-    Width = 584
-    Height = 70
-    Hint = ''
-    Margins.Left = 20
-    Margins.Top = 10
-    Margins.Right = 20
-    Margins.Bottom = 0
-    Caption = 'Mensagem'
-    Align = alTop
-    TabOrder = 2
-    ExplicitWidth = 601
-    object UniContainerPanel20: TUniContainerPanel
+object FrConfirm: TFrConfirm
+  object flexDemoPage: TUniDSAFlexPanel
+    Tag = 120
+    Width = 900
+    Height = 680
+    Align = alClient
+    Flex.Direction = fdColumn
+    Flex.Wrap = fwNoWrap
+    Flex.Gap = 20
+    Flex.Padding = 24
+    Flex.Overflow = foAuto
+    object UniLabel1: TUniLabel
       AlignWithMargins = True
-      Left = 2
+      Left = 20
       Top = 20
-      Width = 596
-      Height = 42
+      Width = 80
+      Height = 30
       Hint = ''
-      Margins.Left = 0
-      Margins.Top = 5
-      Margins.Right = 0
+      Margins.Left = 20
+      Margins.Top = 20
+      Margins.Right = 20
       Margins.Bottom = 0
+      Caption = 'Confirm'
+      ParentFont = False
+      Font.Height = 30
+      Font.Style = [fsBold]
       ParentColor = False
-      Align = alTop
+      Color = clBtnFace
       TabOrder = 1
-      ExplicitWidth = 597
-      object UniContainerPanel23: TUniContainerPanel
-        AlignWithMargins = True
-        Left = 3
-        Top = 0
-        Width = 163
-        Height = 39
+      Align = alNone
+    end
+    object UniLabel2: TUniLabel
+      AlignWithMargins = True
+      Left = 20
+      Top = 50
+      Width = 352
+      Height = 20
+      Hint = ''
+      Margins.Left = 20
+      Margins.Top = 0
+      Margins.Right = 20
+      Margins.Bottom = 0
+      Caption = 'Componente para exibi'#231#227'o de mensagem e dialogos'
+      ParentFont = False
+      Font.Color = clGray
+      Font.Height = -15
+      ParentColor = False
+      Color = clBtnFace
+      TabOrder = 0
+      Align = alNone
+    end
+    object ugbMensagem: TUniDSAFlexPanel
+      AlignWithMargins = True
+      Left = 20
+      Top = 80
+      Width = 584
+      Height = 70
+      Hint = ''
+      Margins.Left = 20
+      Margins.Top = 10
+      Margins.Right = 20
+      Margins.Bottom = 0
+      TabOrder = 2
+      Tag = 100
+      Flex.AutoHeight = True
+      Flex.Gap = 16
+      Flex.AlignContent = faStart
+      Flex.Overflow = foVisible
+      Flex.Direction = fdColumn
+      Flex.Wrap = fwNoWrap
+      FlexItem.Shrink = 0
+      ParentColor = False
+      Color = clWhite
+      Flex.Padding = 20
+      Align = alNone
+      object lblSectionugbMensagem: TUniLabel
+        Tag = 100
+        Caption = 'Mensagem'
+        Height = 28
+        Align = alNone
+      end
+      object UniContainerPanel20: TUniDSAFlexPanel
+        Left = 2
+        Top = 20
+        Width = 596
+        Height = 42
         Hint = ''
-        Margins.Top = 0
-        ParentColor = False
-        Align = alLeft
         TabOrder = 1
-        object UniLabel16: TUniLabel
-          Left = 0
+        Tag = 101
+        Flex.AutoHeight = True
+        Flex.Gap = 10
+        Flex.AlignContent = faStart
+        Flex.Overflow = foVisible
+        Flex.Direction = fdRow
+        Flex.Wrap = fwWrap
+        FlexItem.Shrink = 0
+        ParentColor = False
+        Color = 16579066
+        Align = alNone
+        object UniContainerPanel23: TUniDSAFlexPanel
+          Left = 3
           Top = 0
-          Width = 30
-          Height = 13
-          Hint = ''
-          Caption = 'T'#237'tulo'
-          Align = alTop
-          ParentColor = False
-          Color = clBtnFace
-          TabOrder = 1
-        end
-        object edtTitulo: TUniEdit
-          Left = 0
-          Top = 17
           Width = 163
+          Height = 39
           Hint = ''
-          Text = 'T'#237'tulo Confirm'
-          Align = alBottom
-          TabOrder = 2
+          TabOrder = 1
+          Tag = 102
+          Flex.AutoHeight = True
+          Flex.Gap = 10
+          Flex.AlignContent = faStart
+          Flex.Overflow = foVisible
+          Flex.Direction = fdColumn
+          Flex.Wrap = fwNoWrap
+          FlexItem.Shrink = 0
+          ParentColor = False
+          Color = 16579066
+          Align = alNone
+          object UniLabel16: TUniLabel
+            Left = 0
+            Top = 0
+            Width = 30
+            Height = 13
+            Hint = ''
+            Caption = 'T'#237'tulo'
+            ParentColor = False
+            Color = clBtnFace
+            TabOrder = 1
+            Align = alNone
+          end
+          object edtTitulo: TUniEdit
+            Left = 0
+            Top = 17
+            Width = 163
+            Hint = ''
+            Text = 'T'#237'tulo Confirm'
+            TabOrder = 2
+            Align = alNone
+          end
         end
-      end
-      object UniContainerPanel21: TUniContainerPanel
-        AlignWithMargins = True
-        Left = 172
-        Top = 0
-        Width = 157
-        Height = 39
-        Hint = ''
-        Margins.Top = 0
-        ParentColor = False
-        Align = alLeft
-        TabOrder = 2
-        object UniLabel15: TUniLabel
-          Left = 0
+        object UniContainerPanel21: TUniDSAFlexPanel
+          Left = 172
           Top = 0
-          Width = 56
-          Height = 13
-          Hint = ''
-          Caption = 'Mensagem'
-          Align = alTop
-          TabOrder = 1
-        end
-        object edtMensagem: TUniEdit
-          Left = 0
-          Top = 17
           Width = 157
+          Height = 39
           Hint = ''
-          Text = 'Mensagem Confirm'
-          Align = alBottom
           TabOrder = 2
+          Tag = 102
+          Flex.AutoHeight = True
+          Flex.Gap = 10
+          Flex.AlignContent = faStart
+          Flex.Overflow = foVisible
+          Flex.Direction = fdColumn
+          Flex.Wrap = fwNoWrap
+          FlexItem.Shrink = 0
+          ParentColor = False
+          Color = 16579066
+          Align = alNone
+          object UniLabel15: TUniLabel
+            Left = 0
+            Top = 0
+            Width = 56
+            Height = 13
+            Hint = ''
+            Caption = 'Mensagem'
+            TabOrder = 1
+            Align = alNone
+          end
+          object edtMensagem: TUniEdit
+            Left = 0
+            Top = 17
+            Width = 157
+            Hint = ''
+            Text = 'Mensagem Confirm'
+            TabOrder = 2
+            Align = alNone
+          end
         end
-      end
-      object UniContainerPanel22: TUniContainerPanel
-        AlignWithMargins = True
-        Left = 335
-        Top = 0
-        Width = 61
-        Height = 39
-        Hint = ''
-        Margins.Top = 0
-        ParentColor = False
-        Align = alLeft
-        TabOrder = 3
-        object btnMostrar: TUniButton
-          Left = 0
-          Top = 17
+        object UniContainerPanel22: TUniDSAFlexPanel
+          Left = 335
+          Top = 0
           Width = 61
-          Height = 22
+          Height = 39
           Hint = ''
-          Caption = 'Mostrar'
-          Align = alBottom
-          TabOrder = 1
-          OnClick = btnMostrarClick
+          TabOrder = 3
+          Tag = 102
+          Flex.AutoHeight = True
+          Flex.Gap = 10
+          Flex.AlignContent = faStart
+          Flex.Overflow = foVisible
+          Flex.Direction = fdColumn
+          Flex.Wrap = fwNoWrap
+          FlexItem.Shrink = 0
+          ParentColor = False
+          Color = 16579066
+          Align = alNone
+          object btnMostrar: TUniButton
+            Left = 0
+            Top = 17
+            Width = 61
+            Height = 22
+            Hint = ''
+            Caption = 'Mostrar'
+            TabOrder = 1
+            OnClick = btnMostrarClick
+            Align = alNone
+          end
         end
       end
     end
-  end
-  object UniLabel3: TUniLabel
-    AlignWithMargins = True
-    Left = 20
-    Top = 155
-    Width = 251
-    Height = 13
-    Hint = ''
-    Margins.Left = 20
-    Margins.Top = 5
-    Margins.Right = 20
-    Margins.Bottom = 0
-    Caption = 'Demais recursos ser'#227'o exemplificados em breve...'
-    Align = alTop
-    ParentFont = False
-    Font.Color = clGray
-    Font.Height = -12
-    ParentColor = False
-    Color = clBtnFace
-    TabOrder = 3
+    object UniLabel3: TUniLabel
+      AlignWithMargins = True
+      Left = 20
+      Top = 155
+      Width = 251
+      Height = 13
+      Hint = ''
+      Margins.Left = 20
+      Margins.Top = 5
+      Margins.Right = 20
+      Margins.Bottom = 0
+      Caption = 'Demais recursos ser'#227'o exemplificados em breve...'
+      ParentFont = False
+      Font.Color = clGray
+      Font.Height = -12
+      ParentColor = False
+      Color = clBtnFace
+      TabOrder = 3
+      Align = alNone
+    end
   end
   object Confirm: TUniDSAConfirm
     Version = '1.1.0'
@@ -189,7 +239,7 @@ inherited FrConfirm: TFrConfirm
     Types.Color = clBlue
     TypeAnimated = False
     ContainerFluid = False
-    ColumnClass = 
+    ColumnClass =
       'col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 col-xs-10 col-' +
       'xs-offset-1'
     BoxWidth = '30%'

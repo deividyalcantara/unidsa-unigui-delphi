@@ -1,15 +1,18 @@
-unit Login;
+ï»¿unit Login;
 
 interface
 
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
-  uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniGUIBaseClasses, UniDSABaseControl, UniDSALogin, UniDSAExecuteFunction, UniDSABase, UniDSAConfirm, uniSweetAlert, UniDSATour;
+  uniGUIClasses, uniGUIRegClasses, uniGUIForm, uniGUIBaseClasses, UniDSABaseControl,
+  UniDSALogin, UniDSAExecuteFunction, UniDSABase, UniDSAConfirm, uniSweetAlert,
+  UniDSATour, UniDSAFlexPanel, DemoUI;
 
 type
   TFormLogin = class(TUniLoginForm)
     dsaLogin: TUniDSALogin;
+    flexLogin: TUniDSAFlexPanel;
     saAlerta: TUniSweetAlert;
     UniDSATour1: TUniDSATour;
     function IfThenStr(ACondicao: Boolean; AVerdadeiro: string; AFalso: string): string;
@@ -46,7 +49,7 @@ end;
 procedure TFormLogin.dsaLoginCreateAccount(Sender: TObject);
 begin
   saAlerta.OnConfirm := nil;
-  saAlerta.Title := 'Criação de conta!';
+  saAlerta.Title := 'CriaÃ§Ã£o de conta!';
   saAlerta.AlertType := TAlertType.atSuccess;
   saAlerta.Show('Conta criada! E-mail: admin, senha: admin');
   FAdminHabilitado := True;
@@ -102,7 +105,7 @@ begin
     if FTentativaLogin = 3 then begin
       saAlerta.Title := 'Login';
       saAlerta.AlertType := TAlertType.atError;
-      saAlerta.Show('Desculpe, parece que houve mais de três tentativas incorretas de login. Utilize o "Esqueceu a senha?".');
+      saAlerta.Show('Desculpe, parece que houve mais de trÃªs tentativas incorretas de login. Utilize o "Esqueceu a senha?".');
 
       dsaLogin.Login.Enabled := False;
       dsaLogin.Password.Enabled := False;
@@ -115,7 +118,7 @@ begin
 
     saAlerta.Title := 'Login';
     saAlerta.AlertType := TAlertType.atInfo;
-    saAlerta.Show('E-mail ou senha inválidos. Por favor, tente novamente.');
+    saAlerta.Show('E-mail ou senha invÃ¡lidos. Por favor, tente novamente.');
     Inc(FTentativaLogin);
   end;
 end;
@@ -130,9 +133,9 @@ begin
   saAlerta.Title := 'Lembrar da senha';
   saAlerta.AlertType := TAlertType.atInfo;
   saAlerta.Show(
-    'Opção marcada: ' + IfThenStr(dsaLogin.RememberMe.Checked, '"Sim"', '"Não"') + ' || ' +
-    'Título: ' + dsaLogin.RememberMe.Caption +  ' || ' +
-    'Visível: ' + IfThenStr(dsaLogin.RememberMe.Visible, '"Sim"', '"Não"')
+    'OpÃ§Ã£o marcada: ' + IfThenStr(dsaLogin.RememberMe.Checked, '"Sim"', '"NÃ£o"') + ' || ' +
+    'TÃ­tulo: ' + dsaLogin.RememberMe.Caption +  ' || ' +
+    'VisÃ­vel: ' + IfThenStr(dsaLogin.RememberMe.Visible, '"Sim"', '"NÃ£o"')
   );
 end;
 

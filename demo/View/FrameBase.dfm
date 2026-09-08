@@ -10,4 +10,15 @@ object FrBase: TFrBase
   Font.Name = 'Segoe UI'
   Font.Style = []
   TextHeight = 15
+  object flexDemoPage: TUniDSAFlexPanel
+    Tag = 120
+    Width = 900
+    Height = 680
+    Align = alClient
+    Flex.Direction = fdColumn
+    Flex.Wrap = fwNoWrap
+    Flex.Gap = 20
+    Flex.Padding = 24
+    Flex.Overflow = foAuto
+  end
 end

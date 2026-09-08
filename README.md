@@ -27,6 +27,7 @@ O UniDSA é uma biblioteca de componentes para aplicações web desenvolvidas co
 | `TUniDSAMenuLateral` | Menu lateral responsivo com temas, pesquisa, perfil e notificações. |
 | `TUniDSALogin` | Interface responsiva para autenticação, recuperação de senha e criação de conta. |
 | `TUniDSAFlexPanel` | Contêiner visual com Flexbox, breakpoints e composição por filhos diretamente no Delphi. |
+| `TUniDSAResponsivePageControl` | PageControl com overflow responsivo das abas em menu ou rolagem. |
 | `TUniDSAKanban` | Quadro Kanban responsivo com colunas, cartões, limite WIP e drag-and-drop. |
 | `TUniDSATour` | Apresentação guiada da interface com spotlight, posicionamento automático e navegação acessível. |
 
@@ -192,6 +193,7 @@ O diretório efetivo pode mudar quando `FilesFolder` é personalizado no `TUniSe
 | `TUniDSAMenuLateral` | `menu_lateral/js/script.js` e `menu_lateral/css/style.css` |
 | `TUniDSALogin` | `login/js/script.js` e `login/css/style.css` |
 | `TUniDSAFlexPanel` | `flex/js/unidsa-flex.js` e `flex/css/unidsa-flex.css` |
+| `TUniDSAResponsivePageControl` | `responsive-page-control/css/style.css`, `responsive-page-control/js/script.js` |
 | `TUniDSAKanban` | `kanban/js/script.js` e `kanban/css/style.css` |
 | `TUniDSATour` | `tour/js/script.js` e `tour/css/style.css` |
 
@@ -218,12 +220,40 @@ O `TUniDSAConfirm` tenta carregar o `jquery-confirm` 3.3.4 pelo cdnjs quando a c
 
 1. Abra `demo\UniDSADemo.dproj`.
 2. Confirme que o projeto encontra os fontes e pacotes do UniDSA.
-3. Copie `dsa` para a pasta pública configurada no `TUniServerModule` da demonstração.
+3. Publique `demo/Files` na pasta pública configurada no `TUniServerModule`. Ao atualizar os componentes, sincronize também `dsa` com `demo/Files/dsa`. Mantenha `Files/demo/demo.css` e `Files/demo/demo.js`: são os estilos e a integração de layout exclusivos da demonstração.
 4. Compile e execute o projeto.
 5. Abra a URL apresentada pelo servidor standalone.
 6. Autorize a câmera quando testar o leitor de QR Code.
 
 Se o demo abrir sem estilos ou apresentar erros JavaScript, valide primeiro as URLs da seção anterior.
+
+### Laboratórios responsivos
+
+Todas as telas de exemplo usam `TUniDSAFlexPanel`, com cartões no lugar de GroupBoxes,
+campos que quebram por largura disponível e rolagem para o conteúdo mais longo.
+O menu recolhe abaixo de 900 pixels; quando aberto nessa largura, sobrepõe o conteúdo
+e recolhe após a escolha de uma tela. Os menus Padrão/Administrativo adicionam um grupo
+de exemplo sem remover a navegação dos componentes.
+
+`demo/Library/DemoUI.pas` concentra a preparação visual e os editores de propriedades.
+Os nomes dos componentes e os eventos existentes foram mantidos. Os laboratórios de
+Toast, Confirm, Menu Lateral, Kanban e QRCode permitem aplicar valores em runtime;
+cores aceitam nomes Delphi (como `clWhite`) ou `$00BBGGRR`. A resposta aparece junto
+do campo. A aba **Personalizar abas** demonstra alinhamento, visibilidade da aba ativa
+e cores de hover, seleção e foco.
+
+As opções FPS (1–30) e QrBox (80–220) são usadas na próxima leitura única. A leitura
+real requer câmera/permissão e localhost ou HTTPS. Os diálogos de leitura e apoio
+usam `TUniDSAFormStyle`; publique também `Files/dsa/form-style`.
+
+O Kanban mantém rolagem horizontal dentro do quadro para preservar as colunas.
+No laboratório Flex, valores experimentais como `Wrap = fwNoWrap` ou `Overflow = foHidden`
+podem intencionalmente produzir overflow: use **Restaurar valores** para voltar ao exemplo.
+
+Validação rápida: execute `node tools/test-demo-ui.cjs`, `node tools/test-responsive-tabs.cjs`
+e `node tools/test-form-style.cjs`, compile o projeto e confira as telas em 320, 390, 768
+e 1280 pixels. Teste a última aba selecionada ao reduzir a janela, os botões Aplicar,
+os diálogos, a navegação por teclado e o retorno dos eventos dos exemplos.
 
 ## Uso dos componentes
 
@@ -652,6 +682,65 @@ de 2, 3 e 4 colunas e alterna a prévia entre celular, tablet, desktop e tela am
 Os breakpoints são calculados pela largura do próprio contêiner, portanto um layout
 aninhado responde ao espaço realmente disponível, sem depender apenas da janela.
 
+### TUniDSAResponsivePageControl
+
+`TUniDSAResponsivePageControl` preserva as páginas, propriedades e eventos do
+`TUniPageControl`. A diferença está no tratamento das abas que não cabem na largura
+disponível.
+
+Em `TabOverflowMode`, use:
+
+- `tomMenu`: mantém as abas visíveis que couberem e reúne as demais no menu de
+  overflow nativo do Ext JS. É o valor padrão.
+- `tomScroller`: mantém o comportamento tradicional do uniGUI, com rolagem da
+  barra de abas.
+
+Defina `TabOverflowMode` no designer ou antes da criação da interface web;
+a troca do mecanismo de overflow requer recriar o controle.
+
+`TabAlignment` centraliza o conjunto de abas por padrão (`taCenter`). Use
+`taStart` ou `taEnd` para alinhar ao início ou ao final da barra. O texto e os
+ícones ficam centralizados verticalmente nos botões de 40 pixels.
+
+Com `KeepActiveTabVisible = True` (padrão), o modo `tomMenu` reserva espaço
+para a aba selecionada, inclusive após redimensionar ou selecionar pelo menu.
+As páginas não são reordenadas. Títulos longos são limitados com reticências.
+
+O grupo `TabColors` no Object Inspector permite configurar as cores sem CSS:
+
+- `BackgroundColor`, `BorderColor`, `TabColor` e `TextColor`: barra e abas normais.
+- `HoverColor` e `HoverTextColor`: aba sob o ponteiro.
+- `ActiveColor`, `ActiveTextColor` e `ActiveHoverColor`: aba selecionada.
+- `FocusColor`: indicador de foco para navegação pelo teclado.
+- `MenuColor` e `DisabledTextColor`: menu e texto desabilitado.
+
+As cores, o alinhamento e `KeepActiveTabVisible` podem ser alterados em tempo
+de execução; os setters atualizam o navegador automaticamente. `clNone` representa
+uma cor transparente. Exemplo:
+
+```delphi
+pcExemplos.TabAlignment := taCenter;
+pcExemplos.KeepActiveTabVisible := True;
+pcExemplos.TabColors.HoverColor := $00F6EEEB;
+pcExemplos.TabColors.HoverTextColor := $0080471E;
+pcExemplos.TabColors.ActiveColor := $00EB6325;
+pcExemplos.TabColors.ActiveHoverColor := $00D84E1D;
+```
+
+Publique os dois arquivos `responsive-page-control/css/style.css` e
+`responsive-page-control/js/script.js` dentro de `files/dsa`. Os estilos são
+isolados por componente, inclusive no menu flutuante; não substituem o tema
+dos campos e botões existentes dentro das páginas.
+
+Validação automatizada: `node tools/test-responsive-tabs.cjs`. Para testar com
+o Ext JS real, copie `tools/test-responsive-tabs.html` para `files/` do servidor
+local uniGUI com Ext JS 7.9 e abra `/files/test-responsive-tabs.html`. O teste permite
+redimensionar, mudar cores, selecionar, adicionar e remover abas.
+
+As páginas continuam sendo `TUniTabSheet` e podem ser criadas no designer ou em
+tempo de execução. Também permanecem disponíveis `ActivePage`, `TabIndex`,
+`TabBarVisible`, `DeferredRender`, `OnChange` e os demais recursos herdados.
+
 ## Atualização da biblioteca
 
 Ao atualizar o UniDSA:
@@ -743,6 +832,8 @@ O compilador encontrou fonte ou DCU incompatível com o DCP esperado. Corrija os
 - [ ] O menu lateral carrega estilos, itens e eventos.
 - [ ] A tela de login permanece responsiva.
 - [ ] O cache do navegador foi limpo depois da atualização dos assets.
+- [ ] No PageControl responsivo, selecionar a última aba e reduzir a largura
+  mantém a aba ativa no topo; o menu permite acessar as demais páginas.
 
 Ao relatar um problema, informe a versão do Delphi, a versão do uniGUI, o tipo de servidor utilizado, o modo de compilação, a URL do asset que falhou e a mensagem completa do console ou do compilador.
 

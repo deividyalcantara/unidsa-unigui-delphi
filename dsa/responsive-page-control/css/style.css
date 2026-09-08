@@ -1,0 +1,252 @@
+.dsa-responsive-page-control {
+  --dsa-tabs-accent: #2563eb;
+  --dsa-tabs-accent-hover: #1d4ed8;
+  --dsa-tabs-background: #f1f5f9;
+  --dsa-tabs-border: #e2e8f0;
+  --dsa-tabs-focus: rgba(37, 99, 235, 0.24);
+  --dsa-tabs-muted: #64748b;
+  --dsa-tabs-surface: #ffffff;
+  --dsa-tabs-text: #334155;
+  --dsa-tabs-tab: transparent;
+  --dsa-tabs-hover: #ffffff;
+  --dsa-tabs-hover-text: #0f172a;
+  --dsa-tabs-active-text: #ffffff;
+  --dsa-tabs-disabled: #94a3b8;
+  background: transparent !important;
+  border: 0 !important;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Arial, sans-serif;
+}
+
+.dsa-tabs-bar {
+  min-height: 54px;
+  padding: 6px;
+  border: 1px solid var(--dsa-tabs-border) !important;
+  border-radius: 12px;
+  background: var(--dsa-tabs-background) !important;
+  background-image: none !important;
+}
+
+.dsa-tabs-bar .x-tab-bar-body {
+  height: 40px;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.dsa-tabs-bar .x-box-inner {
+  height: 40px;
+}
+
+.dsa-tabs-bar .x-tab {
+  height: 40px;
+  max-width: var(--dsa-tab-max-width, 280px) !important;
+  margin: 0 4px 0 0 !important;
+  padding: 0 14px;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: var(--dsa-tabs-tab) !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  transition: background-color 160ms ease, box-shadow 160ms ease,
+    color 160ms ease;
+}
+
+.dsa-tabs-bar .x-tab:hover {
+  background: var(--dsa-tabs-hover) !important;
+}
+
+.dsa-tabs-bar .x-tab-active {
+  background: var(--dsa-tabs-accent) !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.12) !important;
+}
+
+.dsa-tabs-bar .x-tab-active:hover {
+  background: var(--dsa-tabs-accent-hover) !important;
+}
+
+.dsa-tabs-bar .x-tab-inner {
+  color: var(--dsa-tabs-text) !important;
+  font-family: inherit !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  line-height: 20px !important;
+}
+
+.dsa-tabs-bar .x-tab:hover .x-tab-inner {
+  color: var(--dsa-tabs-hover-text) !important;
+}
+
+.dsa-tabs-bar .x-tab-active .x-tab-inner,
+.dsa-tabs-bar .x-tab-active:hover .x-tab-inner {
+  color: var(--dsa-tabs-active-text) !important;
+}
+
+.dsa-tabs-bar .x-tab-focus {
+  box-shadow: 0 0 0 3px var(--dsa-tabs-focus) !important;
+}
+
+.dsa-tabs-bar .x-tab-bar-strip {
+  display: none !important;
+}
+
+.dsa-tabs-bar .x-box-menu-after {
+  min-width: 36px;
+  height: 40px;
+  margin: 0 !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  background: var(--dsa-tabs-surface) !important;
+  background-image: none !important;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.1) !important;
+}
+
+.dsa-tabs-bar .x-box-menu-after:hover {
+  background: var(--dsa-tabs-hover) !important;
+}
+
+.dsa-tabs-bar .x-box-menu-after:focus,
+.dsa-tabs-bar .x-box-menu-after.x-btn-focus {
+  outline: 0 !important;
+  box-shadow: 0 0 0 3px var(--dsa-tabs-focus) !important;
+}
+
+.dsa-tabs-bar .x-box-menu-after .x-btn-icon-el {
+  color: var(--dsa-tabs-muted) !important;
+}
+
+.dsa-responsive-page-control > .x-panel-bodyWrap > .x-panel-body {
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.dsa-responsive-page-control .x-panel-body::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+.dsa-responsive-page-control .x-panel-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dsa-responsive-page-control .x-panel-body::-webkit-scrollbar-thumb {
+  border: 3px solid transparent;
+  border-radius: 999px;
+  background: #cbd5e1;
+  background-clip: content-box;
+}
+
+.dsa-responsive-page-control .x-panel-body::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+  background-clip: content-box;
+}
+
+.dsa-responsive-tabs-menu {
+  border: 1px solid var(--dsa-tabs-border, #e2e8f0) !important;
+  border-radius: 10px !important;
+  background: var(--dsa-tabs-surface, #ffffff) !important;
+  background-image: none !important;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.16) !important;
+  overflow: hidden;
+}
+
+.dsa-responsive-tabs-menu .x-menu-body {
+  padding: 5px;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+.dsa-responsive-tabs-menu .x-menu-icon-separator {
+  display: none;
+}
+
+.dsa-responsive-tabs-menu .x-menu-item {
+  margin: 1px 0 !important;
+  border-radius: 7px;
+  background: transparent !important;
+}
+
+.dsa-responsive-tabs-menu .x-menu-item-link {
+  padding: 8px 11px;
+}
+
+.dsa-responsive-tabs-menu .x-menu-item-text {
+  margin: 0 !important;
+  color: var(--dsa-tabs-text, #334155) !important;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.dsa-responsive-tabs-menu .x-menu-item-active {
+  background: var(--dsa-tabs-hover, #eff6ff) !important;
+}
+
+.dsa-responsive-tabs-menu .x-menu-item-active .x-menu-item-text {
+  color: var(--dsa-tabs-hover-text, #2563eb) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dsa-tabs-bar .x-tab {
+    transition: none;
+  }
+}
+
+/* Match the native layout's measured height; center both text and icons. */
+.dsa-tabs-bar .x-tab-wrap,
+.dsa-tabs-bar .x-tab-button,
+.dsa-tabs-bar .x-btn-wrap,
+.dsa-tabs-bar .x-btn-button {
+  height: 100% !important;
+  min-height: 0 !important;
+  vertical-align: middle !important;
+}
+
+.dsa-tabs-bar .x-tab-button,
+.dsa-tabs-bar .x-btn-button {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 100% !important;
+  min-width: 0;
+}
+
+.dsa-tabs-bar .x-tab-wrap {
+  display: flex !important;
+  width: 100% !important;
+}
+
+.dsa-tabs-bar .x-tab-inner {
+  min-width: 0;
+  padding: 0 !important;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.dsa-tabs-bar .x-tab-disabled .x-tab-inner {
+  color: var(--dsa-tabs-disabled) !important;
+}
+
+.dsa-tabs-bar .x-tab-disabled:hover {
+  background: var(--dsa-tabs-tab) !important;
+}
+
+.dsa-tabs-bar .x-tab:focus,
+.dsa-tabs-bar .x-tab-button::before,
+.dsa-tabs-bar .x-tab .x-tab-wrap,
+.dsa-tabs-bar .x-box-menu-after .x-btn-wrap {
+  outline: none !important;
+}
+
+.dsa-responsive-tabs-menu .dsa-tabs-menu-active {
+  background: var(--dsa-tabs-accent, #2563eb) !important;
+}
+
+.dsa-responsive-tabs-menu .dsa-tabs-menu-active .x-menu-item-text {
+  color: var(--dsa-tabs-active-text, #ffffff) !important;
+}
+
+.dsa-responsive-tabs-menu .x-menu-item-disabled .x-menu-item-text {
+  color: var(--dsa-tabs-disabled, #94a3b8) !important;
+}

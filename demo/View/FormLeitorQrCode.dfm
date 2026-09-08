@@ -1,50 +1,22 @@
 object FrmLeitorQrCode: TFrmLeitorQrCode
   Left = 0
   Top = 0
-  ClientHeight = 484
-  ClientWidth = 507
-  Caption = 'Leitor QrCode e c'#243'digo de barras'
   OldCreateOrder = False
-  OnClose = UniFormClose
+  BorderIcons = [biSystemMenu]
   MonitoredKeys.Keys = <>
   TextHeight = 15
-  object qrcLeitor: TUniDSAQrCodeReader
-    AlignWithMargins = True
-    Left = 0
-    Top = 0
-    Width = 507
-    Height = 434
-    Hint = ''
-    Margins.Left = 0
-    Margins.Top = 0
-    Margins.Right = 0
-    Margins.Bottom = 50
+  ClientWidth = 560
+  ClientHeight = 650
+  Caption = 'Leitura de c'#243'digos'
+  object flexDemoPage: TUniDSAFlexPanel
+    Tag = 120
+    Width = 900
+    Height = 680
     Align = alClient
-    Text = ''
-    SingleRead = False
-    QrBox = 250
-    FPS = 10
-    SupportedFormats.QR_CODE = True
-    SupportedFormats.AZTEC = True
-    SupportedFormats.CODABAR = True
-    SupportedFormats.CODE_39 = True
-    SupportedFormats.CODE_93 = True
-    SupportedFormats.CODE_128 = True
-    SupportedFormats.DATA_MATRIX = True
-    SupportedFormats.MAXICODE = True
-    SupportedFormats.ITF = True
-    SupportedFormats.EAN_13 = True
-    SupportedFormats.EAN_8 = True
-    SupportedFormats.PDF_417 = True
-    SupportedFormats.RSS_14 = True
-    SupportedFormats.RSS_EXPANDED = True
-    SupportedFormats.UPC_A = True
-    SupportedFormats.UPC_E = True
-    SupportedFormats.UPC_EAN_EXTENSION = True
-    OnAfterReading = qrcLeitorAfterReading
-    ExplicitLeft = -5
-    ExplicitTop = -5
-    ExplicitWidth = 333
-    ExplicitHeight = 287
+    Flex.Direction = fdColumn
+    Flex.Wrap = fwNoWrap
+    Flex.Gap = 16
+    Flex.Padding = 20
+    Flex.Overflow = foAuto
   end
 end

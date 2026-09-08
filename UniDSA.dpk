@@ -198,6 +198,7 @@ contains
   UniDSABaseControl in 'sources\UniDSABaseControl.pas',
   UniDSAMenuLateral in 'sources\UniDSAMenuLateral.pas',
   UniDSAFlexPanel in 'sources\UniDSAFlexPanel.pas',
+  UniDSAResponsivePageControl in 'sources\UniDSAResponsivePageControl.pas',
   UniDSALogin in 'sources\UniDSALogin.pas',
   UniDSAConst in 'sources\UniDSAConst.pas',
   UniDSAControl in 'sources\UniDSAControl.pas',

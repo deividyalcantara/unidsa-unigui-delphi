@@ -147,6 +147,7 @@
         <DCCReference Include="sources\UniDSABaseControl.pas"/>
         <DCCReference Include="sources\UniDSAMenuLateral.pas"/>
         <DCCReference Include="sources\UniDSAFlexPanel.pas"/>
+        <DCCReference Include="sources\UniDSAResponsivePageControl.pas"/>
         <DCCReference Include="sources\UniDSALogin.pas"/>
         <DCCReference Include="sources\UniDSAConst.pas"/>
         <DCCReference Include="sources\UniDSAControl.pas"/>

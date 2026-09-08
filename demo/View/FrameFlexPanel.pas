@@ -6,13 +6,16 @@ uses
   System.SysUtils, System.Classes, System.TypInfo, Vcl.Controls, Vcl.Forms, uniGUIFrame,
   uniGUIBaseClasses, uniGUIClasses, uniLabel, uniPageControl, uniEdit,
   uniComboBox, uniButton, uniCheckBox, uniProgressBar, uniMemo,
-  UniDSAFlexPanel, UniDSAConfirm, uniMultiItem, uniPanel, UniDSAExecuteFunction, UniDSABase, uniDateTimePicker;
+  UniDSAFlexPanel, UniDSAResponsivePageControl, UniDSAConfirm, uniMultiItem,
+  uniPanel, UniDSAExecuteFunction, UniDSABase, uniDateTimePicker;
 
 type
   TFrFlexPanel = class(TUniFrame)
+    flexDemoPage: TUniDSAFlexPanel;
+    flexHeader: TUniDSAFlexPanel;
     lblTitulo: TUniLabel;
     lblDescricao: TUniLabel;
-    pcExemplos: TUniPageControl;
+    pcExemplos: TUniDSAResponsivePageControl;
     tabGrade: TUniTabSheet;
     flexGrade: TUniDSAFlexPanel;
     flexCadastro: TUniDSAFlexPanel;

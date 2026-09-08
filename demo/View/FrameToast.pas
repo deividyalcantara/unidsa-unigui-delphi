@@ -6,21 +6,23 @@ uses
   Windows, Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uniGUIFrame, uniGUIBaseClasses,
   uniGUIClasses, UniDSABase, UniDSAToast, uniButton, uniEdit, uniLabel, uniPanel,
-  uniGroupBox, uniScrollBox, UniDSAExecuteFunction;
+  UniDSAExecuteFunction, DemoUI, UniDSAFlexPanel;
 
 type
   TFrToast = class(TUniFrame)
+    flexDemoPage: TUniDSAFlexPanel;
+    lblSectionugbMensagem: TUniLabel;
     Toast: TUniDSAToast;
-    usbPrincipal: TUniScrollBox;
-    ugbMensagem: TUniGroupBox;
-    UniContainerPanel20: TUniContainerPanel;
-    UniContainerPanel23: TUniContainerPanel;
+    usbPrincipal: TUniDSAFlexPanel;
+    ugbMensagem: TUniDSAFlexPanel;
+    UniContainerPanel20: TUniDSAFlexPanel;
+    UniContainerPanel23: TUniDSAFlexPanel;
     UniLabel16: TUniLabel;
     edtTitulo: TUniEdit;
-    UniContainerPanel21: TUniContainerPanel;
+    UniContainerPanel21: TUniDSAFlexPanel;
     UniLabel15: TUniLabel;
     edtMensagem: TUniEdit;
-    UniContainerPanel22: TUniContainerPanel;
+    UniContainerPanel22: TUniDSAFlexPanel;
     btnMostrar: TUniButton;
     UniLabel1: TUniLabel;
     UniLabel2: TUniLabel;
@@ -43,7 +45,7 @@ procedure TFrToast.btnMostrarClick(Sender: TObject);
 begin
   inherited;
   Toast.Heading := edtTitulo.Text;
-  Toast.Text := edtTitulo.Text;
+  Toast.Text := edtMensagem.Text;
   Toast.Show;
 end;
 

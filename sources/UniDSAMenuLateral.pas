@@ -1,4 +1,4 @@
-unit UniDSAMenuLateral;
+ï»¿unit UniDSAMenuLateral;
 
 interface
 
@@ -371,6 +371,7 @@ type
     procedure SetTheme(ATheme: TUniDSAMenuLateralStyleTheme);
     property Height;
     property Width;
+    property Align;
     property Visible;
     property Logo: TUniDSAMenuLateralLogo read FLogo write FLogo;
     property Search: TUniDSAMenuLateralSearch read FSearch write SetSearch;
@@ -670,18 +671,18 @@ begin
   Theme.StyleLeft := Theme.StyleLeft;
   Theme.StyleRight := Theme.StyleRight;
 
-  Profile.Visible := Profile.Visible; 
+  Profile.Visible := Profile.Visible;
 
   Style.PaddingTop := Style.PaddingTop;
   Style.PaddingLeft := Style.PaddingLeft;
   Style.PaddingRight := Style.PaddingRight;
   Style.PaddingBottom := Style.PaddingBottom;
-  
+
   Style.BorderRadiusTopLeft := Style.BorderRadiusTopLeft;
   Style.BorderRadiusTopRight := Style.BorderRadiusTopRight;
   Style.BorderRadiusBottomLeft := Style.BorderRadiusBottomLeft;
   Style.BorderRadiusBottomRight := Style.BorderRadiusBottomRight;
-  
+
   Style.BorderTop := Style.BorderTop;
   Style.BorderLeft := Style.BorderLeft;
   Style.BorderRight := Style.BorderRight;
@@ -1380,7 +1381,7 @@ begin
   FBorderTop := 0;
   FBorderLeft := 0;
   FBorderRight := 2;
-  FBorderBottom := 0;  
+  FBorderBottom := 0;
 end;
 
 destructor TUniDSAMenuLateralMenuStyle.Destroy;
@@ -1392,7 +1393,7 @@ procedure TUniDSAMenuLateralMenuStyle.SetBorderBottom(const Value: Integer);
 begin
   if Assigned(FParentMenu) then
     FParentMenu.JS('$(".uni-ml").css("border-bottom","' + px(Value) +' solid var(--var-uni-ml-cor-borda)");');
-    
+
   FBorderBottom := Value;
 end;
 
@@ -1400,7 +1401,7 @@ procedure TUniDSAMenuLateralMenuStyle.SetBorderLeft(const Value: Integer);
 begin
   if Assigned(FParentMenu) then
     FParentMenu.JS('$(".uni-ml").css("border-left","' + px(Value) +' solid var(--var-uni-ml-cor-borda)");');
-    
+
   FBorderLeft := Value;
 end;
 
@@ -1440,7 +1441,7 @@ procedure TUniDSAMenuLateralMenuStyle.SetBorderRight(const Value: Integer);
 begin
   if Assigned(FParentMenu) then
     FParentMenu.JS('$(".uni-ml").css("border-right","' + px(Value) +' solid var(--var-uni-ml-cor-borda)");');
-    
+
   FBorderRight := Value;
 end;
 
@@ -1448,7 +1449,7 @@ procedure TUniDSAMenuLateralMenuStyle.SetBorderTop(const Value: Integer);
 begin
   if Assigned(FParentMenu) then
     FParentMenu.JS('$(".uni-ml").css("border-top","' + px(Value) +' solid var(--var-uni-ml-cor-borda)");');
-  
+
   FBorderTop := Value;
 end;
 
@@ -1494,7 +1495,7 @@ begin
   // Cor texto
   // Cor tema texto selecionado
   // Cor icone hover sair
-  // Cor fundo notificações
+  // Cor fundo notificaÃ§Ãµes
 
   if ATheme = mltClaro then
     Result := '"#FFF", "#edeeef", "#141414", "#00000009", "#141414", "#141414", "#141414", "#f42e2e", "#cddff0"'

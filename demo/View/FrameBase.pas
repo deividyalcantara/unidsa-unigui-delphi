@@ -5,10 +5,12 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Vcl.Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
-  uniGUIClasses, uniGUIFrame;
+  uniGUIClasses, uniGUIFrame, DemoUI, UniDSAFlexPanel;
 
 type
   TFrBase = class(TUniFrame)
+    flexDemoPage: TUniDSAFlexPanel;
+
   end;
 
 implementation

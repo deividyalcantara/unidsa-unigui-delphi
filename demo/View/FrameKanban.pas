@@ -1,18 +1,25 @@
-unit FrameKanban;
+Ôªøunit FrameKanban;
 
 interface
 
 uses
   System.SysUtils, System.Classes, Vcl.Controls, Vcl.Forms, uniGUIFrame,
   uniGUIBaseClasses, uniGUIClasses, uniLabel, uniPanel, uniEdit, uniButton,
-  UniDSABaseControl, UniDSAKanban;
+  UniDSABaseControl, UniDSAKanban, DemoUI, UniDSAFlexPanel;
 
 type
   TFrKanban = class(TUniFrame)
+    flexDemoPage: TUniDSAFlexPanel;
+    flexFieldedtNovoCartaoID: TUniDSAFlexPanel;
+    flexFieldedtNovoCartao: TUniDSAFlexPanel;
+    flexFieldbtnNovoCartao: TUniDSAFlexPanel;
+    lblFieldedtNovoCartaoID: TUniLabel;
+    lblFieldedtNovoCartao: TUniLabel;
+
     lblTitulo: TUniLabel;
     lblDescricao: TUniLabel;
     lblStatus: TUniLabel;
-    pnlNovoCartao: TUniContainerPanel;
+    pnlNovoCartao: TUniDSAFlexPanel;
     edtNovoCartaoID: TUniEdit;
     edtNovoCartao: TUniEdit;
     btnNovoCartao: TUniButton;
@@ -46,26 +53,26 @@ begin
   LTitulo := Trim(edtNovoCartao.Text);
 
   if LID = '' then begin
-    ShowMessage('Informe o ID do novo cart„o.');
+    ShowMessage('Informe o ID do novo cart√£o.');
     edtNovoCartaoID.SetFocus;
     Exit;
   end;
 
   if Assigned(Kanban.Cards.FindByID(LID)) then begin
-    ShowMessage(Format('J· existe um cart„o com o ID "%s".', [LID]));
+    ShowMessage(Format('J√° existe um cart√£o com o ID "%s".', [LID]));
     edtNovoCartaoID.SetFocus;
     Exit;
   end;
 
   if LTitulo = '' then begin
-    ShowMessage('Informe o tÌtulo do novo cart„o.');
+    ShowMessage('Informe o t√≠tulo do novo cart√£o.');
     edtNovoCartao.SetFocus;
     Exit;
   end;
 
-  if SameText(LTitulo, 'Cart„o XX') then begin
-    ShowMessage('O cart„o "Cart„o XX" n„o pode ser criado.');
-    lblStatus.Caption := 'CriaÁ„o bloqueada pela validaÁ„o do tÌtulo.';
+  if SameText(LTitulo, 'Cart√£o XX') then begin
+    ShowMessage('O cart√£o "Cart√£o XX" n√£o pode ser criado.');
+    lblStatus.Caption := 'Cria√ß√£o bloqueada pela valida√ß√£o do t√≠tulo.';
     edtNovoCartao.SetFocus;
     Exit;
   end;
@@ -76,7 +83,7 @@ begin
     LCard.ID := LID;
     LCard.ColumnID := 'a_fazer';
     LCard.Caption := LTitulo;
-    LCard.Description := 'Cart„o criado em runtime pela demonstraÁ„o.';
+    LCard.Description := 'Cart√£o criado em runtime pela demonstra√ß√£o.';
     LCard.Tag := 'Novo';
     LCard.Badge := 'Pendente';
     LCard.Footer := 'Criado agora';
@@ -90,7 +97,7 @@ begin
   edtNovoCartao.Clear;
 
   lblStatus.Caption := Format(
-    'Novo cart„o criado: "%s". ID salvo: %s.',
+    'Novo cart√£o criado: "%s". ID salvo: %s.',
     [LCard.Caption, LCard.ID]
   );
 
@@ -99,7 +106,7 @@ end;
 
 procedure TFrKanban.KanbanCardClick(Sender: TObject; ACard: TUniDSAKanbanCard);
 begin
-  lblStatus.Caption := Format('Cart„o selecionado: %s', [ACard.Caption]);
+  lblStatus.Caption := Format('Cart√£o selecionado: %s', [ACard.Caption]);
 end;
 
 procedure TFrKanban.KanbanCardMove(
@@ -112,7 +119,7 @@ procedure TFrKanban.KanbanCardMove(
 begin
   if SameText(ASourceColumn.ID, ATargetColumn.ID) then begin
     lblStatus.Caption := Format(
-      'Reordenando "%s" na coluna %s: posiÁ„o %d para %d.',
+      'Reordenando "%s" na coluna %s: posi√ß√£o %d para %d.',
       [ACard.Caption, ASourceColumn.Caption, AOldIndex + 1, ANewIndex + 1]
     )
   end
@@ -134,13 +141,13 @@ begin
   if Assigned(LColumn) then begin
     if SameText(ACard.ID, FUltimoCardId) then begin
       lblStatus.Caption := Format(
-        'O cart„o criado manualmente "%s" (ID: %s) foi movido para %s.',
+        'O cart√£o criado manualmente "%s" (ID: %s) foi movido para %s.',
         [ACard.Caption, ACard.ID, LColumn.Caption]
       )
     end
     else begin
       lblStatus.Caption := Format(
-        'MovimentaÁ„o concluÌda: "%s" agora est· em %s.',
+        'Movimenta√ß√£o conclu√≠da: "%s" agora est√° em %s.',
         [ACard.Caption, LColumn.Caption]
       );
     end;

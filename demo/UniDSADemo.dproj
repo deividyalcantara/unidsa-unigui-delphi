@@ -161,6 +161,7 @@ $(PreBuildEvent)]]></PreBuildEvent>
             <DesignClass>TUniFrame</DesignClass>
         </DCCReference>
         <DCCReference Include="Library\Funcoes.pas"/>
+        <DCCReference Include="Library\DemoUI.pas"/>
         <DCCReference Include="View\FrameHome.pas">
             <Form>FrHome</Form>
             <FormType>dfm</FormType>

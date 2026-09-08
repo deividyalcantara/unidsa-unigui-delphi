@@ -1,0 +1,47 @@
+/* Scoped to windows carrying TUniDSAFormStyle. No global uniGUI theme changes. */
+.dsa-form-style{
+  background:var(--dsa-form-background)!important;background-image:none!important;
+  border:var(--dsa-form-borderWidth) solid var(--dsa-form-borderColor)!important;
+  border-radius:var(--dsa-form-radius)!important;box-shadow:var(--dsa-form-shadow)!important;
+  padding:0!important;overflow:hidden!important;
+}
+.dsa-form-style > .x-window-bodyWrap{width:100%!important}
+.dsa-form-style .x-window-body{
+  background:var(--dsa-form-background)!important;background-image:none!important;
+  border:0!important;width:100%!important;
+}
+.dsa-form-style .x-window-header{
+  background:var(--dsa-form-headerBackground)!important;background-image:none!important;
+  border:0!important;box-shadow:none!important;padding:0 20px!important;
+  border-radius:0!important;width:100%!important;box-sizing:border-box;
+}
+.dsa-form-style .x-window-header-title,.dsa-form-style .x-title-text{
+  color:var(--dsa-form-titleColor)!important;font:600 var(--dsa-form-fontSize)/1.35 "Segoe UI",Arial,sans-serif!important;
+}
+.dsa-form-style .x-title-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dsa-form-style.dsa-form-no-icon .x-title-icon-wrap{display:none!important}
+.dsa-form-style .x-tool{background:transparent!important}
+.dsa-form-style .x-tool:has(.x-tool-close){
+  width:var(--dsa-form-closeSize)!important;height:var(--dsa-form-closeSize)!important;
+  border-radius:10px;cursor:pointer;
+}
+.dsa-form-style .x-tool:has(.x-tool-close):hover{background:var(--dsa-form-closeHover)!important}
+.dsa-form-style .x-tool:has(.x-tool-close):focus-visible{outline:2px solid var(--dsa-form-closeColor);outline-offset:2px}
+.dsa-form-style .x-tool-close{
+  background:none!important;width:var(--dsa-form-closeSize)!important;height:var(--dsa-form-closeSize)!important;
+  position:relative;opacity:1!important;
+}
+.dsa-form-style .x-tool-close::before,.dsa-form-style .x-tool-close::after{
+  content:"";position:absolute;left:calc(50% - 8px);top:calc(50% - 1px);
+  width:16px;height:2px;border-radius:2px;background:var(--dsa-form-closeColor);transform:rotate(45deg);
+}
+.dsa-form-style .x-tool-close::after{transform:rotate(-45deg)}
+.dsa-form-style.dsa-form-no-close .x-tool:has(.x-tool-close){display:none!important}
+.dsa-form-style .dsa-form-content{
+  top:0!important;width:100%!important;height:calc(100% - var(--dsa-form-footerHeight,0px))!important;
+}
+.dsa-form-style .dsa-form-footer{
+  top:auto!important;bottom:0!important;width:100%!important;border:0!important;
+  border-top:1px solid var(--dsa-form-borderColor)!important;background:var(--dsa-form-headerBackground)!important;
+}
+.dsa-form-style .dsa-form-footer .x-btn-inner{color:var(--dsa-form-titleColor)!important;font:500 14px "Segoe UI",Arial,sans-serif!important}

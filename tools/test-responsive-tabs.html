@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="pt-BR">
+<meta charset="utf-8">
+<title>Responsive tabs - teste de integração Ext JS 7.9</title>
+<!-- Copie para files/ em um servidor uniGUI local com Ext JS 7.9. -->
+<link rel="stylesheet" href="/ext-7.9.0/build/classic/theme-gray/resources/theme-gray-all.css">
+<link rel="stylesheet" href="/files/dsa/responsive-page-control/css/style.css?v=1.1.3">
+<script src="/ext-7.9.0/build/ext-all.js"></script>
+<script src="/files/dsa/responsive-page-control/js/script.js?v=1.1.2"></script>
+<style>
+  body { padding: 24px; background: #fff; font: 14px Arial, sans-serif; }
+  nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
+  button { padding: 10px; cursor: pointer; }
+  #result { display: block; padding: 16px 0; }
+</style>
+<nav>
+  <button id="compact">Compactar (240px)</button>
+  <button id="expand">Expandir (920px)</button>
+  <button id="palette">Alterar cores e alinhar ao início</button>
+  <button id="last">Selecionar última</button>
+  <button id="add">Adicionar aba</button>
+  <button id="remove">Remover aba ativa</button>
+  <button id="check">Verificar estado</button>
+</nav>
+<output id="result">Aguardando Ext JS</output>
+<div id="fixture"></div>
+<script>
+Ext.onReady(function () {
+  var options = { alignment: 'center', keepActiveVisible: true, colors: {} };
+  var panel = Ext.create('Ext.tab.Panel', {
+    renderTo: 'fixture', width: 920, height: 280,
+    cls: 'dsa-responsive-page-control',
+    tabBar: { cls: 'dsa-tabs-bar', layout: { align: 'middle', pack: 'center', overflowHandler: 'menu' } },
+    items: [
+      { title: 'Primeira', html: 'Página 1' },
+      { title: 'Indisponível', disabled: true },
+      { title: 'Oculta', tabConfig: { hidden: true } },
+      { title: 'Terceira', html: 'Página 3' },
+      { title: 'Última aba com um título bastante longo', html: 'Página final' }
+    ]
+  });
+  UniDSAResponsiveTabs.attach(panel, options);
+  var output = document.getElementById('result');
+  document.getElementById('compact').onclick = function () { panel.setWidth(240); };
+  document.getElementById('expand').onclick = function () { panel.setWidth(920); };
+  document.getElementById('palette').onclick = function () {
+    options = { alignment: 'start', keepActiveVisible: true,
+      colors: { background: '#f0fdf4', border: '#bbf7d0', accent: '#15803d',
+        'accent-hover': '#166534', 'active-text': '#ffffff', hover: '#dcfce7',
+        'hover-text': '#14532d', surface: '#f0fdf4', text: '#14532d', focus: '#86efac' } };
+    UniDSAResponsiveTabs.attach(panel, options);
+  };
+  document.getElementById('last').onclick = function () { panel.setActiveTab(panel.items.last()); };
+  document.getElementById('add').onclick = function () {
+    panel.setActiveTab(panel.add({ title: 'Aba dinâmica', html: 'Adicionada em execução' }));
+  };
+  document.getElementById('remove').onclick = function () { panel.remove(panel.getActiveTab()); };
+  document.getElementById('check').onclick = function () {
+    var bar = panel.getTabBar(), active = bar.activeTab;
+    var bounds = active.el.dom.getBoundingClientRect();
+    var handler = bar.getLayout().overflowHandler;
+    var menuBounds = handler.menuTrigger.el.dom.getBoundingClientRect();
+    var visible = !active.hasCls(handler.menuItemOverflowedCls);
+    var fits = !handler.menuItems.length || bounds.right <= menuBounds.left;
+    var isolated = !handler.menuItems.some(function (item) { return item.hidden; });
+    output.textContent = (visible && fits && isolated ? 'PASS' : 'FAIL') +
+      ': aba ativa visível=' + visible + ', sem sobreposição=' + fits +
+      ', abas ocultas fora do menu=' + isolated + ', ativa=' + active.text;
+  };
+  output.textContent = 'Pronto para testar';
+});
+</script>
+</html>

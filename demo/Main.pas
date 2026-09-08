@@ -1,4 +1,4 @@
-unit Main;
+﻿unit Main;
 
 interface
 
@@ -8,13 +8,16 @@ uses
   uniGUIClasses, uniGUIForm, UniDSAMenuLateral, uniGUIBaseClasses, UniDSABaseControl,
   UniDSABase, UniDSAConfirm, FrameToast, FrameLeitorQRCode,
   UniDSAToast, FrameHome, FrameMenuLateral, uniPanel, uniGUIRegClasses,
-  FrameConfirm, FrameKanban, FrameFlexPanel, UniDSAExecuteFunction;
+  FrameConfirm, FrameKanban, FrameFlexPanel, UniDSAExecuteFunction,
+  UniDSAFlexPanel, DemoUI, uniPageControl;
 
 type
   TMainForm = class(TUniForm)
     mlMenu: TUniDSAMenuLateral;
     Toast: TUniDSAToast;
     Confirm: TUniDSAConfirm;
+    flexShell: TUniDSAFlexPanel;
+    flexContent: TUniDSAFlexPanel;
     procedure mlMenuClickLogo(Sender: TObject);
     procedure mlMenuClickLogoff(Sender: TObject);
     procedure UniFormAfterShow(Sender: TObject);
@@ -30,8 +33,10 @@ type
     procedure mlMenuMenu3Click(Sender: TObject);
     procedure mlMenuKanbanClick(Sender: TObject);
     procedure mlMenuFlexClick(Sender: TObject);
+    procedure UniFormScreenResize(Sender: TObject; AWidth, AHeight: Integer);
   private
     FFrame: TUniFrame;
+    FCompact: Boolean;
 
     procedure ConfigurarMenuComponentes;
     procedure MostrarMenu(ATipoFrame: TUniFrameClass);
@@ -59,7 +64,7 @@ begin
   Confirm.ClearEvents;
   Confirm.Title := 'Logoff';
   Confirm.Content := '<span style=''font-size:14px;''>Deseja sair do sistema?</span>';
-  Confirm.BoxWidth := '30%';
+  Confirm.BoxWidth := 'min(480px, calc(100vw - 32px))';
 
   with Confirm.Buttons.AddItem do begin
     Text := 'Sim';
@@ -67,12 +72,12 @@ begin
     OnClickRef :=
       procedure (Sender: TObject)
       begin
-        UniApplication.Terminate('O usu�rio realizou o logoff do sistema: ' + TUniDSAConfirmButtonItem(Sender).Text + '');
+        UniApplication.Terminate('O usuário realizou o logoff do sistema: ' + TUniDSAConfirmButtonItem(Sender).Text + '');
       end;
   end;
 
   with Confirm.Buttons.AddItem do begin
-    Text := 'N�o';
+    Text := 'Não';
     BtnClass := 'btn-blue';
   end;
 
@@ -100,7 +105,7 @@ begin
     Confirm.ClearEvents;
 
     Confirm.Title := 'Menu Lateral';
-    Confirm.BoxWidth := '30%';
+    Confirm.BoxWidth := 'min(480px, calc(100vw - 32px))';
     Confirm.Draggable := False;
     Confirm.&Type := Green;
     Confirm.Icon := LMenuItem.Icon;
@@ -124,7 +129,7 @@ begin
     end;
 
     with Confirm.Buttons.AddItem do begin
-      Text := 'N�o';
+      Text := 'Não';
       BtnClass := 'btn-red';
       OnClickRef :=
         procedure (Sender: TObject)
@@ -176,12 +181,119 @@ begin
 end;
 
 procedure TMainForm.MostrarMenu(ATipoFrame: TUniFrameClass);
+var
+  LPage: TUniDSAFlexPanel;
+  LTabs: TUniTabSheet;
 begin
   FreeAndNil(FFrame);
 
   FFrame := TUniFrameClass(ATipoFrame).Create(Self);
-  FFrame.Parent := Self;
+  FFrame.Parent := flexContent;
+  FFrame.ParentAlignmentControl := False;
+  FFrame.AlignmentControl := uniAlignmentClient;
+  FFrame.Layout := 'fit';
   FFrame.Align := TAlign.alClient;
+  with flexContent.FlexItems.Add do begin
+    Control := FFrame.FormRegion;
+    Grow := 1;
+    Basis := '0px';
+  end;
+  DemoPrepare(FFrame);
+
+  if FFrame is TFrToast then begin
+    with TFrToast(FFrame) do begin
+      UniLabel3.Caption := 'Configure a notificação abaixo e use Mostrar para testar.';
+      DemoProperties(FFrame, flexDemoPage, Toast, 'Comportamento da notificação',
+        ['Icon', 'Position.Position', 'ShowHideTransition', 'HideAfter',
+         'AllowToastClose', 'Stack.Enabled', 'Stack.Value', 'TextAlign',
+         'Loader.Enabled', 'Loader.Background', 'BgColor.Enabled', 'BgColor.Color',
+         'TextColor.Enabled', 'TextColor.Color']);
+    end;
+  end
+  else if FFrame is TFrConfirm then begin
+    with TFrConfirm(FFrame) do begin
+      UniLabel3.Caption := 'Aplique as propriedades e abra o diálogo para comparar o resultado.';
+      Confirm.BoxWidth := 'min(480px, calc(100vw - 32px))';
+      DemoProperties(FFrame, flexDemoPage, Confirm, 'Aparência e interação do diálogo',
+        ['Theme', 'Type', 'Icon', 'Draggable', 'Close.CloseIcon', 'EscapeKey',
+         'Dismiss.BackgroundDismiss', 'Animation.Enabled', 'Animation.Animation',
+         'Animation.AnimationSpeed', 'TypeAnimated']);
+    end;
+  end
+  else if FFrame is TFrMenuLateral then begin
+    with TFrMenuLateral(FFrame) do
+      DemoProperties(FFrame, flexDemoPage, mlMenu, 'Propriedades adicionais do menu',
+        ['SelectedTheme', 'Style.PaddingTop', 'Style.PaddingLeft',
+         'Style.PaddingRight', 'Style.PaddingBottom', 'Logo.Visible',
+         'Search.Visible', 'Profile.Visible', 'Theme.Visible']);
+  end
+  else if FFrame is TFrKanban then begin
+    with TFrKanban(FFrame) do begin
+      Kanban.Height := 560;
+      DemoProperties(FFrame, flexDemoPage, Kanban, 'Comportamento do quadro',
+        ['ReadOnly', 'EmptyText', 'WIPLimitMessage', 'MoveDeniedMessage']);
+      DemoProperties(FFrame, flexDemoPage, Kanban.Columns[1], 'Coluna em andamento',
+        ['Caption', 'Description', 'WIPLimit', 'AllowDrop', 'AccentColor']);
+    end;
+  end
+  else if FFrame is TFrLeitorQrCode then begin
+    with TFrLeitorQrCode(FFrame) do begin
+      qrcLeitor.Height := 380;
+      DemoProperties(FFrame, flexDemoPage, qrcLeitor, 'Opções da próxima leitura única',
+        ['FPS', 'QrBox']);
+      DemoText(FFrame, flexDemoPage,
+        'A câmera depende da permissão do navegador. Use localhost ou HTTPS. ' +
+        'A leitura única abre uma janela adaptável.', 'demo-muted');
+    end;
+  end
+  else if FFrame is TFrHome then begin
+    with TFrHome(FFrame) do begin
+      UniLabel1.Caption := 'Explore o UniDSA';
+      UniLabel2.Caption := 'Componentes nativos, layouts flexíveis e exemplos prontos para experimentar.';
+      LPage := DemoPanel(FFrame, flexDemoPage, 'demo-card');
+      LPage.Flex.Padding := 24;
+      DemoText(FFrame, LPage, 'Um laboratório para cada componente', 'demo-section-title');
+      DemoText(FFrame, LPage, 'Escolha um componente no menu. Edite propriedades, ' +
+        'aplique os valores e veja o comportamento real sem sair da página.', 'demo-muted');
+      DemoText(FFrame, LPage, 'Layout responsivo', 'demo-section-title');
+      DemoText(FFrame, LPage, 'Os campos se reorganizam conforme o espaço do painel. ' +
+        'Em telas pequenas, o menu recolhe e as seções passam para uma coluna.', 'demo-muted');
+      DemoText(FFrame, LPage, 'Navegação acessível', 'demo-section-title');
+      DemoText(FFrame, LPage, 'Use Tab para percorrer os controles. As ações mantêm ' +
+        'indicação de foco e os valores aplicados recebem uma confirmação na tela.', 'demo-muted');
+    end;
+  end
+  else if FFrame is TFrFlexPanel then begin
+    with TFrFlexPanel(FFrame) do begin
+      flexLabComandos.Flex.AutoHeight := True;
+      flexAlinhamentoComandos.Flex.AutoHeight := True;
+      for LPage in TArray<TUniDSAFlexPanel>.Create(flexCadastro, flexEndereco,
+        flexResumo, flexMetricaVendas, flexMetricaPedidos, flexMetricaClientes,
+        flexDashboardDetalhes) do begin
+        DemoClass(LPage, 'demo-card');
+        LPage.Flex.AutoHeight := True;
+        LPage.FlexItem.Shrink := 0;
+      end;
+      LTabs := TUniTabSheet.Create(FFrame);
+      LTabs.PageControl := pcExemplos;
+      LTabs.Caption := 'Personalizar abas';
+      LTabs.ParentAlignmentControl := False;
+      LTabs.AlignmentControl := uniAlignmentClient;
+      LTabs.Layout := 'fit';
+      LPage := DemoPanel(FFrame, LTabs, 'demo-page');
+      LPage.Align := alClient;
+      LPage.Flex.AutoHeight := False;
+      LPage.Flex.Overflow := foAuto;
+      LPage.Flex.Padding := 16;
+      DemoProperties(FFrame, LPage, pcExemplos, 'Navegação e cores das abas',
+        ['TabAlignment', 'KeepActiveTabVisible', 'TabColors.BackgroundColor',
+         'TabColors.TextColor', 'TabColors.HoverColor', 'TabColors.HoverTextColor',
+         'TabColors.ActiveColor', 'TabColors.ActiveTextColor',
+         'TabColors.ActiveHoverColor', 'TabColors.FocusColor', 'TabColors.MenuColor']);
+    end;
+  end;
+  if FCompact and (mlMenu.MenuState <> mlmMinimize) then
+    mlMenu.MenuState := mlmMinimize;
 end;
 
 procedure TMainForm.ToastAfterHidden(Sender: TObject);
@@ -245,8 +357,30 @@ end;
 
 procedure TMainForm.UniFormCreate(Sender: TObject);
 begin
+  DemoClass(flexShell, 'demo-shell');
+  DemoClass(flexContent, 'demo-shell demo-content');
+  with flexShell.FlexItems.Add do begin
+    Control := mlMenu;
+    Shrink := 0;
+  end;
+  OnScreenResize := UniFormScreenResize;
   ConfigurarMenuComponentes;
   MostrarMenu(TFrHome);
+  UniFormScreenResize(Self, UniApplication.ScreenWidth, UniApplication.ScreenHeight);
+end;
+
+procedure TMainForm.UniFormScreenResize(Sender: TObject; AWidth, AHeight: Integer);
+var
+  LCompact: Boolean;
+begin
+  if AWidth <= 0 then Exit;
+  LCompact := AWidth < 900;
+  if LCompact = FCompact then Exit;
+  FCompact := LCompact;
+  if FCompact then
+    mlMenu.MenuState := mlmMinimize
+  else
+    mlMenu.MenuState := mlmMaximize;
 end;
 
 procedure TMainForm.mlMenuClickLogo(Sender: TObject);

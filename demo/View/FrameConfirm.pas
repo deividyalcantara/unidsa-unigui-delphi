@@ -1,26 +1,28 @@
-unit FrameConfirm;
+﻿unit FrameConfirm;
 
 interface
 
 uses
   Windows, Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, uniGUIBaseClasses, uniGUIClasses,
-  uniLabel, uniButton, uniEdit, uniPanel, uniGroupBox, UniDSABase,
-  UniDSAConfirm, UniDSAExecuteFunction, uniGUIFrame;
+  uniLabel, uniButton, uniEdit, uniPanel, UniDSABase,
+  UniDSAConfirm, UniDSAExecuteFunction, uniGUIFrame, DemoUI, UniDSAFlexPanel;
 
 type
   TFrConfirm = class(TUniFrame)
+    flexDemoPage: TUniDSAFlexPanel;
+    lblSectionugbMensagem: TUniLabel;
     UniLabel2: TUniLabel;
     UniLabel1: TUniLabel;
-    ugbMensagem: TUniGroupBox;
-    UniContainerPanel20: TUniContainerPanel;
-    UniContainerPanel23: TUniContainerPanel;
+    ugbMensagem: TUniDSAFlexPanel;
+    UniContainerPanel20: TUniDSAFlexPanel;
+    UniContainerPanel23: TUniDSAFlexPanel;
     UniLabel16: TUniLabel;
     edtTitulo: TUniEdit;
-    UniContainerPanel21: TUniContainerPanel;
+    UniContainerPanel21: TUniDSAFlexPanel;
     UniLabel15: TUniLabel;
     edtMensagem: TUniEdit;
-    UniContainerPanel22: TUniContainerPanel;
+    UniContainerPanel22: TUniDSAFlexPanel;
     btnMostrar: TUniButton;
     UniLabel3: TUniLabel;
     Confirm: TUniDSAConfirm;
@@ -35,16 +37,10 @@ procedure TFrConfirm.btnMostrarClick(Sender: TObject);
 begin
   inherited;
   with Confirm do begin
-    Clear;
-    ClearEvents;
+    Buttons.Clear;
 
     Title := edtTitulo.Text;
-    BoxWidth := '30%';
-    Draggable := False;
-    &Type := Green;
-    Icon := '';
     Content := edtMensagem.Text;
-    Theme := Supervan;
 
     with Buttons.AddItem do begin
       Text := 'Sim';
@@ -52,7 +48,7 @@ begin
       OnClickRef :=
         procedure (Sender: TObject)
         begin
-          //
+          UniLabel3.Caption := 'Confirmado: o evento OnClickRef do botão Sim foi executado.';
         end;
     end;
 
@@ -62,17 +58,17 @@ begin
       OnClickRef :=
         procedure (Sender: TObject)
         begin
-          //
+          UniLabel3.Caption := 'Ajuda: cada botão pode executar um evento independente.';
         end;
     end;
 
     with Buttons.AddItem do begin
-      Text := 'N�o';
+      Text := 'Não';
       BtnClass := 'btn-red';
       OnClickRef :=
         procedure (Sender: TObject)
         begin
-          //
+          UniLabel3.Caption := 'Cancelado: nenhuma operação foi executada.';
         end;
     end;
 

@@ -1,172 +1,207 @@
-inherited FrLeitorQrCode: TFrLeitorQrCode
-  object usbPrincipal: TUniScrollBox
-    Left = 0
-    Top = 0
-    Width = 624
-    Height = 441
-    Hint = ''
+object FrLeitorQrCode: TFrLeitorQrCode
+  object flexDemoPage: TUniDSAFlexPanel
+    Tag = 120
+    Width = 900
+    Height = 680
     Align = alClient
-    TabOrder = 0
-    ExplicitWidth = 640
-    ExplicitHeight = 480
-    object ugbMensagem: TUniGroupBox
-      AlignWithMargins = True
-      Left = 20
-      Top = 80
-      Width = 697
-      Height = 544
+    Flex.Direction = fdColumn
+    Flex.Wrap = fwNoWrap
+    Flex.Gap = 20
+    Flex.Padding = 24
+    Flex.Overflow = foAuto
+    object usbPrincipal: TUniDSAFlexPanel
+      Left = 0
+      Top = 0
+      Width = 624
+      Height = 441
       Hint = ''
-      Margins.Left = 20
-      Margins.Top = 10
-      Margins.Right = 20
-      Margins.Bottom = 0
-      Caption = 'Leitura'
-      Align = alClient
       TabOrder = 0
-      ExplicitTop = 98
-      ExplicitWidth = 598
-      ExplicitHeight = 380
-      object UniContainerPanel20: TUniContainerPanel
-        AlignWithMargins = True
-        Left = 2
+      Tag = 110
+      Flex.AutoHeight = True
+      Flex.Gap = 10
+      Flex.AlignContent = faStart
+      Flex.Overflow = foVisible
+      Flex.Direction = fdColumn
+      Flex.Wrap = fwNoWrap
+      FlexItem.Shrink = 0
+      ParentColor = False
+      Color = 16579066
+      Align = alNone
+      object UniLabel1: TUniLabel
+        Left = 20
         Top = 20
-        Width = 693
-        Height = 42
+        Width = 147
+        Height = 30
         Hint = ''
-        Margins.Left = 0
-        Margins.Top = 5
-        Margins.Right = 0
-        Margins.Bottom = 0
+        Caption = 'QrCode Reader'
+        ParentFont = False
+        Font.Height = 30
+        Font.Style = [fsBold]
         ParentColor = False
-        Align = alTop
+        Color = clBtnFace
         TabOrder = 1
-        ExplicitWidth = 594
-        object UniContainerPanel23: TUniContainerPanel
-          AlignWithMargins = True
-          Left = 3
-          Top = 0
-          Width = 284
-          Height = 39
-          Hint = ''
-          Margins.Top = 0
-          ParentColor = False
-          Align = alLeft
-          TabOrder = 1
-          object UniLabel16: TUniLabel
-            Left = 0
-            Top = 0
-            Width = 52
-            Height = 13
-            Hint = ''
-            Caption = 'Resultado'
-            Align = alTop
-            ParentColor = False
-            Color = clBtnFace
-            TabOrder = 1
-          end
-          object edtResultado: TUniEdit
-            Left = 0
-            Top = 17
-            Width = 284
-            Hint = ''
-            Text = ''
-            Align = alBottom
-            TabOrder = 2
-          end
-        end
-        object UniContainerPanel22: TUniContainerPanel
-          AlignWithMargins = True
-          Left = 293
-          Top = 0
-          Width = 108
-          Height = 39
-          Hint = ''
-          Margins.Top = 0
-          ParentColor = False
-          Align = alLeft
-          TabOrder = 2
-          object btnLeitura: TUniButton
-            Left = 0
-            Top = 17
-            Width = 108
-            Height = 22
-            Hint = ''
-            Caption = 'Leitura '#250'nica'
-            Align = alBottom
-            TabOrder = 1
-            OnClick = btnLeituraClick
-          end
-        end
+        Align = alNone
       end
-      object qrcLeitor: TUniDSAQrCodeReader
-        Left = 3
-        Top = 65
-        Width = 400
-        Height = 352
+      object UniLabel2: TUniLabel
+        Left = 20
+        Top = 50
+        Width = 377
+        Height = 20
         Hint = ''
-        Text = ''
-        SingleRead = False
-        QrBox = 250
-        FPS = 10
-        SupportedFormats.QR_CODE = True
-        SupportedFormats.AZTEC = True
-        SupportedFormats.CODABAR = True
-        SupportedFormats.CODE_39 = True
-        SupportedFormats.CODE_93 = True
-        SupportedFormats.CODE_128 = True
-        SupportedFormats.DATA_MATRIX = True
-        SupportedFormats.MAXICODE = True
-        SupportedFormats.ITF = True
-        SupportedFormats.EAN_13 = True
-        SupportedFormats.EAN_8 = True
-        SupportedFormats.PDF_417 = True
-        SupportedFormats.RSS_14 = True
-        SupportedFormats.RSS_EXPANDED = True
-        SupportedFormats.UPC_A = True
-        SupportedFormats.UPC_E = True
-        SupportedFormats.UPC_EAN_EXTENSION = True
-        OnAfterReading = qrcLeitorAfterReading
+        Caption = 'Componente para leitura de c'#243'digos de barras e QrCode'
+        ParentFont = False
+        Font.Color = clGray
+        Font.Height = -15
+        ParentColor = False
+        Color = clBtnFace
+        TabOrder = 2
+        Align = alNone
       end
-    end
-    object UniLabel1: TUniLabel
-      AlignWithMargins = True
-      Left = 20
-      Top = 20
-      Width = 147
-      Height = 30
-      Hint = ''
-      Margins.Left = 20
-      Margins.Top = 20
-      Margins.Right = 20
-      Margins.Bottom = 0
-      Caption = 'QrCode Reader'
-      Align = alTop
-      ParentFont = False
-      Font.Height = 30
-      Font.Style = [fsBold]
-      ParentColor = False
-      Color = clBtnFace
-      TabOrder = 1
-    end
-    object UniLabel2: TUniLabel
-      AlignWithMargins = True
-      Left = 20
-      Top = 50
-      Width = 377
-      Height = 20
-      Hint = ''
-      Margins.Left = 20
-      Margins.Top = 0
-      Margins.Right = 20
-      Margins.Bottom = 0
-      Caption = 'Componente para leitura de c'#243'digos de barras e QrCode'
-      Align = alTop
-      ParentFont = False
-      Font.Color = clGray
-      Font.Height = -15
-      ParentColor = False
-      Color = clBtnFace
-      TabOrder = 2
+      object ugbMensagem: TUniDSAFlexPanel
+        Left = 20
+        Top = 80
+        Width = 697
+        Height = 544
+        Hint = ''
+        TabOrder = 0
+        Tag = 100
+        Flex.AutoHeight = True
+        Flex.Gap = 16
+        Flex.AlignContent = faStart
+        Flex.Overflow = foVisible
+        Flex.Direction = fdColumn
+        Flex.Wrap = fwNoWrap
+        FlexItem.Shrink = 0
+        ParentColor = False
+        Color = clWhite
+        Flex.Padding = 20
+        Align = alNone
+        object lblSectionugbMensagem: TUniLabel
+          Tag = 100
+          Caption = 'Leitura'
+          Height = 28
+          Align = alNone
+        end
+        object UniContainerPanel20: TUniDSAFlexPanel
+          Left = 2
+          Top = 20
+          Width = 693
+          Height = 42
+          Hint = ''
+          TabOrder = 1
+          Tag = 101
+          Flex.AutoHeight = True
+          Flex.Gap = 10
+          Flex.AlignContent = faStart
+          Flex.Overflow = foVisible
+          Flex.Direction = fdRow
+          Flex.Wrap = fwWrap
+          FlexItem.Shrink = 0
+          ParentColor = False
+          Color = 16579066
+          Align = alNone
+          object UniContainerPanel23: TUniDSAFlexPanel
+            Left = 3
+            Top = 0
+            Width = 284
+            Height = 39
+            Hint = ''
+            TabOrder = 1
+            Tag = 102
+            Flex.AutoHeight = True
+            Flex.Gap = 10
+            Flex.AlignContent = faStart
+            Flex.Overflow = foVisible
+            Flex.Direction = fdColumn
+            Flex.Wrap = fwNoWrap
+            FlexItem.Shrink = 0
+            ParentColor = False
+            Color = 16579066
+            Align = alNone
+            object UniLabel16: TUniLabel
+              Left = 0
+              Top = 0
+              Width = 52
+              Height = 13
+              Hint = ''
+              Caption = 'Resultado'
+              ParentColor = False
+              Color = clBtnFace
+              TabOrder = 1
+              Align = alNone
+            end
+            object edtResultado: TUniEdit
+              Left = 0
+              Top = 17
+              Width = 284
+              Hint = ''
+              Text = ''
+              TabOrder = 2
+              Align = alNone
+            end
+          end
+          object UniContainerPanel22: TUniDSAFlexPanel
+            Left = 293
+            Top = 0
+            Width = 108
+            Height = 39
+            Hint = ''
+            TabOrder = 2
+            Tag = 102
+            Flex.AutoHeight = True
+            Flex.Gap = 10
+            Flex.AlignContent = faStart
+            Flex.Overflow = foVisible
+            Flex.Direction = fdColumn
+            Flex.Wrap = fwNoWrap
+            FlexItem.Shrink = 0
+            ParentColor = False
+            Color = 16579066
+            Align = alNone
+            object btnLeitura: TUniButton
+              Left = 0
+              Top = 17
+              Width = 108
+              Height = 22
+              Hint = ''
+              Caption = 'Leitura '#250'nica'
+              TabOrder = 1
+              OnClick = btnLeituraClick
+              Align = alNone
+            end
+          end
+        end
+        object qrcLeitor: TUniDSAQrCodeReader
+          Left = 3
+          Top = 65
+          Width = 400
+          Height = 352
+          Hint = ''
+          Text = ''
+          SingleRead = False
+          QrBox = 180
+          FPS = 10
+          SupportedFormats.QR_CODE = True
+          SupportedFormats.AZTEC = True
+          SupportedFormats.CODABAR = True
+          SupportedFormats.CODE_39 = True
+          SupportedFormats.CODE_93 = True
+          SupportedFormats.CODE_128 = True
+          SupportedFormats.DATA_MATRIX = True
+          SupportedFormats.MAXICODE = True
+          SupportedFormats.ITF = True
+          SupportedFormats.EAN_13 = True
+          SupportedFormats.EAN_8 = True
+          SupportedFormats.PDF_417 = True
+          SupportedFormats.RSS_14 = True
+          SupportedFormats.RSS_EXPANDED = True
+          SupportedFormats.UPC_A = True
+          SupportedFormats.UPC_E = True
+          SupportedFormats.UPC_EAN_EXTENSION = True
+          OnAfterReading = qrcLeitorAfterReading
+          Align = alNone
+        end
+      end
     end
   end
   object Toast: TUniDSAToast

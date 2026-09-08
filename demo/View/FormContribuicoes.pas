@@ -5,18 +5,20 @@ interface
 uses
   Windows, Messages, SysUtils, Variants, Classes, Graphics,
   Controls, Forms, uniGUITypes, uniGUIAbstractClasses,
-  uniGUIClasses, uniGUIForm, uniGUIBaseClasses, uniPanel, uniHTMLFrame, uniLabel, Vcl.Imaging.pngimage, uniImage, uniButton;
+  uniGUIClasses, uniGUIForm, uniGUIBaseClasses, uniPanel, uniHTMLFrame, uniLabel,
+  Vcl.Imaging.pngimage, uniImage, uniButton, UniDSAFlexPanel, UniDSAFormStyle, DemoUI;
 
 type
   TFrmContribuicoes = class(TUniForm)
-    a: TUniContainerPanel;
+    flexDemoPage: TUniDSAFlexPanel;
+    a: TUniDSAFlexPanel;
     UniLabel1: TUniLabel;
     UniImage1: TUniImage;
     UniLabel2: TUniLabel;
     UniLabel3: TUniLabel;
     UniLabel4: TUniLabel;
     UniLabel5: TUniLabel;
-    b: TUniContainerPanel;
+    b: TUniDSAFlexPanel;
     btnObrigado: TUniButton;
     procedure btnObrigadoClick(Sender: TObject);
     procedure UniFormClose(Sender: TObject; var Action: TCloseAction);
@@ -37,8 +39,11 @@ var
   LForm: TFrmContribuicoes;
 begin
   LForm := TFrmContribuicoes.Create(UniApplication);
-  LForm.ShowModal();
-  LForm.Free;
+  try
+    LForm.ShowModal();
+  finally
+    LForm.Free;
+  end;
 end;
 
 procedure TFrmContribuicoes.btnObrigadoClick(Sender: TObject);
@@ -48,18 +53,23 @@ end;
 
 procedure TFrmContribuicoes.UniFormClose(Sender: TObject; var Action: TCloseAction);
 begin
-  Action := TCloseAction.caFree;
+  Action := TCloseAction.caHide;
 end;
 
 procedure TFrmContribuicoes.UniFormCreate(Sender: TObject);
+var
+  LStyle: TUniDSAFormStyle;
 begin
-  a.Top := 40;
-  a.Height := Round(Self.Height - b.Height - 40);
-  a.Left := Round((Self.Width / 2) - (a.Width / 2));
-
-  btnObrigado.Top := 0;
-  btnObrigado.Height := b.Height;
-  btnObrigado.Left := Round((Self.Width / 2) - (btnObrigado.Width / 2));
+  DemoClass(flexDemoPage, 'demo-page demo-modal');
+  AlignmentControl := uniAlignmentClient;
+  Layout := 'fit';
+  DemoPrepare(flexDemoPage);
+  UniImage1.Proportional := True;
+  LStyle := TUniDSAFormStyle.Create(Self);
+  LStyle.Sizing.AutoHeight := False;
+  LStyle.Sizing.MaxWidth := 560;
+  LStyle.Sizing.MaxHeight := 720;
+  LStyle.Sizing.ViewportMargin := 16;
 end;
 
 end.
