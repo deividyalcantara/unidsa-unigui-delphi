@@ -1,0 +1,139 @@
+.unidsa-qrcode-reader {
+  --dsa-qr-background: #f6f9fc;
+  --dsa-qr-surface: #fff;
+  --dsa-qr-border: #dbe4ee;
+  --dsa-qr-text: #253349;
+  --dsa-qr-muted: #64748b;
+  --dsa-qr-primary: #2563eb;
+  --dsa-qr-radius: 16px;
+  --dsa-qr-max-width: 720px;
+  --dsa-qr-video-max-height: 420px;
+  box-sizing: border-box;
+  width: min(100%, var(--dsa-qr-max-width));
+  max-width: 100%;
+  margin-inline: auto;
+  overflow: hidden;
+  border: 1px solid var(--dsa-qr-border) !important;
+  border-radius: var(--dsa-qr-radius);
+  background: var(--dsa-qr-background);
+  color: var(--dsa-qr-text);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+
+.unidsa-qrcode-reader,
+.unidsa-qrcode-reader * { box-sizing: border-box; }
+
+.unidsa-qrcode-reader > div { background: transparent; }
+
+.unidsa-qrcode-reader [id$="__scan_region"] {
+  min-height: 150px;
+  overflow: hidden;
+  background: var(--dsa-qr-surface);
+}
+
+.unidsa-qrcode-reader [id$="__scan_region"] > img {
+  display: block;
+  width: 92px;
+  max-width: 30%;
+  height: auto;
+  margin: 26px auto 20px;
+  opacity: .82;
+}
+
+.unidsa-qrcode-reader video,
+.unidsa-qrcode-reader canvas {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  max-height: var(--dsa-qr-video-max-height) !important;
+  margin: 0 auto;
+  object-fit: contain;
+  background: #101318;
+}
+
+.unidsa-qrcode-reader #qr-shaded-region { border-width: 0 !important; }
+
+.unidsa-qrcode-reader [id$="__dashboard"] {
+  padding: 14px 16px 16px !important;
+  border-top: 1px solid var(--dsa-qr-border);
+  background: var(--dsa-qr-surface);
+}
+
+.unidsa-qrcode-reader [id$="__dashboard_section"],
+.unidsa-qrcode-reader [id$="__dashboard_section_csr"] {
+  width: 100%;
+  max-width: 100%;
+}
+
+.unidsa-qrcode-reader .html5-qrcode-element {
+  max-width: 100%;
+  min-height: 38px;
+  margin: 5px 4px !important;
+  border: 1px solid var(--dsa-qr-border);
+  border-radius: 8px;
+  color: var(--dsa-qr-text);
+  background: var(--dsa-qr-surface);
+  font: 500 13px/1.35 Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+
+.unidsa-qrcode-reader button.html5-qrcode-element,
+.unidsa-qrcode-reader input[type="button"].html5-qrcode-element {
+  padding: 8px 13px;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.unidsa-qrcode-reader button.html5-qrcode-element:hover,
+.unidsa-qrcode-reader input[type="button"].html5-qrcode-element:hover {
+  border-color: var(--dsa-qr-primary);
+  color: var(--dsa-qr-primary);
+  background: color-mix(in srgb, var(--dsa-qr-primary) 7%, white);
+}
+
+.unidsa-qrcode-reader button.html5-qrcode-element:focus-visible,
+.unidsa-qrcode-reader input.html5-qrcode-element:focus-visible,
+.unidsa-qrcode-reader select.html5-qrcode-element:focus-visible,
+.unidsa-qrcode-reader a.html5-qrcode-element:focus-visible,
+.unidsa-qrcode-reader span.html5-qrcode-element:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--dsa-qr-primary) 24%, transparent);
+  outline-offset: 2px;
+}
+
+.unidsa-qrcode-reader select.html5-qrcode-element {
+  min-width: min(280px, 100%);
+  padding: 7px 34px 7px 10px;
+}
+
+.unidsa-qrcode-reader a.html5-qrcode-element,
+.unidsa-qrcode-reader span.html5-qrcode-element {
+  display: inline-flex !important;
+  width: auto;
+  min-height: 40px;
+  padding: 9px 14px !important;
+  align-items: center;
+  justify-content: center;
+  border-color: var(--dsa-qr-border);
+  border-radius: 8px;
+  color: var(--dsa-qr-primary);
+  line-height: 20px;
+  text-decoration: none !important;
+  vertical-align: middle;
+}
+
+.unidsa-qrcode-reader [id$="__header_message"] { color: var(--dsa-qr-muted) !important; }
+.unidsa-qrcode-reader img[alt="Info icon"] { margin: 10px !important; opacity: .65; }
+
+@media (max-width: 480px) {
+  .unidsa-qrcode-reader { border-radius: 12px; }
+  .unidsa-qrcode-reader [id$="__dashboard"] { padding: 12px 10px 14px !important; }
+  .unidsa-qrcode-reader .html5-qrcode-element { width: calc(100% - 8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unidsa-qrcode-reader .html5-qrcode-element { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .unidsa-qrcode-reader { border-color: CanvasText !important; }
+  .unidsa-qrcode-reader .html5-qrcode-element { border-color: ButtonText; }
+}

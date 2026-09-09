@@ -5,8 +5,8 @@ object FrmLeitorQrCode: TFrmLeitorQrCode
   BorderIcons = [biSystemMenu]
   MonitoredKeys.Keys = <>
   TextHeight = 15
-  ClientWidth = 560
-  ClientHeight = 650
+  ClientWidth = 480
+  ClientHeight = 520
   Caption = 'Leitura de c'#243'digos'
   object flexDemoPage: TUniDSAFlexPanel
     Tag = 120

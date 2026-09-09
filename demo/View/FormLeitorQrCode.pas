@@ -38,14 +38,16 @@ begin
     DemoClass(LForm.flexDemoPage, 'demo-page demo-modal');
     LStyle := TUniDSAFormStyle.Create(LForm);
     LStyle.Sizing.AutoHeight := False;
-    LStyle.Sizing.MaxWidth := 560;
-    LStyle.Sizing.MaxHeight := 650;
+    LStyle.Sizing.MaxWidth := 480;
+    LStyle.Sizing.MaxHeight := 520;
     LStyle.Sizing.ViewportMargin := 16;
     LForm.qrcLeitor := TUniDSAQrCodeReader.Create(LForm);
     LForm.qrcLeitor.FPS := EnsureRange(AFPS, 1, 30);
     LForm.qrcLeitor.QrBox := EnsureRange(AQrBox, 80, 220);
     LForm.qrcLeitor.SingleRead := True;
-    LForm.qrcLeitor.Height := 420;
+    LForm.qrcLeitor.Height := 350;
+    LForm.qrcLeitor.Style.MaxWidth := 420;
+    LForm.qrcLeitor.Style.VideoMaxHeight := 220;
     LForm.qrcLeitor.OnAfterReading := LForm.qrcLeitorAfterReading;
     LForm.qrcLeitor.Parent := LForm.flexDemoPage;
     if LForm.ShowModal() = mrOk then

@@ -396,9 +396,21 @@ end;
 | `SingleRead` | Interrompe após uma leitura quando habilitado. |
 | `FPS` | Define a frequência de análise dos frames. |
 | `QrBox` | Define a área utilizada na leitura. |
+| `Style` | Personaliza cores, borda, raio, largura máxima e altura máxima do vídeo. |
 | `Result` | Retorna o último conteúdo lido. |
 | `Start`, `Stop` | Inicia ou encerra a câmera. |
 | `OnAfterReading` | Evento disparado após uma leitura válida. |
+
+O layout padrão centraliza o leitor e limita sua largura a 720 pixels e o vídeo a
+420 pixels de altura. Ajuste `Style.MaxWidth` e `Style.VideoMaxHeight` para telas ou
+diálogos menores. `Style.BackgroundColor`, `SurfaceColor`, `BorderColor`, `TextColor`,
+`MutedColor`, `PrimaryColor` e `BorderRadius` permitem adequar o leitor ao tema da
+aplicação. As alterações visuais podem ser aplicadas em runtime.
+
+Publique `qrcode_reader/css/style.css`, `qrcode_reader/js/qrcode_library.js` e
+`qrcode_reader/js/script.js` em `files/dsa`. O JavaScript adicional acompanha a
+interface criada dinamicamente pela biblioteca, preserva o limite do vídeo e adiciona
+nomes acessíveis aos controles.
 
 Formatos disponíveis: `QR_CODE`, `AZTEC`, `CODABAR`, `CODE_39`, `CODE_93`, `CODE_128`, `DATA_MATRIX`, `MAXICODE`, `ITF`, `EAN_13`, `EAN_8`, `PDF_417`, `RSS_14`, `RSS_EXPANDED`, `UPC_A`, `UPC_E` e `UPC_EAN_EXTENSION`.
 

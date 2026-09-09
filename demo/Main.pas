@@ -239,8 +239,14 @@ begin
   else if FFrame is TFrLeitorQrCode then begin
     with TFrLeitorQrCode(FFrame) do begin
       qrcLeitor.Height := 380;
-      DemoProperties(FFrame, flexDemoPage, qrcLeitor, 'Opções da próxima leitura única',
+      qrcLeitor.Style.MaxWidth := 720;
+      qrcLeitor.Style.VideoMaxHeight := 260;
+      DemoProperties(FFrame, flexDemoPage, qrcLeitor, 'Configuração da próxima leitura',
         ['FPS', 'QrBox']);
+      DemoProperties(FFrame, flexDemoPage, qrcLeitor, 'Aparência do leitor',
+        ['Style.MaxWidth', 'Style.VideoMaxHeight', 'Style.BorderRadius',
+         'Style.PrimaryColor', 'Style.BackgroundColor', 'Style.SurfaceColor',
+         'Style.BorderColor', 'Style.TextColor', 'Style.MutedColor']);
       DemoText(FFrame, flexDemoPage,
         'A câmera depende da permissão do navegador. Use localhost ou HTTPS. ' +
         'A leitura única abre uma janela adaptável.', 'demo-muted');

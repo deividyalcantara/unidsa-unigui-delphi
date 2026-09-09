@@ -63,8 +63,8 @@
 .demo-secondary .x-btn-inner { color: #334155 !important; }
 .demo-secondary:hover { background: #eaf0f8 !important; }
 .demo-button.x-item-disabled { opacity: .5; }
-.demo-page [id^='uni-dsa-qrcode-reader-qr-reader-'],
-.demo-modal [id^='uni-dsa-qrcode-reader-qr-reader-'] { width: 100% !important; max-width: 100%; overflow-wrap: anywhere; }
+.demo-page .unidsa-qrcode-reader,
+.demo-modal .unidsa-qrcode-reader { max-width: min(100%, var(--dsa-qr-max-width)); overflow-wrap: anywhere; }
 .demo-page video, .demo-modal video { max-width: 100%; }
 .demo-modal img { max-width: 100%; object-fit: contain; }
 .demo-page .x-progress { border-radius: 8px; border-color: #dce4ee; background: #eaf0f8; }

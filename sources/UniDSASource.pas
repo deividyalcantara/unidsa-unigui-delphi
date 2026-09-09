@@ -33,7 +33,9 @@ begin
     UniAddCSSLibrary(cFolder + '/css/dsa.css', True, [upoFolderUni, upoPlatformBoth]);
   end
   else if AComponent = TTypeUniDSASource.QrCodeReader then begin
+    UniAddCSSLibrary(cFolder + '/qrcode_reader/css/style.css?v=1.1.4', True, [upoFolderUni, upoPlatformBoth]);
     UniAddJSLibrary(cFolder + '/qrcode_reader/js/qrcode_library.js', True, [upoFolderUni, upoPlatformBoth]);
+    UniAddJSLibrary(cFolder + '/qrcode_reader/js/script.js?v=1.1.1', True, [upoFolderUni, upoPlatformBoth]);
   end
   else if AComponent = TTypeUniDSASource.MenuLateral then begin
     // Keep both assets on the same revision when the menu markup/API changes.
