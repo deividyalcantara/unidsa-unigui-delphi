@@ -25,6 +25,9 @@ assert.match(css, /padding: 9px 14px !important/);
 assert.doesNotMatch(css, /backdrop-filter/);
 new vm.Script(script);
 assert.match(script, /MutationObserver/);
+assert.match(script, /ResizeObserver/);
+assert.match(script, /syncHostHeight/);
+assert.match(script, /owner\.setHeight\(height\)/);
 assert.match(script, /aria-label/);
 assert.match(script, /root\.style\.maxWidth/);
 

@@ -1,0 +1,114 @@
+.unidsa-barcode-generator {
+  --barcode-panel: #f8fafc;
+  --barcode-surface: #ffffff;
+  --barcode-border: #dbe4ee;
+  --barcode-text: #253349;
+  --barcode-muted: #64748b;
+  --barcode-primary: #2563eb;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: var(--barcode-max-width, 840px);
+  margin-inline: auto;
+  padding: clamp(16px, 3vw, 28px);
+  border: 1px solid var(--barcode-border);
+  border-radius: var(--barcode-radius, 16px);
+  background: var(--barcode-panel);
+  color: var(--barcode-text);
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.unidsa-barcode-generator *,
+.unidsa-barcode-generator *::before,
+.unidsa-barcode-generator *::after {
+  box-sizing: border-box;
+}
+
+.unidsa-barcode-generator__preview {
+  display: flex;
+  min-height: 190px;
+  align-items: center;
+  justify-content: center;
+  justify-content: safe center;
+  overflow: auto hidden;
+  padding: clamp(18px, 4vw, 32px);
+  border: 1px solid var(--barcode-border);
+  border-radius: max(8px, calc(var(--barcode-radius, 16px) - 4px));
+  background: var(--barcode-surface);
+}
+
+.unidsa-barcode-generator__preview svg {
+  display: block;
+  flex: 0 0 auto;
+  max-width: none;
+  height: auto;
+}
+
+.unidsa-barcode-generator__empty {
+  max-width: 420px;
+  color: var(--barcode-muted);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.unidsa-barcode-generator__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.unidsa-barcode-generator__button {
+  min-height: 42px;
+  padding: 10px 18px;
+  border: 1px solid var(--barcode-border);
+  border-radius: 10px;
+  background: var(--barcode-surface);
+  color: var(--barcode-text);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 600;
+  transition: border-color 150ms ease, color 150ms ease, transform 150ms ease;
+}
+
+.unidsa-barcode-generator__button:hover {
+  border-color: var(--barcode-primary);
+  color: var(--barcode-primary);
+  transform: translateY(-1px);
+}
+
+.unidsa-barcode-generator__button:focus-visible {
+  outline: 3px solid rgba(37, 99, 235, .28);
+  outline-offset: 2px;
+}
+
+.unidsa-barcode-generator__status {
+  min-height: 20px;
+  margin-top: 12px;
+  color: var(--barcode-muted);
+  font-size: 13px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.unidsa-barcode-generator__status--error {
+  color: #b42318;
+}
+
+@media (max-width: 520px) {
+  .unidsa-barcode-generator {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .unidsa-barcode-generator__preview {
+    min-height: 160px;
+    justify-content: flex-start;
+    padding: 16px;
+  }
+
+  .unidsa-barcode-generator__button {
+    flex: 1 1 130px;
+  }
+}

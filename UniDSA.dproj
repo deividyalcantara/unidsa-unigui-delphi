@@ -144,6 +144,9 @@
         <DCCReference Include="sources\UniDSABase.pas"/>
         <DCCReference Include="sources\UniDSAColor.pas"/>
         <DCCReference Include="sources\UniDSAQrCodeReader.pas"/>
+        <DCCReference Include="sources\UniDSAQrCodeGenerator.pas"/>
+        <DCCReference Include="sources\UniDSASignature.pas"/>
+        <DCCReference Include="sources\UniDSABarcodeGenerator.pas"/>
         <DCCReference Include="sources\UniDSABaseControl.pas"/>
         <DCCReference Include="sources\UniDSAMenuLateral.pas"/>
         <DCCReference Include="sources\UniDSAFlexPanel.pas"/>
@@ -170,6 +173,18 @@
         <RcItem Include="images\TUniDSAQrCodeReader.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>TUniDSAQrCodeReader</ResourceId>
+        </RcItem>
+        <RcItem Include="images\TUniDSAQrCodeGenerator.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TUniDSAQrCodeGenerator</ResourceId>
+        </RcItem>
+        <RcItem Include="images\TUniDSASignature.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TUniDSASignature</ResourceId>
+        </RcItem>
+        <RcItem Include="images\TUniDSABarcodeGenerator.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TUniDSABarcodeGenerator</ResourceId>
         </RcItem>
         <RcItem Include="images\TUniDSAToast.bmp">
             <ResourceType>BITMAP</ResourceType>

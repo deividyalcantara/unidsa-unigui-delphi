@@ -24,6 +24,9 @@ O UniDSA é uma biblioteca de componentes para aplicações web desenvolvidas co
 | `TUniDSAConfirm` | Confirmações, alertas, diálogos e prompts com retorno por AJAX. |
 | `TUniDSAToast` | Notificações temporárias com posição, cores, ícones e eventos configuráveis. |
 | `TUniDSAQrCodeReader` | Leitura de QR Code e códigos de barras pela câmera do dispositivo. |
+| `TUniDSAQrCodeGenerator` | Geração de QR Code em PNG ou SVG, com cores, logotipo e estilos de módulo. |
+| `TUniDSASignature` | Captura responsiva de assinatura por mouse, toque ou caneta. |
+| `TUniDSABarcodeGenerator` | Geração e validação de códigos de barras para produtos, etiquetas e logística. |
 | `TUniDSAMenuLateral` | Menu lateral responsivo com temas, pesquisa, perfil e notificações. |
 | `TUniDSALogin` | Interface responsiva para autenticação, recuperação de senha e criação de conta. |
 | `TUniDSAFlexPanel` | Contêiner visual com Flexbox, breakpoints e composição por filhos diretamente no Delphi. |
@@ -44,7 +47,10 @@ unidsa-unigui-delphi/
 │   ├── kanban/
 │   ├── login/
 │   ├── menu_lateral/
+│   ├── barcode_generator/
+│   ├── qrcode_generator/
 │   ├── qrcode_reader/
+│   ├── signature/
 │   └── tour/
 ├── demo/                     Aplicação de demonstração
 ├── images/                   Ícones usados na paleta do Delphi
@@ -86,6 +92,25 @@ As combinações Delphi 13/uniGUI 30 e Delphi XE8/uniGUI 22 foram validadas nest
 > A versão do Delphi, a versão do uniGUI e os arquivos DCU/DCP/BPL precisam pertencer à mesma combinação. Misturar arquivos de versões diferentes normalmente causa erros como `Required package not found` ou `Never-build package must be recompiled`.
 
 ## Instalação no Delphi
+
+### Instalação automática no Windows
+
+Execute `tools\Install-UniDSA.ps1` ou use o atalho **Instalar UniDSA** criado na Área
+de Trabalho. O utilitário detecta a versão mais recente do Delphi instalada, compila
+os pacotes Win32 em uma área temporária, remove somente o registro anterior do
+UniDSA e reinstala `UniDSA.bpl` e `UniDSADesign.bpl`. O uniGUI não é removido nem
+alterado. A instalação também mantém a pasta `sources` no Library Path do Delphi.
+
+Feche todas as instâncias do Delphi antes de executar o instalador. Se a compilação
+falhar, os pacotes atuais não são alterados. Se ocorrer uma falha durante a troca dos
+arquivos, a instalação anterior é restaurada automaticamente. O log fica disponível
+em `%LOCALAPPDATA%\UniDSA\Installer\install.log`.
+
+Para escolher uma versão específica do Delphi, execute:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\Install-UniDSA.ps1 -BdsVersion 37.0
+```
 
 ### 1. Obter o código
 
@@ -190,6 +215,9 @@ O diretório efetivo pode mudar quando `FilesFolder` é personalizado no `TUniSe
 | `TUniDSAConfirm` | `dist/jquery-confirm.min.js`, `dist/jquery-confirm.min.css` e `css/dsa.css` |
 | `TUniDSAToast` | `js/jquery.toast.js` e `css/jquery.toast.css` |
 | `TUniDSAQrCodeReader` | `qrcode_reader/js/qrcode_library.js` |
+| `TUniDSAQrCodeGenerator` | `qrcode_generator/js/qrcode.js`, `qrcode_generator/js/script.js` e `qrcode_generator/css/style.css` |
+| `TUniDSASignature` | `signature/js/script.js` e `signature/css/style.css` |
+| `TUniDSABarcodeGenerator` | `barcode_generator/js/JsBarcode.all.min.js`, `barcode_generator/js/script.js` e `barcode_generator/css/style.css` |
 | `TUniDSAMenuLateral` | `menu_lateral/js/script.js` e `menu_lateral/css/style.css` |
 | `TUniDSALogin` | `login/js/script.js` e `login/css/style.css` |
 | `TUniDSAFlexPanel` | `flex/js/unidsa-flex.js` e `flex/css/unidsa-flex.css` |
@@ -203,9 +231,14 @@ Com a aplicação em execução, estas URLs devem responder com HTTP 200:
 
 ```text
 https://seu-servidor/files/dsa/dist/jquery-confirm.min.js
+https://seu-servidor/files/dsa/barcode_generator/js/JsBarcode.all.min.js
 https://seu-servidor/files/dsa/dist/jquery-confirm.min.css
 https://seu-servidor/files/dsa/js/jquery.toast.js
 https://seu-servidor/files/dsa/qrcode_reader/js/qrcode_library.js
+https://seu-servidor/files/dsa/qrcode_generator/js/qrcode.js
+https://seu-servidor/files/dsa/qrcode_generator/css/style.css
+https://seu-servidor/files/dsa/signature/js/script.js
+https://seu-servidor/files/dsa/signature/css/style.css
 https://seu-servidor/files/dsa/menu_lateral/css/style.css
 https://seu-servidor/files/dsa/login/css/style.css
 https://seu-servidor/files/dsa/flex/js/unidsa-flex.js
@@ -413,6 +446,80 @@ interface criada dinamicamente pela biblioteca, preserva o limite do vídeo e ad
 nomes acessíveis aos controles.
 
 Formatos disponíveis: `QR_CODE`, `AZTEC`, `CODABAR`, `CODE_39`, `CODE_93`, `CODE_128`, `DATA_MATRIX`, `MAXICODE`, `ITF`, `EAN_13`, `EAN_8`, `PDF_417`, `RSS_14`, `RSS_EXPANDED`, `UPC_A`, `UPC_E` e `UPC_EAN_EXTENSION`.
+
+### TUniDSAQrCodeGenerator
+
+Gera QR Codes no navegador sem depender de serviços externos. A biblioteca
+`qrcode-generator` 2.0.4 é publicada localmente com sua licença MIT.
+
+```pascal
+QrGenerator.Text := 'https://exemplo.com/pedido/123';
+QrGenerator.ErrorCorrection := qecHigh;
+QrGenerator.ModuleStyle := qmsSquare;
+QrGenerator.ForegroundColor := clBlack;
+QrGenerator.ExportFormat := qefPNG;
+QrGenerator.Generate;
+```
+
+| Grupo | Recursos principais |
+| --- | --- |
+| Conteúdo | `Text`, `Size`, `Margin` e `ErrorCorrection` |
+| Aparência | `ModuleStyle`, `ForegroundColor`, `BackgroundColor` e `Style` |
+| Marca | `LogoURL` e `LogoSize` |
+| Exportação | `ExportFormat`, `FileName`, `Download`, `CopyToClipboard` e `RequestData` |
+| Eventos | `OnGenerated` e `OnData` |
+
+Após `RequestData`, as propriedades somente leitura `DataURL` e `SVG` contêm o
+resultado que pode ser salvo no banco ou enviado para outro serviço.
+
+### TUniDSASignature
+
+Captura assinaturas em Canvas com Pointer Events, funcionando com mouse, toque e
+caneta. Os traços usam coordenadas proporcionais para permanecerem corretos quando o
+componente muda de tamanho.
+
+```pascal
+Signature.Required := True;
+Signature.PenWidth := 3;
+Signature.PenColor := clNavy;
+Signature.OnChange := SignatureChange;
+
+if Signature.IsValid then
+  SalvarAssinatura(Signature.Value);
+```
+
+| Grupo | Recursos principais |
+| --- | --- |
+| Captura | `PenColor`, `PenWidth`, `CanvasHeight`, `ReadOnly` e `Required` |
+| Interface | `Placeholder`, `ShowToolbar` e `Style` |
+| Histórico | `Undo`, `Redo` e `Clear` |
+| Exportação | `Format`, `FileName`, `Value`, `Download` e `RequestValue` |
+| Eventos | `OnChange`, `OnBeginDraw` e `OnEndDraw` |
+
+### TUniDSABarcodeGenerator
+
+Gera códigos de barras inteiramente no navegador usando o JsBarcode 3.12.3,
+distribuído localmente com sua licença MIT. Não utiliza CDN ou serviço externo.
+
+```pascal
+BarcodeGenerator.Value := '7891234567895';
+BarcodeGenerator.Format := bcEAN13;
+BarcodeGenerator.BarWidth := 2;
+BarcodeGenerator.BarHeight := 100;
+BarcodeGenerator.DisplayValue := True;
+BarcodeGenerator.Generate;
+```
+
+| Grupo | Recursos principais |
+| --- | --- |
+| Formatos | `bcCode128`, `bcEAN13`, `bcEAN8`, `bcUPCA`, `bcCode39`, `bcITF14` e `bcCodabar` |
+| Dimensões | `BarWidth`, `BarHeight`, `Margin`, `FontSize` e `TextMargin` |
+| Aparência | `LineColor`, `BackgroundColor`, `DisplayValue`, `HumanReadableText` e `Style` |
+| Exportação | `ExportFormat`, `FileName`, `Download`, `CopyToClipboard` e `RequestData` |
+| Resultado | `Valid`, `LastError`, `DataURL`, `SVG`, `OnGenerated`, `OnError` e `OnData` |
+
+Cada simbologia é validada pela biblioteca antes da renderização. Após
+`RequestData`, `DataURL` contém o PNG em Base64 e `SVG` contém o documento vetorial.
 
 ### TUniDSAMenuLateral
 

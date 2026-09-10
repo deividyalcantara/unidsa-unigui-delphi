@@ -182,6 +182,21 @@ $(PreBuildEvent)]]></PreBuildEvent>
             <FormType>dfm</FormType>
             <DesignClass>TUniFrame</DesignClass>
         </DCCReference>
+        <DCCReference Include="View\FrameQrCodeGenerator.pas">
+            <Form>FrQrCodeGenerator</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TUniFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="View\FrameSignature.pas">
+            <Form>FrSignature</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TUniFrame</DesignClass>
+        </DCCReference>
+        <DCCReference Include="View\FrameBarcodeGenerator.pas">
+            <Form>FrBarcodeGenerator</Form>
+            <FormType>dfm</FormType>
+            <DesignClass>TUniFrame</DesignClass>
+        </DCCReference>
         <DCCReference Include="View\FormLeitorQrCode.pas">
             <Form>FrmLeitorQrCode</Form>
             <FormType>dfm</FormType>

@@ -1,0 +1,104 @@
+.unidsa-qrcode-generator {
+  --dsa-qrgen-background: #f8fafc;
+  --dsa-qrgen-surface: #ffffff;
+  --dsa-qrgen-border: #dbe4ee;
+  --dsa-qrgen-text: #253349;
+  --dsa-qrgen-muted: #64748b;
+  --dsa-qrgen-primary: #2563eb;
+  --dsa-qrgen-radius: 16px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 720px;
+  margin-inline: auto;
+  padding: 20px;
+  border: 1px solid var(--dsa-qrgen-border);
+  border-radius: var(--dsa-qrgen-radius);
+  background: var(--dsa-qrgen-background);
+  color: var(--dsa-qrgen-text);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+}
+
+.unidsa-qrcode-generator,
+.unidsa-qrcode-generator * { box-sizing: border-box; }
+
+.unidsa-qrcode-generator__preview {
+  position: relative;
+  display: grid;
+  min-height: 220px;
+  place-items: center;
+  overflow: hidden;
+  padding: 18px;
+  border: 1px solid var(--dsa-qrgen-border);
+  border-radius: calc(var(--dsa-qrgen-radius) - 4px);
+  background: var(--dsa-qrgen-surface);
+}
+
+.unidsa-qrcode-generator canvas {
+  display: block;
+  width: min(100%, var(--dsa-qrgen-size, 280px));
+  height: auto;
+  border-radius: var(--dsa-qrgen-code-radius, 0);
+  image-rendering: pixelated;
+}
+
+.unidsa-qrcode-generator__empty {
+  max-width: 300px;
+  color: var(--dsa-qrgen-muted);
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.unidsa-qrcode-generator__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  padding-top: 14px;
+}
+
+.unidsa-qrcode-generator__button {
+  min-height: 40px;
+  padding: 9px 16px;
+  border: 1px solid var(--dsa-qrgen-border);
+  border-radius: 9px;
+  color: var(--dsa-qrgen-text);
+  background: var(--dsa-qrgen-surface);
+  font: 600 13px/20px Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+  cursor: pointer;
+  transition: background-color .15s ease, border-color .15s ease, color .15s ease;
+}
+
+.unidsa-qrcode-generator__button:hover {
+  border-color: var(--dsa-qrgen-primary);
+  color: var(--dsa-qrgen-primary);
+}
+
+.unidsa-qrcode-generator__button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--dsa-qrgen-primary) 24%, transparent);
+  outline-offset: 2px;
+}
+
+.unidsa-qrcode-generator__status {
+  min-height: 18px;
+  padding-top: 8px;
+  color: var(--dsa-qrgen-muted);
+  font-size: 12px;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .unidsa-qrcode-generator { padding: 12px; border-radius: 12px; }
+  .unidsa-qrcode-generator__preview { min-height: 190px; padding: 12px; }
+  .unidsa-qrcode-generator__button { flex: 1 1 120px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .unidsa-qrcode-generator__button { transition: none; }
+}
+
+@media (forced-colors: active) {
+  .unidsa-qrcode-generator,
+  .unidsa-qrcode-generator__preview,
+  .unidsa-qrcode-generator__button { border-color: CanvasText; }
+}

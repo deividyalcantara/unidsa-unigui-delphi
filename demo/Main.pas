@@ -8,7 +8,8 @@ uses
   uniGUIClasses, uniGUIForm, UniDSAMenuLateral, uniGUIBaseClasses, UniDSABaseControl,
   UniDSABase, UniDSAConfirm, FrameToast, FrameLeitorQRCode,
   UniDSAToast, FrameHome, FrameMenuLateral, uniPanel, uniGUIRegClasses,
-  FrameConfirm, FrameKanban, FrameFlexPanel, UniDSAExecuteFunction,
+  FrameConfirm, FrameKanban, FrameFlexPanel, FrameQrCodeGenerator,
+  FrameSignature, FrameBarcodeGenerator, UniDSAExecuteFunction,
   UniDSAFlexPanel, DemoUI, uniPageControl;
 
 type
@@ -33,6 +34,9 @@ type
     procedure mlMenuMenu3Click(Sender: TObject);
     procedure mlMenuKanbanClick(Sender: TObject);
     procedure mlMenuFlexClick(Sender: TObject);
+    procedure mlMenuQrGeneratorClick(Sender: TObject);
+    procedure mlMenuSignatureClick(Sender: TObject);
+    procedure mlMenuBarcodeGeneratorClick(Sender: TObject);
     procedure UniFormScreenResize(Sender: TObject; AWidth, AHeight: Integer);
   private
     FFrame: TUniFrame;
@@ -158,6 +162,21 @@ begin
   MostrarMenu(TFrLeitorQrCode);
 end;
 
+procedure TMainForm.mlMenuQrGeneratorClick(Sender: TObject);
+begin
+  MostrarMenu(TFrQrCodeGenerator);
+end;
+
+procedure TMainForm.mlMenuSignatureClick(Sender: TObject);
+begin
+  MostrarMenu(TFrSignature);
+end;
+
+procedure TMainForm.mlMenuBarcodeGeneratorClick(Sender: TObject);
+begin
+  MostrarMenu(TFrBarcodeGenerator);
+end;
+
 procedure TMainForm.mlMenuKanbanClick(Sender: TObject);
 begin
   MostrarMenu(TFrKanban);
@@ -250,6 +269,44 @@ begin
       DemoText(FFrame, flexDemoPage,
         'A câmera depende da permissão do navegador. Use localhost ou HTTPS. ' +
         'A leitura única abre uma janela adaptável.', 'demo-muted');
+    end;
+  end
+  else if FFrame is TFrQrCodeGenerator then begin
+    with TFrQrCodeGenerator(FFrame) do begin
+      DemoProperties(FFrame, flexDemoPage, QrGenerator, 'Conteúdo e renderização',
+        ['Size', 'Margin', 'ErrorCorrection', 'ModuleStyle', 'LogoURL',
+         'LogoSize', 'ExportFormat', 'FileName', 'ShowActions']);
+      DemoProperties(FFrame, flexDemoPage, QrGenerator, 'Cores do QR Code',
+        ['ForegroundColor', 'BackgroundColor']);
+      DemoProperties(FFrame, flexDemoPage, QrGenerator, 'Aparência do componente',
+        ['Style.MaxWidth', 'Style.BorderRadius', 'Style.PanelBackgroundColor',
+         'Style.SurfaceColor', 'Style.BorderColor', 'Style.TextColor',
+         'Style.MutedColor', 'Style.PrimaryColor']);
+    end;
+  end
+  else if FFrame is TFrSignature then begin
+    with TFrSignature(FFrame) do begin
+      DemoProperties(FFrame, flexDemoPage, Signature, 'Captura e validação',
+        ['PenWidth', 'PenColor', 'CanvasHeight', 'ReadOnly', 'Required',
+         'ShowToolbar', 'Placeholder', 'FileName', 'Format']);
+      DemoProperties(FFrame, flexDemoPage, Signature, 'Aparência do componente',
+        ['Style.MaxWidth', 'Style.BorderRadius', 'Style.BackgroundColor',
+         'Style.BorderColor', 'Style.TextColor', 'Style.MutedColor',
+         'Style.PrimaryColor']);
+    end;
+  end
+  else if FFrame is TFrBarcodeGenerator then begin
+    with TFrBarcodeGenerator(FFrame) do begin
+      DemoProperties(FFrame, flexDemoPage, BarcodeGenerator, 'Formato e renderizacao',
+        ['Format', 'BarWidth', 'BarHeight', 'Margin', 'DisplayValue',
+         'HumanReadableText', 'FontSize', 'TextMargin', 'ExportFormat',
+         'FileName', 'ShowActions']);
+      DemoProperties(FFrame, flexDemoPage, BarcodeGenerator, 'Cores do codigo',
+        ['LineColor', 'BackgroundColor']);
+      DemoProperties(FFrame, flexDemoPage, BarcodeGenerator, 'Aparencia do componente',
+        ['Style.MaxWidth', 'Style.BorderRadius', 'Style.PanelBackgroundColor',
+         'Style.SurfaceColor', 'Style.BorderColor', 'Style.TextColor',
+         'Style.MutedColor', 'Style.PrimaryColor']);
     end;
   end
   else if FFrame is TFrHome then begin
@@ -354,6 +411,9 @@ begin
     AddComponent('Toast', 'fas fa-bell', mlMenuMenu2Click);
     AddComponent('Confirm', 'fas fa-check-square', mlMenuMenu3Click);
     AddComponent('QrCode Reader', 'fas fa-qrcode', mlMenuMenu4Click);
+    AddComponent('QR Code Generator', 'fas fa-qrcode', mlMenuQrGeneratorClick);
+    AddComponent('Signature', 'fas fa-signature', mlMenuSignatureClick);
+    AddComponent('Barcode Generator', 'fas fa-barcode', mlMenuBarcodeGeneratorClick);
     AddComponent('Kanban', 'fas fa-columns', mlMenuKanbanClick);
     AddComponent('FlexPanel', 'fas fa-th-large', mlMenuFlexClick);
   finally
@@ -365,10 +425,6 @@ procedure TMainForm.UniFormCreate(Sender: TObject);
 begin
   DemoClass(flexShell, 'demo-shell');
   DemoClass(flexContent, 'demo-shell demo-content');
-  with flexShell.FlexItems.Add do begin
-    Control := mlMenu;
-    Shrink := 0;
-  end;
   OnScreenResize := UniFormScreenResize;
   ConfigurarMenuComponentes;
   MostrarMenu(TFrHome);

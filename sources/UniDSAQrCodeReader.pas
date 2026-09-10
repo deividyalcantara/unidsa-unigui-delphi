@@ -372,7 +372,7 @@ begin
       '  var html5QrcodeScanner = new Html5QrcodeScanner( ' +
       '    "' + RootID + '", { fps: ' + IntToStr(FPS) + ', qrbox: ' + IntToStr(FQrBox) + ', formatsToSupport: formatsToSupport }); ' +
       '    html5QrcodeScanner.render(onScanSuccess); ' +
-      '    UniDSAQrCodeReader.attach("' + RootID + '", ' + StyleJSON + '); ' +
+      '    UniDSAQrCodeReader.attach("' + RootID + '", ' + Self.JSName + ', ' + StyleJSON + '); ' +
       '  }); ' +
       '}); '
     );
@@ -401,7 +401,8 @@ end;
 procedure TUniDSAQrCodeReader.ApplyStyle;
 begin
   if WebMode and not IsLoading and Assigned(FStyle) then
-    JS('UniDSAQrCodeReader.attach(' + UniDSAJSString(RootID) + ',' + StyleJSON + ');');
+    JS('UniDSAQrCodeReader.attach(' + UniDSAJSString(RootID) + ',' +
+      Self.JSName + ',' + StyleJSON + ');');
 end;
 
 procedure TUniDSAQrCodeReader.SetStyle(const Value: TUniDSAQrCodeReaderStyle);

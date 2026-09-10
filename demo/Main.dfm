@@ -12,102 +12,127 @@ object MainForm: TMainForm
   OnCreate = UniFormCreate
   TextHeight = 15
   object flexShell: TUniDSAFlexPanel
-    Align = alClient
+    Left = 0
+    Top = 0
+    Width = 966
+    Height = 692
+    Hint = ''
     Flex.Wrap = fwNoWrap
     Flex.Gap = 0
     Flex.Overflow = foHidden
-    object mlMenu: TUniDSAMenuLateral
-      Align = alNone
+    FlexItem.Basis = 'auto'
+    Responsive.XS.Span = 12
+    Align = alClient
+    ParentColor = False
+    Color = clBtnFace
+    TabOrder = 0
+    object flexContent: TUniDSAFlexPanel
       Left = 0
       Top = 0
-      Width = 300
-      Height = 692
+      Width = 320
+      Height = 160
       Hint = ''
-      Logo.UrlImage = 'https://i.ibb.co/yhLx7mc/Logo.jpg'
-      Logo.CompanyName = 'UniDSA - Unigui'
-      Logo.Visible = True
-      Search.Icon = 'fas fa-search'
-      Search.TextPrompt = 'Pesquisa...'
-      Search.AutoComplete = True
-      Search.Visible = True
-      Theme.StyleLeft = mltUniGray
-      Theme.StyleRight = mltEscuro
-      Theme.TitleLeft = 'Claro'
-      Theme.TitleRight = 'Escuro'
-      Theme.Visible = True
-      Profile.Name = 'Nome Sobrenome'
-      Profile.Email = 'nome@dominio.com'
-      Profile.ImageURL = 'https://s11.gifyu.com/images/SchAL.png'
-      Profile.Visible = True
-      Menu.IMenuParent = mlMenu
-      Menu = <
-        item
-          Icon = 'fas fa-home'
-          Caption = 'Home'
-          NotificationCount = 0
-          Visible = True
-          Enabled = True
-          Hidden = False
-          Separator = False
-          OnClick = mlMenuMenu0Click
-        end
-        item
-          Icon = 'fas fa-layer-group'
-          Caption = 'Componentes'
-          NotificationCount = 0
-          Visible = True
-          Enabled = True
-          Hidden = False
-          Separator = False
-        end
-        item
-          Icon = 'fas fa-bars'
-          Caption = 'Menu 5'
-          NotificationCount = 0
-          Visible = True
-          Enabled = True
-          Hidden = False
-          Separator = True
-        end
-        item
-          Icon = 'fas fa-hands-helping'
-          Caption = 'Apoie o projeto'
-          NotificationCount = 0
-          Visible = True
-          Enabled = True
-          Hidden = False
-          Separator = False
-          OnClick = mlMenuMenu6Click
-        end>
-      MenuState = mlmMaximize
-      Style.PaddingTop = 20
-      Style.PaddingLeft = 20
-      Style.PaddingRight = 20
-      Style.PaddingBottom = 20
-      Style.BorderTop = 0
-      Style.BorderLeft = 0
-      Style.BorderRight = 2
-      Style.BorderBottom = 0
-      Style.BorderRadiusTopLeft = 0
-      Style.BorderRadiusTopRight = 15
-      Style.BorderRadiusBottomLeft = 0
-      Style.BorderRadiusBottomRight = 15
-      SelectedDiretionTheme = mltThemeLeft
-      SelectedTheme = mltUniCrisp
-      OnClickLogo = mlMenuClickLogo
-      OnClickLogoff = mlMenuClickLogoff
-      OnSearchEnter = mlMenuSearchEnter
-      AjaxSecurity = True
-    end
-    object flexContent: TUniDSAFlexPanel
       Flex.Direction = fdColumn
       Flex.Wrap = fwNoWrap
       Flex.Gap = 0
       Flex.Overflow = foHidden
       FlexItem.Grow = 1
       FlexItem.Basis = '0px'
-      Responsive.XS.Span = 0
+      FlexItems = <>
+      ParentColor = False
+      Color = clBtnFace
+      TabOrder = 1
     end
+  end
+  object mlMenu: TUniDSAMenuLateral
+    Left = 0
+    Top = 0
+    Width = 300
+    Height = 692
+    Hint = ''
+    Logo.UrlImage = 'https://i.ibb.co/yhLx7mc/Logo.jpg'
+    Logo.CompanyName = 'UniDSA - Unigui'
+    Logo.Visible = True
+    Search.Icon = 'fas fa-search'
+    Search.TextPrompt = 'Pesquisa...'
+    Search.AutoComplete = True
+    Search.Visible = True
+    Theme.StyleLeft = mltUniGray
+    Theme.StyleRight = mltEscuro
+    Theme.TitleLeft = 'Claro'
+    Theme.TitleRight = 'Escuro'
+    Theme.Visible = True
+    Profile.Name = 'Nome Sobrenome'
+    Profile.Email = 'nome@dominio.com'
+    Profile.ImageURL = 'https://s11.gifyu.com/images/SchAL.png'
+    Profile.Visible = True
+    Menu.IMenuParent = mlMenu
+    Menu = <
+      item
+        SubItems.IMenuParent = mlMenu
+        SubItems = <>
+        Icon = 'fas fa-home'
+        Caption = 'Home'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+        OnClick = mlMenuMenu0Click
+      end
+      item
+        SubItems.IMenuParent = mlMenu
+        SubItems = <>
+        Icon = 'fas fa-layer-group'
+        Caption = 'Componentes'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+      end
+      item
+        SubItems.IMenuParent = mlMenu
+        SubItems = <>
+        Icon = 'fas fa-bars'
+        Caption = 'Menu 5'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = True
+      end
+      item
+        SubItems.IMenuParent = mlMenu
+        SubItems = <>
+        Icon = 'fas fa-hands-helping'
+        Caption = 'Apoie o projeto'
+        NotificationCount = 0
+        Visible = True
+        Enabled = True
+        Hidden = False
+        Separator = False
+        OnClick = mlMenuMenu6Click
+      end>
+    MenuState = mlmMaximize
+    Style.PaddingTop = 20
+    Style.PaddingLeft = 20
+    Style.PaddingRight = 20
+    Style.PaddingBottom = 20
+    Style.BorderTop = 0
+    Style.BorderLeft = 0
+    Style.BorderRight = 2
+    Style.BorderBottom = 0
+    Style.BorderRadiusTopLeft = 0
+    Style.BorderRadiusTopRight = 15
+    Style.BorderRadiusBottomLeft = 0
+    Style.BorderRadiusBottomRight = 15
+    SelectedDiretionTheme = mltThemeLeft
+    SelectedTheme = mltUniCrisp
+    OnClickLogo = mlMenuClickLogo
+    OnClickLogoff = mlMenuClickLogoff
+    OnSearchEnter = mlMenuSearchEnter
+    AjaxSecurity = True
   end
   object Toast: TUniDSAToast
     Version = '1.1.0'

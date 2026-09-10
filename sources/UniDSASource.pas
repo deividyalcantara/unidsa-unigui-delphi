@@ -7,7 +7,8 @@ uses
 
 type
   TTypeUniDSASource = (Toast, Confirm, MenuSiderbar, QrCodeReader, MenuLateral,
-    Login, Kanban, Tour, Flex, FormStyle, ResponsivePageControl);
+    Login, Kanban, Tour, Flex, FormStyle, ResponsivePageControl,
+    QrCodeGenerator, Signature, BarcodeGenerator);
 
 procedure GetLink(AComponent: TTypeUniDSASource);
 
@@ -35,7 +36,7 @@ begin
   else if AComponent = TTypeUniDSASource.QrCodeReader then begin
     UniAddCSSLibrary(cFolder + '/qrcode_reader/css/style.css?v=1.1.4', True, [upoFolderUni, upoPlatformBoth]);
     UniAddJSLibrary(cFolder + '/qrcode_reader/js/qrcode_library.js', True, [upoFolderUni, upoPlatformBoth]);
-    UniAddJSLibrary(cFolder + '/qrcode_reader/js/script.js?v=1.1.1', True, [upoFolderUni, upoPlatformBoth]);
+    UniAddJSLibrary(cFolder + '/qrcode_reader/js/script.js?v=1.1.2', True, [upoFolderUni, upoPlatformBoth]);
   end
   else if AComponent = TTypeUniDSASource.MenuLateral then begin
     // Keep both assets on the same revision when the menu markup/API changes.
@@ -65,6 +66,20 @@ begin
   else if AComponent = TTypeUniDSASource.ResponsivePageControl then begin
     UniAddCSSLibrary(cFolder + '/responsive-page-control/css/style.css?v=1.1.3', True, [upoFolderUni, upoPlatformDesktop]);
     UniAddJSLibrary(cFolder + '/responsive-page-control/js/script.js?v=1.1.2', True, [upoFolderUni, upoPlatformDesktop]);
+  end
+  else if AComponent = TTypeUniDSASource.QrCodeGenerator then begin
+    UniAddCSSLibrary(cFolder + '/qrcode_generator/css/style.css?v=1', True, [upoFolderUni, upoPlatformBoth]);
+    UniAddJSLibrary(cFolder + '/qrcode_generator/js/qrcode.js?v=2.0.4', True, [upoFolderUni, upoPlatformBoth]);
+    UniAddJSLibrary(cFolder + '/qrcode_generator/js/script.js?v=1.1', True, [upoFolderUni, upoPlatformBoth]);
+  end
+  else if AComponent = TTypeUniDSASource.Signature then begin
+    UniAddCSSLibrary(cFolder + '/signature/css/style.css?v=1', True, [upoFolderUni, upoPlatformBoth]);
+    UniAddJSLibrary(cFolder + '/signature/js/script.js?v=1', True, [upoFolderUni, upoPlatformBoth]);
+  end
+  else if AComponent = TTypeUniDSASource.BarcodeGenerator then begin
+    UniAddCSSLibrary(cFolder + '/barcode_generator/css/style.css?v=1', True, [upoFolderUni, upoPlatformBoth]);
+    UniAddJSLibrary(cFolder + '/barcode_generator/js/JsBarcode.all.min.js?v=3.12.3', True, [upoFolderUni, upoPlatformBoth]);
+    UniAddJSLibrary(cFolder + '/barcode_generator/js/script.js?v=1.0.1', True, [upoFolderUni, upoPlatformBoth]);
   end;
 end;
 
