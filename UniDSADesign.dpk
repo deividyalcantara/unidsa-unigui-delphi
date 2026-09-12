@@ -58,7 +58,8 @@ requires
 contains
   UniDSABrowser in 'sources\UniDSABrowser.pas' {FormUniDSABrowser},
   UniDSAMenu in 'sources\UniDSAMenu.pas',
-  UniDSAFlexPanelDesign in 'sources\UniDSAFlexPanelDesign.pas';
+  UniDSAFlexPanelDesign in 'sources\UniDSAFlexPanelDesign.pas',
+  UniDSAStyleDesign in 'sources\UniDSAStyleDesign.pas';
 
 end.
 

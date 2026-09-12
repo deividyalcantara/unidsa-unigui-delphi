@@ -158,6 +158,16 @@
         <DCCReference Include="sources\UniDSAKanban.pas"/>
         <DCCReference Include="sources\UniDSATour.pas"/>
         <DCCReference Include="sources\UniDSAFormStyle.pas"/>
+        <DCCReference Include="sources\UniDSAStyle.pas"/>
+        <DCCReference Include="sources\UniDSAFocusControl.pas"/>
+        <RcItem Include="images\TUniDSAFocusControl.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TUniDSAFocusControl</ResourceId>
+        </RcItem>
+        <RcItem Include="images\TUniDSAStyle.bmp">
+            <ResourceType>BITMAP</ResourceType>
+            <ResourceId>TUniDSAStyle</ResourceId>
+        </RcItem>
         <RcItem Include="images\TUniDSAFormStyle.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>TUniDSAFormStyle</ResourceId>

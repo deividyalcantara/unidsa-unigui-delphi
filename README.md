@@ -29,6 +29,7 @@ O UniDSA é uma biblioteca de componentes para aplicações web desenvolvidas co
 | `TUniDSABarcodeGenerator` | Geração e validação de códigos de barras para produtos, etiquetas e logística. |
 | `TUniDSAMenuLateral` | Menu lateral responsivo com temas, pesquisa, perfil e notificações. |
 | `TUniDSALogin` | Interface responsiva para autenticação, recuperação de senha e criação de conta. |
+| `TUniDSAStyle` | Estilos por controle no Object Inspector, com reutilização, hover, estados e responsividade, sem CSS próprio da aplicação. |
 | `TUniDSAFlexPanel` | Contêiner visual com Flexbox, breakpoints e composição por filhos diretamente no Delphi. |
 | `TUniDSAResponsivePageControl` | PageControl com overflow responsivo das abas em menu ou rolagem. |
 | `TUniDSAKanban` | Quadro Kanban responsivo com colunas, cartões, limite WIP e drag-and-drop. |
@@ -962,3 +963,11 @@ Componente não visual para TUniForm: cantos arredondados, sombra, cabeçalho e 
 personalizáveis, fundo modal e dimensões responsivas. Arraste da paleta UniDSA;
 para altura natural, selecione ContentControl e, se houver, FooterControl.
 Configuração, publicação e instalação em [docs/FormStyle.md](docs/FormStyle.md).
+
+## Estilos por controle — TUniDSAStyle
+
+Configure a aparência dos controles no DFM, incluindo hover, foco e estados selecionado/desabilitado. Veja [docs/Style.md](docs/Style.md) e o exemplo [WhatsAppWeb](examples/WhatsAppWeb/README.md).
+
+### TUniDSAFocusControl
+
+Arraste para o formulário para remover contornos de foco dos controles e frames filhos, sem associações individuais. Consulte [FocusControl](docs/FocusControl.md).

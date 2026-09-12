@@ -1,3 +1,5 @@
+TUniDSAFocusControl BITMAP "images\\TUniDSAFocusControl.bmp"
+TUniDSAStyle BITMAP "images\\TUniDSAStyle.bmp"
 TUniDSAFormStyle BITMAP "images\\TUniDSAFormStyle.bmp"
 TUniDSAConfirm BITMAP "images\\TUniDSAConfirm.bmp"
 TUniDSALogin BITMAP "images\\TUniDSALogin.bmp"

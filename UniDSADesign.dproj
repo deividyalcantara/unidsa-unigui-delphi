@@ -161,6 +161,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         </DCCReference>
         <DCCReference Include="sources\UniDSAMenu.pas"/>
         <DCCReference Include="sources\UniDSAFlexPanelDesign.pas"/>
+        <DCCReference Include="sources\UniDSAStyleDesign.pas"/>
         <RcItem Include="images\TFormUniDSABrowser.bmp">
             <ResourceType>BITMAP</ResourceType>
             <ResourceId>TFormUniDSABrowser</ResourceId>

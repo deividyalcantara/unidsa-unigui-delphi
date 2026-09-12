@@ -265,6 +265,7 @@ type
     procedure RefreshFlex;
     procedure RefreshFlexItem;
     procedure RefreshFlexItems;
+    procedure RolarParaFim;
   published
     property Flex: TUniDSAFlexOptions read FFlex write SetFlex;
     property FlexItem: TUniDSAFlexItemOptions read FFlexItem write SetFlexItem;
@@ -916,8 +917,10 @@ begin
   for I := 0 to FFlexItems.Count - 1 do
   begin
     LItem := FFlexItems[I];
-    if not Assigned(LItem.Control) or (LItem.Control.Parent <> Self) or
-       (LItem.Control.JSId = '') then
+    { O FormRegion de um TUniFrame pertence ao frame no VCL, embora seu
+      componente Ext JS seja filho deste FlexPanel. O runtime percorre somente
+      os próprios itens, portanto referências externas são ignoradas com segurança. }
+    if not Assigned(LItem.Control) or (LItem.Control.JSId = '') then
       Continue;
     if LHasItem then
       Result := Result + ',';
@@ -1042,6 +1045,12 @@ begin
   UpdateDesignLayout;
   if WebMode and (not IsLoading) then
     JSCall('setDsaFlexItemsConfig', [JSStatement(BuildChildItemsConfig)]);
+end;
+
+procedure TUniDSAFlexPanel.RolarParaFim;
+begin
+  if WebMode and (not IsLoading) then
+    JSCall('scrollToEnd', []);
 end;
 
 procedure TUniDSAFlexPanel.RemoveControl(AControl: TControl);

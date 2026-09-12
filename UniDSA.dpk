@@ -208,7 +208,9 @@ contains
   UniDSAWebUtils in 'sources\UniDSAWebUtils.pas',
   UniDSAKanban in 'sources\UniDSAKanban.pas',
   UniDSATour in 'sources\UniDSATour.pas',
-  UniDSAFormStyle in 'sources\UniDSAFormStyle.pas';
+  UniDSAFormStyle in 'sources\UniDSAFormStyle.pas',
+  UniDSAStyle in 'sources\UniDSAStyle.pas',
+  UniDSAFocusControl in 'sources\UniDSAFocusControl.pas';
 
 end.
 

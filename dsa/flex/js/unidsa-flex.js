@@ -66,6 +66,20 @@
       this.dsaApplyFlex();
     },
 
+    scrollToEnd: function () {
+      var target = this.dsaTargetElement();
+
+      if (!target || !target.dom) {
+        return;
+      }
+
+      window.requestAnimationFrame(function () {
+        window.requestAnimationFrame(function () {
+          target.dom.scrollTop = target.dom.scrollHeight;
+        });
+      });
+    },
+
     dsaScheduleFlex: function () {
       var me = this;
       if (me.dsaFlexScheduled || me.destroyed) {
@@ -163,6 +177,7 @@
       var stretchesAcrossColumn;
       var stretchesAcrossRow;
       var preservesWidth;
+      var defaultShrink;
 
       if (!item || !item.el || !item.el.dom) {
         return;
@@ -184,6 +199,10 @@
         (alignSelf === 'stretch' || (alignSelf === 'auto' && config.alignItems === 'stretch'));
       preservesWidth = autoWidth && direction.indexOf('column') === 0 &&
         (alignSelf === 'stretch' || (alignSelf === 'auto' && config.alignItems === 'stretch'));
+      // A vertical scroll container must preserve each child's natural height.
+      // Explicit FlexItem.Shrink values still take precedence over this default.
+      defaultShrink = direction.indexOf('column') === 0 &&
+        (config.overflow === 'auto' || config.overflow === 'scroll') ? 0 : 1;
 
       item.el.addCls('dsa-flex-item');
       if (stretchesAcrossColumn) {
@@ -192,7 +211,7 @@
         item.el.removeCls('dsa-flex-item-stretch-width');
       }
       style.flexGrow = String(Math.max(0, Number(itemConfig.grow) || 0));
-      style.flexShrink = String(Math.max(0, itemConfig.shrink === undefined ? 1 : Number(itemConfig.shrink)));
+      style.flexShrink = String(Math.max(0, itemConfig.shrink === undefined ? defaultShrink : Number(itemConfig.shrink)));
       style.order = String(Number(itemConfig.order) || 0);
       style.alignSelf = (stretchesAcrossRow || preservesWidth) ? 'flex-start' : alignSelf;
 

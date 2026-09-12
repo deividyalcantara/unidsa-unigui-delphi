@@ -1,0 +1,11 @@
+# Saídas do Delphi e arquivos locais do RAD Studio
+/bin/
+/tmp/
+*.dproj.local
+*.identcache
+*.res
+
+# Histórico e recuperação da IDE
+__history/
+__recovery/
+*.~*

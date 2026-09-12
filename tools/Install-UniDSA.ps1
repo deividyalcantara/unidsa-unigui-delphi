@@ -70,6 +70,16 @@ function Invoke-DelphiBuild {
   }
 }
 
+function Initialize-KnownPackagesKey {
+  param([string]$KnownPackagesKey)
+
+  # New-Item -Force replaces an existing registry key and removes its values.
+  # Only create the key when missing so other installed packages are preserved.
+  if (-not (Test-Path -LiteralPath $KnownPackagesKey)) {
+    New-Item -Path $KnownPackagesKey | Out-Null
+  }
+}
+
 function Restore-Installation {
   param(
     [string]$KnownPackagesKey,
@@ -219,7 +229,7 @@ try {
   New-Item -ItemType Directory -Path $BplDirectory, $DcpDirectory -Force | Out-Null
 
   $KnownPackagesKey = Join-Path $BdsRegistryRoot "$Version\Known Packages"
-  New-Item -Path $KnownPackagesKey -Force | Out-Null
+  Initialize-KnownPackagesKey -KnownPackagesKey $KnownPackagesKey
 
   $KnownPackages = Get-Item -LiteralPath $KnownPackagesKey
   foreach ($PackageName in $KnownPackages.GetValueNames()) {
