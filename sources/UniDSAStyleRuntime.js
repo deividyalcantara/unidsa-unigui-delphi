@@ -40,10 +40,10 @@
     }
     return target;
   }
-  function length(value) {
+  function length(value, signed) {
     if (!value || !value.Units) return '';
     const suffix = ['', 'px', '%', 'em', 'rem', 'vw', 'vh', 'dvh'][value.Units];
-    if (suffix) return Math.max(0, number(value.Value, 0)) + suffix;
+    if (suffix) return (signed ? number(value.Value, 0) : Math.max(0, number(value.Value, 0))) + suffix;
     return ({8:'auto', 9:'fit-content', 10:'min-content', 11:'max-content'})[value.Units] || '';
   }
   function matches(rule) {
@@ -63,12 +63,19 @@
     }
     return result;
   }
-  function declarations(appearance) {
+  function declarations(appearance, partial) {
     const result = {surface:{}, text:{}, content:{}, root:{}};
     const put = (group, property, value) => {
       if (value !== '' && value !== undefined && value !== null) result[group][property] = String(value);
     };
     const a = appearance || {}, b = a.Background || {}, border = a.Border || {}, t = a.Typography || {};
+    if (a.Display) put('root', 'display', ['', 'none', 'block', 'inline', 'inline-block', 'flex', 'inline-flex', 'grid', 'inline-grid'][a.Display]);
+    const geometry = a.Transform || {};
+    if (own(geometry, 'SkewX') || own(geometry, 'SkewY')) {
+      for (const axis of ['X', 'Y']) if (own(geometry, 'Skew' + axis))
+        put('root', '--unidsa-skew-' + axis.toLowerCase(), number(geometry['Skew' + axis], 0) + 'deg');
+      put('root', 'transform', 'skewX(var(--unidsa-skew-x, 0deg)) skewY(var(--unidsa-skew-y, 0deg))');
+    }
     put('surface', 'background-color', rgba(b.Color, b.Opacity));
     if (b.Color) put('surface', 'background-image', 'none');
     if (b.ImageURL) {
@@ -152,8 +159,15 @@
     if (effects.Cursor) put('root', 'cursor', ['', 'default','pointer','text','not-allowed','grab'][effects.Cursor]);
     if (own(effects, 'TransitionMs')) {
       const ms = Math.max(0, effects.TransitionMs) + 'ms';
-      put('surface', 'transition', ['background-color','border-color','box-shadow','color','opacity'].map(p => p + ' ' + ms + ' ease').join(','));
-      put('text', 'transition', 'color ' + ms + ' ease');
+      for (const group of ['surface', 'root', 'text']) {
+        put(group, 'transition-duration', ms);
+        put(group, 'transition-timing-function', 'ease');
+      }
+    }
+    if ((!partial && own(effects, 'TransitionMs')) || effects.TransitionAll) {
+      const properties = effects.TransitionAll === 2 ? 'all' : 'background-color,border-color,box-shadow,color,opacity,transform';
+      for (const group of ['surface', 'root']) put(group, 'transition-property', properties);
+      put('text', 'transition-property', effects.TransitionAll === 2 ? 'all' : 'color');
     }
     if (own(effects, 'OutlineWidth')) { put('root', 'outline-width', px(Math.max(0, effects.OutlineWidth))); put('root', 'outline-style', 'solid'); }
     put('root', 'outline-color', effects.OutlineColor);
@@ -164,6 +178,7 @@
     const inset = position.Insets || {};
     if (own(inset, 'All')) for (const side of ['top','right','bottom','left']) put('root', side, px(inset.All));
     for (const side of ['Top','Right','Bottom','Left']) if (own(inset, side)) put('root', side.toLowerCase(), px(inset[side]));
+    for (const side of ['Top','Right','Bottom','Left']) put('root', side.toLowerCase(), length(position[side], true));
     return result;
   }
   function adapter(el) {
@@ -181,6 +196,43 @@
       list.push(property + ':' + value + '!important');
     }
     return list.length && selectors.length ? selectors.join(',') + '{' + list.join(';') + '}\n' : '';
+  }
+  // Use one wrapper: nested button spans must never be skewed twice.
+  function contentTargets(el) {
+    if (el.matches('.x-btn')) return el.querySelector('.x-btn-wrap') ? [' .x-btn-wrap'] : [' .x-btn-inner'];
+    return adapter(el).content.filter(target => target !== '');
+  }
+  function partValues(part, partial) {
+    const rules = declarations(part, partial);
+    return Object.assign({}, rules.surface, rules.text, rules.content, rules.root);
+  }
+  function contentString(text) {
+    return '"' + String(text).replace(/[\\"\n\r\f{};\u0000]/g,
+      c => '\\' + (c.charCodeAt(0) || 0xfffd).toString(16) + ' ') + '"';
+  }
+  function partsCSS(el, bases, appearance, partial) {
+    const a = appearance || {};
+    let css = cssRule(bases.flatMap(base => contentTargets(el).map(target => base + target)), partValues(a.Content, partial));
+    for (const name of ['Before', 'After']) {
+      const part = a[name] || {}, values = partValues(part, partial);
+      if (part.Enabled === 1) values.content = 'none';
+      else if (part.Enabled === 2 || own(part, 'Text')) values.content = contentString(part.Text || '');
+      // Decorative layers must not intercept the control's pointer events.
+      if (Object.keys(part).length) values['pointer-events'] = 'none';
+      css += cssRule(bases.map(base => base + '::' + name.toLowerCase()), values);
+    }
+    return css;
+  }
+  function geometryDefaults(el, rule) {
+    let css = '';
+    const id = '#' + escapeID(el.id), base = id + id;
+    const appearances = [rule.appearance, ...Object.values(rule.states)];
+    for (const name of ['', 'Content', 'Before', 'After']) {
+      if (!appearances.some(a => Object.keys(((name ? a[name] : a) || {}).Transform || {}).length)) continue;
+      const targets = name === 'Content' ? contentTargets(el) : [name ? '::' + name.toLowerCase() : ''];
+      css += cssRule(targets.map(target => base + target), {'--unidsa-skew-x':'0deg', '--unidsa-skew-y':'0deg'});
+    }
+    return css;
   }
   function scrollbarCSS(el, bases, appearance) {
     const scrollbar = (appearance || {}).Scrollbar || {};
@@ -229,13 +281,14 @@
     return css;
   }
 
-  function emit(el, suffixes, appearance) {
-    const rules = declarations(appearance), map = adapter(el), id = '#' + escapeID(el.id);
+  function emit(el, suffixes, appearance, partial) {
+    const rules = declarations(appearance, partial), map = adapter(el), id = '#' + escapeID(el.id);
     const bases = suffixes.map(s => id + id + s);
     let css = '';
     for (const group of ['surface','text','content','root'])
       css += cssRule(bases.flatMap(base => map[group].map(suffix => base + suffix)), rules[group]);
     css += scrollbarCSS(el, bases, appearance);
+    css += partsCSS(el, bases, appearance, partial);
     if (el.matches('.x-panel,.x-window')) {
       const bodies = [' > .x-panel-bodyWrap > .x-panel-body',' > .x-window-bodyWrap > .x-window-body'];
       const backgrounds = Object.fromEntries(Object.entries(rules.surface).filter(([p]) => p.startsWith('background')));
@@ -258,12 +311,12 @@
   const live = ':not(.x-item-disabled):not(.x-btn-disabled):not([aria-disabled="true"]):not(:disabled)';
   function controlCSS(el, layers, selected) {
     const rule = resolve(layers);
-    let css = emit(el, [''], rule.appearance);
-    if (selected) css += emit(el, [''], rule.states.Selected || {});
-    css += emit(el, [live + ':hover'], rule.states.Hover || {});
-    css += emit(el, [live + ':focus-visible',live + ':focus-within'], rule.states.Focus || {});
-    css += emit(el, [live + ':active'], rule.states.Pressed || {});
-    css += emit(el, ['.x-item-disabled','.x-btn-disabled','[aria-disabled="true"]',':disabled'], rule.states.Disabled || {});
+    let css = geometryDefaults(el, rule) + emit(el, [''], rule.appearance);
+    if (selected) css += emit(el, [''], rule.states.Selected || {}, true);
+    css += emit(el, [live + ':hover'], rule.states.Hover || {}, true);
+    css += emit(el, [live + ':focus-visible',live + ':focus-within'], rule.states.Focus || {}, true);
+    css += emit(el, [live + ':active'], rule.states.Pressed || {}, true);
+    css += emit(el, ['.x-item-disabled','.x-btn-disabled','[aria-disabled="true"]',':disabled'], rule.states.Disabled || {}, true);
     return css;
   }
   function clearTags(record) {

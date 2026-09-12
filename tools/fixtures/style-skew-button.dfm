@@ -1,0 +1,40 @@
+object SkewButtonStyle: TUniDSAStyle
+  Styles = <
+    item
+      Name = 'SkewButton'
+      Appearance.Display = sdInlineBlock
+      Appearance.Background.Color = clWhite
+      Appearance.Border.Width = 0
+      Appearance.Border.Line = blNone
+      Appearance.Border.Radius = 0
+      Appearance.Typography.Color = clBlack
+      Appearance.Typography.Size = 15
+      Appearance.Typography.Weight = swSemiBold
+      Appearance.Typography.Transform = ttUppercase
+      Appearance.Spacing.Padding.Top = 10
+      Appearance.Spacing.Padding.Right = 20
+      Appearance.Spacing.Padding.Bottom = 10
+      Appearance.Spacing.Padding.Left = 20
+      Appearance.Sizing.Width.Value = 120.000000000000000000
+      Appearance.Sizing.Width.Units = suPx
+      Appearance.Effects.Cursor = scPointer
+      Appearance.Position.Mode = poRelative
+      Appearance.Transform.SkewX = -21
+      Appearance.Content.Display = sdInlineBlock
+      Appearance.Content.Transform.SkewX = 21
+      Appearance.Before.Enabled = ssYes
+      Appearance.Before.Background.Color = 1315860
+      Appearance.Before.Position.Mode = poAbsolute
+      Appearance.Before.Position.Insets.All = 0
+      Appearance.Before.Position.Right.Value = 100.000000000000000000
+      Appearance.Before.Position.Right.Units = suPercent
+      Appearance.Before.Position.ZIndex = -1
+      Appearance.Before.Effects.Opacity = 0
+      Appearance.Before.Effects.TransitionMs = 500
+      Appearance.Before.Effects.TransitionAll = ssYes
+      States.Hover.Typography.Color = clWhite
+      States.Hover.Before.Position.Right.Value = 0.000000000000000000
+      States.Hover.Before.Position.Right.Units = suPercent
+      States.Hover.Before.Effects.Opacity = 100
+    end>
+end

@@ -40,13 +40,22 @@ type
     property Version: string read FVersion;
     property FontAwesome: string read FFontAwesome;
   protected
+    procedure InitComponent; override;
     procedure InternalSetCaption(const Value: string); override;
     procedure ConfigJSClasses(ALoading: Boolean); override;
   end;
 
 implementation
 
+uses UniDSASource;
+
 { TUniDSABaseControl }
+
+procedure TUniDSABaseControl.InitComponent;
+begin
+  UniDSASource.CheckAssets(Self);
+  inherited;
+end;
 
 procedure TUniDSABaseControl.ConfigJSClasses(ALoading: Boolean);
 begin

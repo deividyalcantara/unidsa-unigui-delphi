@@ -39,6 +39,7 @@ type
   TUniDSAStyleGradient = (sgInherit, sgNone, sgLinear, sgRadial);
   TUniDSAStylePositionMode = (poInherit, poStatic, poRelative, poAbsolute, poFixed, poSticky);
   TUniDSAStyleBoxSizing = (bsInherit, bsBorderBox, bsContentBox);
+  TUniDSAStyleDisplay = (sdInherit, sdNone, sdBlock, sdInline, sdInlineBlock, sdFlex, sdInlineFlex, sdGrid, sdInlineGrid);
   TUniDSAStyleOrientation = (orAny, orPortrait, orLandscape);
   TUniDSAStyleLength = class(TUniDSAStylePersistent)
   private
@@ -356,12 +357,14 @@ type
     FOpacity: Integer;
     FCursor: TUniDSAStyleCursor;
     FTransitionMs: Integer;
+    FTransitionAll: TUniDSAStyleSwitch;
     FOutlineWidth: Integer;
     FOutlineColor: TColor;
     FOutlineOffset: Integer;
     procedure SetOpacity(const Value: Integer);
     procedure SetCursor(const Value: TUniDSAStyleCursor);
     procedure SetTransitionMs(const Value: Integer);
+    procedure SetTransitionAll(const Value: TUniDSAStyleSwitch);
     procedure SetOutlineWidth(const Value: Integer);
     procedure SetOutlineColor(const Value: TColor);
     procedure SetOutlineOffset(const Value: Integer);
@@ -372,6 +375,7 @@ type
   published
     property Opacity: Integer read FOpacity write SetOpacity default -1;
     property Cursor: TUniDSAStyleCursor read FCursor write SetCursor default scInherit;
+    property TransitionAll: TUniDSAStyleSwitch read FTransitionAll write SetTransitionAll default ssInherit;
     property TransitionMs: Integer read FTransitionMs write SetTransitionMs default -1;
     property OutlineWidth: Integer read FOutlineWidth write SetOutlineWidth default -1;
     property OutlineColor: TColor read FOutlineColor write SetOutlineColor default clNone;
@@ -381,9 +385,17 @@ type
   TUniDSAStylePosition = class(TUniDSAStylePersistent)
   private
     FMode: TUniDSAStylePositionMode;
+    FTop: TUniDSAStyleLength;
+    FRight: TUniDSAStyleLength;
+    FBottom: TUniDSAStyleLength;
+    FLeft: TUniDSAStyleLength;
     FInsets: TUniDSAStyleEdges;
     FZIndex: Integer;
     procedure SetMode(const Value: TUniDSAStylePositionMode);
+    procedure SetTop(const Value: TUniDSAStyleLength);
+    procedure SetRight(const Value: TUniDSAStyleLength);
+    procedure SetBottom(const Value: TUniDSAStyleLength);
+    procedure SetLeft(const Value: TUniDSAStyleLength);
     procedure SetInsets(const Value: TUniDSAStyleEdges);
     procedure SetZIndex(const Value: Integer);
   public
@@ -393,27 +405,48 @@ type
     function ToJSON: TJSONObject;
   published
     property Mode: TUniDSAStylePositionMode read FMode write SetMode default poInherit;
+    property Top: TUniDSAStyleLength read FTop write SetTop;
+    property Right: TUniDSAStyleLength read FRight write SetRight;
+    property Bottom: TUniDSAStyleLength read FBottom write SetBottom;
+    property Left: TUniDSAStyleLength read FLeft write SetLeft;
     property Insets: TUniDSAStyleEdges read FInsets write SetInsets;
     property ZIndex: Integer read FZIndex write SetZIndex default -1000;
   end;
 
-  TUniDSAStyleAppearance = class(TUniDSAStylePersistent)
+  { Geometry is independent of Typography.Transform (uppercase/lowercase). }
+  TUniDSAStyleGeometry = class(TUniDSAStylePersistent)
   private
+    FSkewX, FSkewY: Integer;
+    procedure SetSkewX(const Value: Integer);
+    procedure SetSkewY(const Value: Integer);
+  public
+    constructor Create(AOnChange: TNotifyEvent); override;
+    procedure Assign(Source: TPersistent); override;
+    function ToJSON: TJSONObject;
+  published
+    property SkewX: Integer read FSkewX write SetSkewX default -1000;
+    property SkewY: Integer read FSkewY write SetSkewY default -1000;
+  end;
+
+  TUniDSAStyleVisual = class(TUniDSAStylePersistent)
+  private
+    FDisplay: TUniDSAStyleDisplay;
+    FTransform: TUniDSAStyleGeometry;
     FBackground: TUniDSAStyleBackground;
     FBorder: TUniDSAStyleBorder;
     FTypography: TUniDSAStyleTypography;
     FSpacing: TUniDSAStyleSpacing;
     FSizing: TUniDSAStyleSizing;
-    FScrollbar: TUniDSAStyleScrollbar;
     FShadow: TUniDSAStyleShadow;
     FEffects: TUniDSAStyleEffects;
     FPosition: TUniDSAStylePosition;
+    procedure SetDisplay(const Value: TUniDSAStyleDisplay);
+    procedure SetTransform(const Value: TUniDSAStyleGeometry);
     procedure SetBackground(const Value: TUniDSAStyleBackground);
     procedure SetBorder(const Value: TUniDSAStyleBorder);
     procedure SetTypography(const Value: TUniDSAStyleTypography);
     procedure SetSpacing(const Value: TUniDSAStyleSpacing);
     procedure SetSizing(const Value: TUniDSAStyleSizing);
-    procedure SetScrollbar(const Value: TUniDSAStyleScrollbar);
     procedure SetShadow(const Value: TUniDSAStyleShadow);
     procedure SetEffects(const Value: TUniDSAStyleEffects);
     procedure SetPosition(const Value: TUniDSAStylePosition);
@@ -421,17 +454,53 @@ type
     constructor Create(AOnChange: TNotifyEvent); override;
     destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
-    function ToJSON: TJSONObject;
+    function ToJSON: TJSONObject; virtual;
   published
+    property Display: TUniDSAStyleDisplay read FDisplay write SetDisplay default sdInherit;
+    property Transform: TUniDSAStyleGeometry read FTransform write SetTransform;
     property Background: TUniDSAStyleBackground read FBackground write SetBackground;
     property Border: TUniDSAStyleBorder read FBorder write SetBorder;
     property Typography: TUniDSAStyleTypography read FTypography write SetTypography;
     property Spacing: TUniDSAStyleSpacing read FSpacing write SetSpacing;
     property Sizing: TUniDSAStyleSizing read FSizing write SetSizing;
-    property Scrollbar: TUniDSAStyleScrollbar read FScrollbar write SetScrollbar;
     property Shadow: TUniDSAStyleShadow read FShadow write SetShadow;
     property Effects: TUniDSAStyleEffects read FEffects write SetEffects;
     property Position: TUniDSAStylePosition read FPosition write SetPosition;
+  end;
+
+  TUniDSAStylePseudoElement = class(TUniDSAStyleVisual)
+  private
+    FEnabled: TUniDSAStyleSwitch;
+    FText: string;
+    procedure SetEnabled(const Value: TUniDSAStyleSwitch);
+    procedure SetText(const Value: string);
+  public
+    procedure Assign(Source: TPersistent); override;
+    function ToJSON: TJSONObject; override;
+  published
+    property Enabled: TUniDSAStyleSwitch read FEnabled write SetEnabled default ssInherit;
+    property Text: string read FText write SetText;
+  end;
+
+  TUniDSAStyleAppearance = class(TUniDSAStyleVisual)
+  private
+    FScrollbar: TUniDSAStyleScrollbar;
+    FContent: TUniDSAStyleVisual;
+    FBefore, FAfter: TUniDSAStylePseudoElement;
+    procedure SetScrollbar(const Value: TUniDSAStyleScrollbar);
+    procedure SetContent(const Value: TUniDSAStyleVisual);
+    procedure SetBefore(const Value: TUniDSAStylePseudoElement);
+    procedure SetAfter(const Value: TUniDSAStylePseudoElement);
+  public
+    constructor Create(AOnChange: TNotifyEvent); override;
+    destructor Destroy; override;
+    procedure Assign(Source: TPersistent); override;
+    function ToJSON: TJSONObject; override;
+  published
+    property Scrollbar: TUniDSAStyleScrollbar read FScrollbar write SetScrollbar;
+    property Content: TUniDSAStyleVisual read FContent write SetContent;
+    property Before: TUniDSAStylePseudoElement read FBefore write SetBefore;
+    property After: TUniDSAStylePseudoElement read FAfter write SetAfter;
   end;
 
   TUniDSAStyleStates = class(TUniDSAStylePersistent)
@@ -1623,6 +1692,7 @@ begin
   FOpacity := -1;
   FCursor := scInherit;
   FTransitionMs := -1;
+  FTransitionAll := ssInherit;
   FOutlineWidth := -1;
   FOutlineColor := clNone;
   FOutlineOffset := -1000;
@@ -1638,6 +1708,7 @@ begin
     FOpacity := S.FOpacity;
     FCursor := S.FCursor;
     FTransitionMs := S.FTransitionMs;
+    FTransitionAll := S.FTransitionAll;
     FOutlineWidth := S.FOutlineWidth;
     FOutlineColor := S.FOutlineColor;
     FOutlineOffset := S.FOutlineOffset;
@@ -1656,6 +1727,13 @@ procedure TUniDSAStyleEffects.SetCursor(const Value: TUniDSAStyleCursor);
 begin
   if FCursor = Value then Exit;
   FCursor := Value;
+  Changed;
+end;
+
+procedure TUniDSAStyleEffects.SetTransitionAll(const Value: TUniDSAStyleSwitch);
+begin
+  if FTransitionAll = Value then Exit;
+  FTransitionAll := Value;
   Changed;
 end;
 
@@ -1692,6 +1770,7 @@ begin
   Result := TJSONObject.Create;
   if FOpacity <> -1 then Result.AddPair('Opacity', TJSONNumber.Create(FOpacity));
   if FCursor <> scInherit then Result.AddPair('Cursor', TJSONNumber.Create(Ord(FCursor)));
+  if FTransitionAll <> ssInherit then Result.AddPair('TransitionAll', TJSONNumber.Create(Ord(FTransitionAll)));
   if FTransitionMs <> -1 then Result.AddPair('TransitionMs', TJSONNumber.Create(FTransitionMs));
   if FOutlineWidth <> -1 then Result.AddPair('OutlineWidth', TJSONNumber.Create(FOutlineWidth));
   if FOutlineColor <> clNone then Result.AddPair('OutlineColor', UniDSAColorToCSS(FOutlineColor));
@@ -1702,12 +1781,20 @@ constructor TUniDSAStylePosition.Create(AOnChange: TNotifyEvent);
 begin
   inherited;
   FMode := poInherit;
+  FTop := TUniDSAStyleLength.Create(ChildChanged);
+  FRight := TUniDSAStyleLength.Create(ChildChanged);
+  FBottom := TUniDSAStyleLength.Create(ChildChanged);
+  FLeft := TUniDSAStyleLength.Create(ChildChanged);
   FInsets := TUniDSAStyleEdges.Create(ChildChanged);
   FZIndex := -1000;
 end;
 
 destructor TUniDSAStylePosition.Destroy;
 begin
+  FTop.Free;
+  FRight.Free;
+  FBottom.Free;
+  FLeft.Free;
   FInsets.Free;
   inherited;
 end;
@@ -1720,6 +1807,10 @@ begin
   BeginUpdate;
   try
     FMode := S.FMode;
+    FTop.Assign(S.FTop);
+    FRight.Assign(S.FRight);
+    FBottom.Assign(S.FBottom);
+    FLeft.Assign(S.FLeft);
     FInsets.Assign(S.FInsets);
     FZIndex := S.FZIndex;
     Changed;
@@ -1731,6 +1822,26 @@ begin
   if FMode = Value then Exit;
   FMode := Value;
   Changed;
+end;
+
+procedure TUniDSAStylePosition.SetTop(const Value: TUniDSAStyleLength);
+begin
+  if Assigned(Value) then FTop.Assign(Value);
+end;
+
+procedure TUniDSAStylePosition.SetRight(const Value: TUniDSAStyleLength);
+begin
+  if Assigned(Value) then FRight.Assign(Value);
+end;
+
+procedure TUniDSAStylePosition.SetBottom(const Value: TUniDSAStyleLength);
+begin
+  if Assigned(Value) then FBottom.Assign(Value);
+end;
+
+procedure TUniDSAStylePosition.SetLeft(const Value: TUniDSAStyleLength);
+begin
+  if Assigned(Value) then FLeft.Assign(Value);
 end;
 
 procedure TUniDSAStylePosition.SetInsets(const Value: TUniDSAStyleEdges);
@@ -1749,35 +1860,227 @@ function TUniDSAStylePosition.ToJSON: TJSONObject;
 begin
   Result := TJSONObject.Create;
   if FMode <> poInherit then Result.AddPair('Mode', TJSONNumber.Create(Ord(FMode)));
+  Result.AddPair('Top', FTop.ToJSON);
+  Result.AddPair('Right', FRight.ToJSON);
+  Result.AddPair('Bottom', FBottom.ToJSON);
+  Result.AddPair('Left', FLeft.ToJSON);
   Result.AddPair('Insets', FInsets.ToJSON);
   if FZIndex <> -1000 then Result.AddPair('ZIndex', TJSONNumber.Create(FZIndex));
 end;
 
-constructor TUniDSAStyleAppearance.Create(AOnChange: TNotifyEvent);
+constructor TUniDSAStyleVisual.Create(AOnChange: TNotifyEvent);
 begin
   inherited;
+  FDisplay := sdInherit;
+  FTransform := TUniDSAStyleGeometry.Create(ChildChanged);
   FBackground := TUniDSAStyleBackground.Create(ChildChanged);
   FBorder := TUniDSAStyleBorder.Create(ChildChanged);
   FTypography := TUniDSAStyleTypography.Create(ChildChanged);
   FSpacing := TUniDSAStyleSpacing.Create(ChildChanged);
   FSizing := TUniDSAStyleSizing.Create(ChildChanged);
-  FScrollbar := TUniDSAStyleScrollbar.Create(ChildChanged);
   FShadow := TUniDSAStyleShadow.Create(ChildChanged);
   FEffects := TUniDSAStyleEffects.Create(ChildChanged);
   FPosition := TUniDSAStylePosition.Create(ChildChanged);
 end;
 
-destructor TUniDSAStyleAppearance.Destroy;
+destructor TUniDSAStyleVisual.Destroy;
 begin
+  FTransform.Free;
   FBackground.Free;
   FBorder.Free;
   FTypography.Free;
   FSpacing.Free;
   FSizing.Free;
-  FScrollbar.Free;
   FShadow.Free;
   FEffects.Free;
   FPosition.Free;
+  inherited;
+end;
+
+procedure TUniDSAStyleVisual.Assign(Source: TPersistent);
+var S: TUniDSAStyleVisual;
+begin
+  if not (Source is TUniDSAStyleVisual) then begin inherited; Exit; end;
+  S := TUniDSAStyleVisual(Source);
+  BeginUpdate;
+  try
+    FDisplay := S.FDisplay;
+    FTransform.Assign(S.FTransform);
+    FBackground.Assign(S.FBackground);
+    FBorder.Assign(S.FBorder);
+    FTypography.Assign(S.FTypography);
+    FSpacing.Assign(S.FSpacing);
+    FSizing.Assign(S.FSizing);
+    FShadow.Assign(S.FShadow);
+    FEffects.Assign(S.FEffects);
+    FPosition.Assign(S.FPosition);
+    Changed;
+  finally EndUpdate; end;
+end;
+
+procedure TUniDSAStyleVisual.SetBackground(const Value: TUniDSAStyleBackground);
+begin
+  if Assigned(Value) then FBackground.Assign(Value);
+end;
+
+procedure TUniDSAStyleVisual.SetBorder(const Value: TUniDSAStyleBorder);
+begin
+  if Assigned(Value) then FBorder.Assign(Value);
+end;
+
+procedure TUniDSAStyleVisual.SetTypography(const Value: TUniDSAStyleTypography);
+begin
+  if Assigned(Value) then FTypography.Assign(Value);
+end;
+
+procedure TUniDSAStyleVisual.SetSpacing(const Value: TUniDSAStyleSpacing);
+begin
+  if Assigned(Value) then FSpacing.Assign(Value);
+end;
+
+procedure TUniDSAStyleVisual.SetSizing(const Value: TUniDSAStyleSizing);
+begin
+  if Assigned(Value) then FSizing.Assign(Value);
+end;
+
+procedure TUniDSAStyleAppearance.SetScrollbar(const Value: TUniDSAStyleScrollbar);
+begin
+  if Assigned(Value) then FScrollbar.Assign(Value);
+end;
+
+procedure TUniDSAStyleVisual.SetShadow(const Value: TUniDSAStyleShadow);
+begin
+  if Assigned(Value) then FShadow.Assign(Value);
+end;
+
+procedure TUniDSAStyleVisual.SetEffects(const Value: TUniDSAStyleEffects);
+begin
+  if Assigned(Value) then FEffects.Assign(Value);
+end;
+
+procedure TUniDSAStyleVisual.SetPosition(const Value: TUniDSAStylePosition);
+begin
+  if Assigned(Value) then FPosition.Assign(Value);
+end;
+
+function TUniDSAStyleVisual.ToJSON: TJSONObject;
+begin
+  Result := TJSONObject.Create;
+  if FDisplay <> sdInherit then Result.AddPair('Display', TJSONNumber.Create(Ord(FDisplay)));
+  Result.AddPair('Transform', FTransform.ToJSON);
+  Result.AddPair('Background', FBackground.ToJSON);
+  Result.AddPair('Border', FBorder.ToJSON);
+  Result.AddPair('Typography', FTypography.ToJSON);
+  Result.AddPair('Spacing', FSpacing.ToJSON);
+  Result.AddPair('Sizing', FSizing.ToJSON);
+  Result.AddPair('Shadow', FShadow.ToJSON);
+  Result.AddPair('Effects', FEffects.ToJSON);
+  Result.AddPair('Position', FPosition.ToJSON);
+end;
+
+procedure TUniDSAStyleVisual.SetDisplay(const Value: TUniDSAStyleDisplay);
+begin
+  if FDisplay = Value then Exit;
+  FDisplay := Value;
+  Changed;
+end;
+
+procedure TUniDSAStyleVisual.SetTransform(const Value: TUniDSAStyleGeometry);
+begin
+  if Assigned(Value) then FTransform.Assign(Value);
+end;
+
+constructor TUniDSAStyleGeometry.Create(AOnChange: TNotifyEvent);
+begin
+  inherited;
+  FSkewX := -1000;
+  FSkewY := -1000;
+end;
+
+procedure TUniDSAStyleGeometry.Assign(Source: TPersistent);
+var S: TUniDSAStyleGeometry;
+begin
+  if not (Source is TUniDSAStyleGeometry) then begin inherited; Exit; end;
+  S := TUniDSAStyleGeometry(Source);
+  BeginUpdate;
+  try
+    FSkewX := S.FSkewX;
+    FSkewY := S.FSkewY;
+    Changed;
+  finally EndUpdate; end;
+end;
+
+function TUniDSAStyleGeometry.ToJSON: TJSONObject;
+begin
+  Result := TJSONObject.Create;
+  if FSkewX <> -1000 then Result.AddPair('SkewX', TJSONNumber.Create(FSkewX));
+  if FSkewY <> -1000 then Result.AddPair('SkewY', TJSONNumber.Create(FSkewY));
+end;
+
+procedure TUniDSAStyleGeometry.SetSkewX(const Value: Integer);
+begin
+  if FSkewX = Value then Exit;
+  FSkewX := Value;
+  Changed;
+end;
+
+procedure TUniDSAStyleGeometry.SetSkewY(const Value: Integer);
+begin
+  if FSkewY = Value then Exit;
+  FSkewY := Value;
+  Changed;
+end;
+
+procedure TUniDSAStylePseudoElement.Assign(Source: TPersistent);
+var S: TUniDSAStylePseudoElement;
+begin
+  if not (Source is TUniDSAStylePseudoElement) then begin inherited; Exit; end;
+  S := TUniDSAStylePseudoElement(Source);
+  BeginUpdate;
+  try
+    inherited Assign(Source);
+    FEnabled := S.FEnabled;
+    FText := S.FText;
+    Changed;
+  finally EndUpdate; end;
+end;
+
+function TUniDSAStylePseudoElement.ToJSON: TJSONObject;
+begin
+  Result := inherited ToJSON;
+  if FEnabled <> ssInherit then Result.AddPair('Enabled', TJSONNumber.Create(Ord(FEnabled)));
+  if (FText <> '') or (FEnabled = ssYes) then Result.AddPair('Text', FText);
+end;
+
+procedure TUniDSAStylePseudoElement.SetEnabled(const Value: TUniDSAStyleSwitch);
+begin
+  if FEnabled = Value then Exit;
+  FEnabled := Value;
+  Changed;
+end;
+
+procedure TUniDSAStylePseudoElement.SetText(const Value: string);
+begin
+  if FText = Value then Exit;
+  FText := Value;
+  Changed;
+end;
+
+constructor TUniDSAStyleAppearance.Create(AOnChange: TNotifyEvent);
+begin
+  inherited;
+  FScrollbar := TUniDSAStyleScrollbar.Create(ChildChanged);
+  FContent := TUniDSAStyleVisual.Create(ChildChanged);
+  FBefore := TUniDSAStylePseudoElement.Create(ChildChanged);
+  FAfter := TUniDSAStylePseudoElement.Create(ChildChanged);
+end;
+
+destructor TUniDSAStyleAppearance.Destroy;
+begin
+  FScrollbar.Free;
+  FContent.Free;
+  FBefore.Free;
+  FAfter.Free;
   inherited;
 end;
 
@@ -1788,76 +2091,37 @@ begin
   S := TUniDSAStyleAppearance(Source);
   BeginUpdate;
   try
-    FBackground.Assign(S.FBackground);
-    FBorder.Assign(S.FBorder);
-    FTypography.Assign(S.FTypography);
-    FSpacing.Assign(S.FSpacing);
-    FSizing.Assign(S.FSizing);
+    inherited Assign(Source);
     FScrollbar.Assign(S.FScrollbar);
-    FShadow.Assign(S.FShadow);
-    FEffects.Assign(S.FEffects);
-    FPosition.Assign(S.FPosition);
+    FContent.Assign(S.FContent);
+    FBefore.Assign(S.FBefore);
+    FAfter.Assign(S.FAfter);
     Changed;
   finally EndUpdate; end;
 end;
 
-procedure TUniDSAStyleAppearance.SetBackground(const Value: TUniDSAStyleBackground);
-begin
-  if Assigned(Value) then FBackground.Assign(Value);
-end;
-
-procedure TUniDSAStyleAppearance.SetBorder(const Value: TUniDSAStyleBorder);
-begin
-  if Assigned(Value) then FBorder.Assign(Value);
-end;
-
-procedure TUniDSAStyleAppearance.SetTypography(const Value: TUniDSAStyleTypography);
-begin
-  if Assigned(Value) then FTypography.Assign(Value);
-end;
-
-procedure TUniDSAStyleAppearance.SetSpacing(const Value: TUniDSAStyleSpacing);
-begin
-  if Assigned(Value) then FSpacing.Assign(Value);
-end;
-
-procedure TUniDSAStyleAppearance.SetSizing(const Value: TUniDSAStyleSizing);
-begin
-  if Assigned(Value) then FSizing.Assign(Value);
-end;
-
-procedure TUniDSAStyleAppearance.SetScrollbar(const Value: TUniDSAStyleScrollbar);
-begin
-  if Assigned(Value) then FScrollbar.Assign(Value);
-end;
-
-procedure TUniDSAStyleAppearance.SetShadow(const Value: TUniDSAStyleShadow);
-begin
-  if Assigned(Value) then FShadow.Assign(Value);
-end;
-
-procedure TUniDSAStyleAppearance.SetEffects(const Value: TUniDSAStyleEffects);
-begin
-  if Assigned(Value) then FEffects.Assign(Value);
-end;
-
-procedure TUniDSAStyleAppearance.SetPosition(const Value: TUniDSAStylePosition);
-begin
-  if Assigned(Value) then FPosition.Assign(Value);
-end;
-
 function TUniDSAStyleAppearance.ToJSON: TJSONObject;
 begin
-  Result := TJSONObject.Create;
-  Result.AddPair('Background', FBackground.ToJSON);
-  Result.AddPair('Border', FBorder.ToJSON);
-  Result.AddPair('Typography', FTypography.ToJSON);
-  Result.AddPair('Spacing', FSpacing.ToJSON);
-  Result.AddPair('Sizing', FSizing.ToJSON);
+  Result := inherited ToJSON;
   Result.AddPair('Scrollbar', FScrollbar.ToJSON);
-  Result.AddPair('Shadow', FShadow.ToJSON);
-  Result.AddPair('Effects', FEffects.ToJSON);
-  Result.AddPair('Position', FPosition.ToJSON);
+  Result.AddPair('Content', FContent.ToJSON);
+  Result.AddPair('Before', FBefore.ToJSON);
+  Result.AddPair('After', FAfter.ToJSON);
+end;
+
+procedure TUniDSAStyleAppearance.SetContent(const Value: TUniDSAStyleVisual);
+begin
+  if Assigned(Value) then FContent.Assign(Value);
+end;
+
+procedure TUniDSAStyleAppearance.SetBefore(const Value: TUniDSAStylePseudoElement);
+begin
+  if Assigned(Value) then FBefore.Assign(Value);
+end;
+
+procedure TUniDSAStyleAppearance.SetAfter(const Value: TUniDSAStylePseudoElement);
+begin
+  if Assigned(Value) then FAfter.Assign(Value);
 end;
 
 constructor TUniDSAStyleStates.Create(AOnChange: TNotifyEvent);

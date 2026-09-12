@@ -62,7 +62,11 @@ vertical e espaço à direita mesmo ao personalizar CloseButton.Size.
 Durante o arraste, liveDrag move a própria janela estilizada, sem a moldura
 fantasma do tema uniGUI. Ao desativar o componente, o tamanho original do X
 e a configuração anterior de arraste são restaurados.
-Os assets usam a versão v=4 para invalidar cópias anteriores em cache.
+Minimizar, maximizar e restaurar usam ícones de traço no mesmo padrão do X.
+CloseButton.Size, Color e HoverColor também definem a aparência dessas ações;
+CloseButton.Visible continua controlando somente o X. Os tamanhos nativos de
+todos esses botões são restaurados ao desativar o componente.
+Os assets usam a versão v=5 para invalidar cópias anteriores em cache.
 
 ## Instalação na IDE
 

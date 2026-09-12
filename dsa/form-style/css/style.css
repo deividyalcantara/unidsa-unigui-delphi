@@ -21,13 +21,13 @@
 .dsa-form-style .x-title-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dsa-form-style.dsa-form-no-icon .x-title-icon-wrap{display:none!important}
 .dsa-form-style .x-tool{background:transparent!important}
-.dsa-form-style .x-tool:has(.x-tool-close){
+.dsa-form-style .x-tool:has(:is(.x-tool-close,.x-tool-minimize,.x-tool-maximize,.x-tool-restore)){
   width:var(--dsa-form-closeSize)!important;height:var(--dsa-form-closeSize)!important;
   border-radius:10px;cursor:pointer;
 }
-.dsa-form-style .x-tool:has(.x-tool-close):hover{background:var(--dsa-form-closeHover)!important}
-.dsa-form-style .x-tool:has(.x-tool-close):focus-visible{outline:2px solid var(--dsa-form-closeColor);outline-offset:2px}
-.dsa-form-style .x-tool-close{
+.dsa-form-style .x-tool:has(:is(.x-tool-close,.x-tool-minimize,.x-tool-maximize,.x-tool-restore)):hover{background:var(--dsa-form-closeHover)!important}
+.dsa-form-style .x-tool:has(:is(.x-tool-close,.x-tool-minimize,.x-tool-maximize,.x-tool-restore)):focus-visible{outline:2px solid var(--dsa-form-closeColor);outline-offset:2px}
+.dsa-form-style :is(.x-tool-close,.x-tool-minimize,.x-tool-maximize,.x-tool-restore){
   background:none!important;width:var(--dsa-form-closeSize)!important;height:var(--dsa-form-closeSize)!important;
   position:relative;opacity:1!important;
 }
@@ -36,6 +36,20 @@
   width:16px;height:2px;border-radius:2px;background:var(--dsa-form-closeColor);transform:rotate(45deg);
 }
 .dsa-form-style .x-tool-close::after{transform:rotate(-45deg)}
+.dsa-form-style :is(.x-tool-minimize,.x-tool-maximize,.x-tool-restore)::before,
+.dsa-form-style .x-tool-restore::after{
+  content:"";position:absolute;box-sizing:border-box;transform:none;
+  border:2px solid var(--dsa-form-closeColor);border-radius:2px;background:transparent;
+}
+.dsa-form-style .x-tool-minimize::before{
+  left:calc(50% - 8px);top:calc(50% - 1px);width:16px;height:2px;border:0;background:var(--dsa-form-closeColor);
+}
+.dsa-form-style .x-tool-maximize::before{left:calc(50% - 7px);top:calc(50% - 7px);width:14px;height:14px}
+.dsa-form-style .x-tool-restore::before{left:calc(50% - 8px);top:calc(50% - 4px);width:12px;height:12px}
+.dsa-form-style .x-tool-restore::after{
+  left:calc(50% - 4px);top:calc(50% - 8px);width:12px;height:12px;
+  border-left:0;border-bottom:0;border-bottom-right-radius:0;
+}
 .dsa-form-style.dsa-form-no-close .x-tool:has(.x-tool-close){display:none!important}
 .dsa-form-style .dsa-form-content{
   top:0!important;width:100%!important;height:calc(100% - var(--dsa-form-footerHeight,0px))!important;

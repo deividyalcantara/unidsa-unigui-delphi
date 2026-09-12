@@ -521,7 +521,7 @@ object FrConversa: TFrConversa
       Left = 0
       Top = 358
       Width = 850
-      Height = 100
+      Height = 133
       Hint = ''
       Flex.Direction = fdColumn
       Flex.Wrap = fwNoWrap
@@ -607,6 +607,18 @@ object FrConversa: TFrConversa
         Font.Height = -10
         Font.OverrideDefaults = [ovFontName, ovFontHeight]
         TabOrder = 2
+      end
+      object UniButton1: TUniButton
+        Left = 16
+        Top = 92
+        Width = 818
+        Height = 25
+        Cursor = crHandPoint
+        Hint = ''
+        Caption = 'UniButton1'
+        ParentFont = False
+        Font.Color = clWhite
+        TabOrder = 3
       end
     end
   end
@@ -870,6 +882,30 @@ object FrConversa: TFrConversa
         States.Selected.Typography.LineHeight = -1.000000000000000000
         States.Selected.Typography.LetterSpacing = -1000.000000000000000000
         Responsive = <>
+      end
+      item
+        Name = 'btnUniverse'
+        Appearance.Background.Color = clWhite
+        Appearance.Border.Line = blNone
+        Appearance.Typography.LineHeight = -1.000000000000000000
+        Appearance.Typography.LetterSpacing = -1000.000000000000000000
+        Appearance.Typography.Transform = ttUppercase
+        Appearance.Spacing.Padding.Left = 20
+        Appearance.Spacing.Padding.Top = 10
+        Appearance.Spacing.Padding.Right = 20
+        Appearance.Spacing.Padding.Bottom = 10
+        States.Hover.Background.Color = -1
+        States.Hover.Typography.LineHeight = -1.000000000000000000
+        States.Hover.Typography.LetterSpacing = -1000.000000000000000000
+        States.Focus.Typography.LineHeight = -1.000000000000000000
+        States.Focus.Typography.LetterSpacing = -1000.000000000000000000
+        States.Pressed.Typography.LineHeight = -1.000000000000000000
+        States.Pressed.Typography.LetterSpacing = -1000.000000000000000000
+        States.Disabled.Typography.LineHeight = -1.000000000000000000
+        States.Disabled.Typography.LetterSpacing = -1000.000000000000000000
+        States.Selected.Typography.LineHeight = -1.000000000000000000
+        States.Selected.Typography.LetterSpacing = -1000.000000000000000000
+        Responsive = <>
       end>
     StyleItems = <
       item
@@ -1076,6 +1112,24 @@ object FrConversa: TFrConversa
         Responsive = <>
         Control = flexAviso
         StyleName = 'caixa-aviso'
+      end
+      item
+        Name = 'name1'
+        Appearance.Typography.LineHeight = -1.000000000000000000
+        Appearance.Typography.LetterSpacing = -1000.000000000000000000
+        States.Hover.Typography.LineHeight = -1.000000000000000000
+        States.Hover.Typography.LetterSpacing = -1000.000000000000000000
+        States.Focus.Typography.LineHeight = -1.000000000000000000
+        States.Focus.Typography.LetterSpacing = -1000.000000000000000000
+        States.Pressed.Typography.LineHeight = -1.000000000000000000
+        States.Pressed.Typography.LetterSpacing = -1000.000000000000000000
+        States.Disabled.Typography.LineHeight = -1.000000000000000000
+        States.Disabled.Typography.LetterSpacing = -1000.000000000000000000
+        States.Selected.Typography.LineHeight = -1.000000000000000000
+        States.Selected.Typography.LetterSpacing = -1000.000000000000000000
+        Responsive = <>
+        Control = UniButton1
+        StyleName = 'btnUniverse'
       end>
     Defaults.Appearance.Typography.LineHeight = -1.000000000000000000
     Defaults.Appearance.Typography.LetterSpacing = -1000.000000000000000000

@@ -48,9 +48,9 @@
     if (state.content) state.content.classList.remove('dsa-form-content');
     if (state.footer) state.footer.classList.remove('dsa-form-footer');
     if (!win.destroying && !win.destroyed) {
-      if (state.closeTool && !state.closeTool.destroyed) {
-        state.closeTool.setSize(state.closeWidth, state.closeHeight);
-      }
+      state.tools.forEach(({tool, width, height}) => {
+        if (!tool.destroyed) tool.setSize(width, height);
+      });
       if (win.header) {
         if (state.headerHeight) win.header.setHeight(state.headerHeight);
         win.header.setVisible(state.headerVisible);
@@ -104,10 +104,14 @@
       win.el.dom.style.setProperty(name, value);
     }
     // Capture the native dimensions before CSS changes the tool's measured size.
-    state.closeTool = win.header && win.header.down && win.header.down('tool[type=close]');
-    if (state.closeTool) {
-      state.closeWidth = state.closeTool.getWidth();
-      state.closeHeight = state.closeTool.getHeight();
+    state.tools = [];
+    if (win.header && win.header.down) {
+      ['close','minimize','maximize','restore'].forEach(type => {
+        const tool = win.header.down('tool[type=' + type + ']');
+        if (tool && !state.tools.some(saved => saved.tool === tool)) {
+          state.tools.push({tool, width: tool.getWidth(), height: tool.getHeight()});
+        }
+      });
     }
     win.addCls('dsa-form-style');
     ['radius','borderWidth','fontSize','closeSize'].forEach(name => css(name, options[name] + 'px'));
@@ -118,8 +122,8 @@
     });
     if (win.el.disableShadow) win.el.disableShadow();
     if (win.header) {
-      // Inform Ext's hbox layout: CSS alone leaves a 16px slot for a 32px X.
-      if (state.closeTool) state.closeTool.setSize(options.closeSize, options.closeSize);
+      // Reserve the same slot for every window action in Ext's hbox layout.
+      state.tools.forEach(({tool}) => tool.setSize(options.closeSize, options.closeSize));
       win.header.setVisible(options.headerVisible);
       win.header.setHeight(options.headerHeight);
       win.header.updateLayout();

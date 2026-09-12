@@ -32,13 +32,14 @@ vm.runInNewContext(fs.readFileSync(path.join(__dirname,'../dsa/form-style/js/scr
 function flush(){for(let i=0;frames.size&&i<10;i++){const callbacks=[...frames.values()];frames.clear();callbacks.forEach(fn=>fn())}}
 function windowMock(rendered=true) {
   const el=element(), listeners=new Map();
-  const closeTool={width:16,height:16,getWidth(){return this.width},getHeight(){return this.height},
-    setSize(w,h){this.width=w;this.height=h}};
+  const tools=Object.fromEntries(['close','minimize','maximize'].map(type=>[type,{
+    type,width:16,height:16,getWidth(){return this.width},getHeight(){return this.height},
+    setSize(w,h){this.width=w;this.height=h}}]));
   const win={
     rendered,modal:true,shown:true,closable:true,width:900,height:700,onEsc(){},
     el:{dom:el,shadow:{disabled:false},disableShadow(){this.shadow.disabled=true},enableShadow(){this.shadow.disabled=false}},
     header:{height:28,shown:true,getHeight(){return this.height},setHeight(h){this.height=h},isVisible(){return this.shown},setVisible(v){this.shown=v},
-      down:selector=>selector==='tool[type=close]'?closeTool:null,updateLayout(){this.layoutUpdated=true}},
+      down:selector=>Object.values(tools).find(tool=>selector==='tool[type='+tool.type+']')||null,updateLayout(){this.layoutUpdated=true}},
     zIndexManager:{mask:{dom:mask},getActive:()=>active},
     getWidth(){return this.width},getHeight(){return this.height},
     setSize(w,h){this.width=w;this.height=h},setWidth(w){this.width=w},setHeight(h){this.height=h},
@@ -71,8 +72,19 @@ assert.equal(win.liveDrag,true,'drag the real styled window, not the native ghos
 assert.equal(win.header.down('tool[type=close]').width,32,'native hbox reserves the full close button width');
 assert.equal(win.header.down('tool[type=close]').height,32,'native hbox centers the full close button height');
 assert.equal(win.header.layoutUpdated,true);
+const minimizeTool=win.header.down('tool[type=minimize]');
+const maximizeTool=win.header.down('tool[type=maximize]');
+for(const tool of [minimizeTool,maximizeTool]){
+  assert.equal(tool.width,32,'all window actions reserve the same width');
+  assert.equal(tool.height,32,'all window actions reserve the same height');
+}
+maximizeTool.type='restore'; // Ext reuses its maximize tool when the window is maximized.
 api.attach(win,{...options,closeSize:40});flush();
 assert.equal(win.header.down('tool[type=close]').width,40,'changing close size updates native layout');
+for(const tool of [minimizeTool,maximizeTool]){
+  assert.equal(tool.width,40,'reapply includes minimize and the active restore tool');
+  assert.equal(tool.height,40);
+}
 global.innerWidth=390;global.innerHeight=500;win.fire('show');flush();
 assert.equal(win.width,342);assert.ok(win.x>=0);assert.ok(win.y>=0);
 for(const fn of events.get('pointerdown'))fn({target:mask});
@@ -87,6 +99,10 @@ assert.equal(win.width,900);assert.equal(win.height,700);
 assert.equal(Object.hasOwn(win,'liveDrag'),false,'detach restores inherited drag setting');
 assert.equal(win.header.down('tool[type=close]').width,16);
 assert.equal(win.header.down('tool[type=close]').height,16);
+for(const tool of [minimizeTool,maximizeTool]){
+  assert.equal(tool.width,16,'disable restores native window action width');
+  assert.equal(tool.height,16,'disable restores native window action height');
+}
 assert.equal(win.el.dom.classes.has('dsa-form-style'),false);
 assert.equal(events.get('keydown').size,0);
 const pending=windowMock(false);
@@ -106,4 +122,4 @@ assert.equal(win.closed,true);
 win.destroying=true;win.fire('destroy');flush();
 assert.equal(events.get('pointerdown').size,0);
 assert.equal(events.get('keydown').size,0);
-console.log('PASS: sizing, auto height, viewport limits, native close tool sizing, live drag and restoration, Escape, backdrop, unstyled modal, disabled pending attach, detach and listener cleanup.');
+console.log('PASS: sizing, auto height, viewport limits, native close/minimize/maximize/restore sizing, live drag and restoration, Escape, backdrop, unstyled modal, disabled pending attach, detach and listener cleanup.');

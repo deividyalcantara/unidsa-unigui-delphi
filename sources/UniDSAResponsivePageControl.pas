@@ -68,6 +68,7 @@ type
     procedure SetKeepActiveTabVisible(const Value: Boolean);
     function OptionsJSON: string;
   protected
+    procedure InitComponent; override;
     procedure ConfigCreate; override;
     procedure LoadCompleted; override;
   public
@@ -274,6 +275,14 @@ procedure TUniDSAResponsivePageControl.ConfigCreate;
 begin
   inherited;
   JSConfig('cls', ['dsa-responsive-page-control'], GetContainer);
+end;
+
+procedure TUniDSAResponsivePageControl.InitComponent;
+begin
+  // LoadCompleted exceptions are collected as native alerts by uniGUI.
+  // InitComponent runs before JSCreateControl, including during AJAX form creation.
+  UniDSASource.CheckAssets(Self);
+  inherited;
 end;
 
 procedure TUniDSAResponsivePageControl.LoadCompleted;

@@ -43,10 +43,10 @@ const
     '    }' + #10 +
     '    return target;' + #10 +
     '  }' + #10 +
-    '  function length(value) {' + #10 +
+    '  function length(value, signed) {' + #10 +
     '    if (!value || !value.Units) return '''';' + #10 +
     '    const suffix = ['''', ''px'', ''%'', ''em'', ''rem'', ''vw'', ''vh'', ''dvh''][value.Units];' + #10 +
-    '    if (suffix) return Math.max(0, number(value.Value, 0)) + suffix;' + #10 +
+    '    if (suffix) return (signed ? number(value.Value, 0) : Math.max(0, number(value.Value, 0))) + suffix;' + #10 +
     '    return ({8:''auto'', 9:''fit-content'', 10:''min-content'', 11:''max-content''})[value.Units] || '''';' + #10 +
     '  }' + #10 +
     '  function matches(rule) {' + #10 +
@@ -66,12 +66,19 @@ const
     '    }' + #10 +
     '    return result;' + #10 +
     '  }' + #10 +
-    '  function declarations(appearance) {' + #10 +
+    '  function declarations(appearance, partial) {' + #10 +
     '    const result = {surface:{}, text:{}, content:{}, root:{}};' + #10 +
     '    const put = (group, property, value) => {' + #10 +
     '      if (value !== '''' && value !== undefined && value !== null) result[group][property] = String(value);' + #10 +
     '    };' + #10 +
     '    const a = appearance || {}, b = a.Background || {}, border = a.Border || {}, t = a.Typography || {};' + #10 +
+    '    if (a.Display) put(''root'', ''display'', ['''', ''none'', ''block'', ''inline'', ''inline-block'', ''flex'', ''inline-flex'', ''grid'', ''inline-grid''][a.Display]);' + #10 +
+    '    const geometry = a.Transform || {};' + #10 +
+    '    if (own(geometry, ''SkewX'') || own(geometry, ''SkewY'')) {' + #10 +
+    '      for (const axis of [''X'', ''Y'']) if (own(geometry, ''Skew'' + axis))' + #10 +
+    '        put(''root'', ''--unidsa-skew-'' + axis.toLowerCase(), number(geometry[''Skew'' + axis], 0) + ''deg'');' + #10 +
+    '      put(''root'', ''transform'', ''skewX(var(--unidsa-skew-x, 0deg)) skewY(var(--unidsa-skew-y, 0deg))'');' + #10 +
+    '    }' + #10 +
     '    put(''surface'', ''background-color'', rgba(b.Color, b.Opacity));' + #10 +
     '    if (b.Color) put(''surface'', ''background-image'', ''none'');' + #10 +
     '    if (b.ImageURL) {' + #10 +
@@ -155,8 +162,15 @@ const
     '    if (effects.Cursor) put(''root'', ''cursor'', ['''', ''default'',''pointer'',''text'',''not-allowed'',''grab''][effects.Cursor]);' + #10 +
     '    if (own(effects, ''TransitionMs'')) {' + #10 +
     '      const ms = Math.max(0, effects.TransitionMs) + ''ms'';' + #10 +
-    '      put(''surface'', ''transition'', [''background-color'',''border-color'',''box-shadow'',''color'',''opacity''].map(p => p + '' '' + ms + '' ease'').join('',''));' + #10 +
-    '      put(''text'', ''transition'', ''color '' + ms + '' ease'');' + #10 +
+    '      for (const group of [''surface'', ''root'', ''text'']) {' + #10 +
+    '        put(group, ''transition-duration'', ms);' + #10 +
+    '        put(group, ''transition-timing-function'', ''ease'');' + #10 +
+    '      }' + #10 +
+    '    }' + #10 +
+    '    if ((!partial && own(effects, ''TransitionMs'')) || effects.TransitionAll) {' + #10 +
+    '      const properties = effects.TransitionAll === 2 ? ''all'' : ''background-color,border-color,box-shadow,color,opacity,transform'';' + #10 +
+    '      for (const group of [''surface'', ''root'']) put(group, ''transition-property'', properties);' + #10 +
+    '      put(''text'', ''transition-property'', effects.TransitionAll === 2 ? ''all'' : ''color'');' + #10 +
     '    }' + #10 +
     '    if (own(effects, ''OutlineWidth'')) { put(''root'', ''outline-width'', px(Math.max(0, effects.OutlineWidth))); put(''root'', ''outline-style'', ''solid''); }' + #10 +
     '    put(''root'', ''outline-color'', effects.OutlineColor);' + #10 +
@@ -167,6 +181,7 @@ const
     '    const inset = position.Insets || {};' + #10 +
     '    if (own(inset, ''All'')) for (const side of [''top'',''right'',''bottom'',''left'']) put(''root'', side, px(inset.All));' + #10 +
     '    for (const side of [''Top'',''Right'',''Bottom'',''Left'']) if (own(inset, side)) put(''root'', side.toLowerCase(), px(inset[side]));' + #10 +
+    '    for (const side of [''Top'',''Right'',''Bottom'',''Left'']) put(''root'', side.toLowerCase(), length(position[side], true));' + #10 +
     '    return result;' + #10 +
     '  }' + #10 +
     '  function adapter(el) {' + #10 +
@@ -184,6 +199,43 @@ const
     '      list.push(property + '':'' + value + ''!important'');' + #10 +
     '    }' + #10 +
     '    return list.length && selectors.length ? selectors.join('','') + ''{'' + list.join('';'') + ''}\n'' : '''';' + #10 +
+    '  }' + #10 +
+    '  // Use one wrapper: nested button spans must never be skewed twice.' + #10 +
+    '  function contentTargets(el) {' + #10 +
+    '    if (el.matches(''.x-btn'')) return el.querySelector(''.x-btn-wrap'') ? ['' .x-btn-wrap''] : ['' .x-btn-inner''];' + #10 +
+    '    return adapter(el).content.filter(target => target !== '''');' + #10 +
+    '  }' + #10 +
+    '  function partValues(part, partial) {' + #10 +
+    '    const rules = declarations(part, partial);' + #10 +
+    '    return Object.assign({}, rules.surface, rules.text, rules.content, rules.root);' + #10 +
+    '  }' + #10 +
+    '  function contentString(text) {' + #10 +
+    '    return ''"'' + String(text).replace(/[\\"\n\r\f{};\u0000]/g,' + #10 +
+    '      c => ''\\'' + (c.charCodeAt(0) || 0xfffd).toString(16) + '' '') + ''"'';' + #10 +
+    '  }' + #10 +
+    '  function partsCSS(el, bases, appearance, partial) {' + #10 +
+    '    const a = appearance || {};' + #10 +
+    '    let css = cssRule(bases.flatMap(base => contentTargets(el).map(target => base + target)), partValues(a.Content, partial));' + #10 +
+    '    for (const name of [''Before'', ''After'']) {' + #10 +
+    '      const part = a[name] || {}, values = partValues(part, partial);' + #10 +
+    '      if (part.Enabled === 1) values.content = ''none'';' + #10 +
+    '      else if (part.Enabled === 2 || own(part, ''Text'')) values.content = contentString(part.Text || '''');' + #10 +
+    '      // Decorative layers must not intercept the control''s pointer events.' + #10 +
+    '      if (Object.keys(part).length) values[''pointer-events''] = ''none'';' + #10 +
+    '      css += cssRule(bases.map(base => base + ''::'' + name.toLowerCase()), values);' + #10 +
+    '    }' + #10 +
+    '    return css;' + #10 +
+    '  }' + #10 +
+    '  function geometryDefaults(el, rule) {' + #10 +
+    '    let css = '''';' + #10 +
+    '    const id = ''#'' + escapeID(el.id), base = id + id;' + #10 +
+    '    const appearances = [rule.appearance, ...Object.values(rule.states)];' + #10 +
+    '    for (const name of ['''', ''Content'', ''Before'', ''After'']) {' + #10 +
+    '      if (!appearances.some(a => Object.keys(((name ? a[name] : a) || {}).Transform || {}).length)) continue;' + #10 +
+    '      const targets = name === ''Content'' ? contentTargets(el) : [name ? ''::'' + name.toLowerCase() : ''''];' + #10 +
+    '      css += cssRule(targets.map(target => base + target), {''--unidsa-skew-x'':''0deg'', ''--unidsa-skew-y'':''0deg''});' + #10 +
+    '    }' + #10 +
+    '    return css;' + #10 +
     '  }' + #10 +
     '  function scrollbarCSS(el, bases, appearance) {' + #10 +
     '    const scrollbar = (appearance || {}).Scrollbar || {};' + #10 +
@@ -232,13 +284,14 @@ const
     '    return css;' + #10 +
     '  }' + #10 +
     '' + #10 +
-    '  function emit(el, suffixes, appearance) {' + #10 +
-    '    const rules = declarations(appearance), map = adapter(el), id = ''#'' + escapeID(el.id);' + #10 +
+    '  function emit(el, suffixes, appearance, partial) {' + #10 +
+    '    const rules = declarations(appearance, partial), map = adapter(el), id = ''#'' + escapeID(el.id);' + #10 +
     '    const bases = suffixes.map(s => id + id + s);' + #10 +
     '    let css = '''';' + #10 +
     '    for (const group of [''surface'',''text'',''content'',''root''])' + #10 +
     '      css += cssRule(bases.flatMap(base => map[group].map(suffix => base + suffix)), rules[group]);' + #10 +
     '    css += scrollbarCSS(el, bases, appearance);' + #10 +
+    '    css += partsCSS(el, bases, appearance, partial);' + #10 +
     '    if (el.matches(''.x-panel,.x-window'')) {' + #10 +
     '      const bodies = ['' > .x-panel-bodyWrap > .x-panel-body'','' > .x-window-bodyWrap > .x-window-body''];' + #10 +
     '      const backgrounds = Object.fromEntries(Object.entries(rules.surface).filter(([p]) => p.startsWith(''background'')));' + #10 +
@@ -261,12 +314,12 @@ const
     '  const live = '':not(.x-item-disabled):not(.x-btn-disabled):not([aria-disabled="true"]):not(:disabled)'';' + #10 +
     '  function controlCSS(el, layers, selected) {' + #10 +
     '    const rule = resolve(layers);' + #10 +
-    '    let css = emit(el, [''''], rule.appearance);' + #10 +
-    '    if (selected) css += emit(el, [''''], rule.states.Selected || {});' + #10 +
-    '    css += emit(el, [live + '':hover''], rule.states.Hover || {});' + #10 +
-    '    css += emit(el, [live + '':focus-visible'',live + '':focus-within''], rule.states.Focus || {});' + #10 +
-    '    css += emit(el, [live + '':active''], rule.states.Pressed || {});' + #10 +
-    '    css += emit(el, [''.x-item-disabled'',''.x-btn-disabled'',''[aria-disabled="true"]'','':disabled''], rule.states.Disabled || {});' + #10 +
+    '    let css = geometryDefaults(el, rule) + emit(el, [''''], rule.appearance);' + #10 +
+    '    if (selected) css += emit(el, [''''], rule.states.Selected || {}, true);' + #10 +
+    '    css += emit(el, [live + '':hover''], rule.states.Hover || {}, true);' + #10 +
+    '    css += emit(el, [live + '':focus-visible'',live + '':focus-within''], rule.states.Focus || {}, true);' + #10 +
+    '    css += emit(el, [live + '':active''], rule.states.Pressed || {}, true);' + #10 +
+    '    css += emit(el, [''.x-item-disabled'',''.x-btn-disabled'',''[aria-disabled="true"]'','':disabled''], rule.states.Disabled || {}, true);' + #10 +
     '    return css;' + #10 +
     '  }' + #10 +
     '  function clearTags(record) {' + #10 +

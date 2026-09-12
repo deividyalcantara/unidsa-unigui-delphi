@@ -1,35 +1,50 @@
 object FrLeitorQrCode: TFrLeitorQrCode
+  Left = 0
+  Top = 0
+  Width = 640
+  Height = 639
+  TabOrder = 0
   object flexDemoPage: TUniDSAFlexPanel
     Tag = 120
-    Width = 900
-    Height = 680
-    Align = alClient
+    Left = 0
+    Top = 0
+    Width = 640
+    Height = 639
+    Hint = ''
     Flex.Direction = fdColumn
     Flex.Wrap = fwNoWrap
     Flex.Gap = 20
     Flex.Padding = 24
     Flex.Overflow = foAuto
+    FlexItem.Basis = 'auto'
+    Responsive.XS.Span = 12
+    FlexItems = <>
+    Align = alClient
+    ParentColor = False
+    Color = clBtnFace
+    TabOrder = 0
     object usbPrincipal: TUniDSAFlexPanel
-      Left = 0
-      Top = 0
-      Width = 624
-      Height = 441
-      Hint = ''
-      TabOrder = 0
       Tag = 110
-      Flex.AutoHeight = True
-      Flex.Gap = 10
-      Flex.AlignContent = faStart
-      Flex.Overflow = foVisible
+      Left = 24
+      Top = 24
+      Width = 592
+      Height = 584
+      Hint = ''
       Flex.Direction = fdColumn
       Flex.Wrap = fwNoWrap
+      Flex.AlignContent = faStart
+      Flex.Gap = 10
+      Flex.AutoHeight = True
       FlexItem.Shrink = 0
+      FlexItem.Basis = 'auto'
+      Responsive.XS.Span = 12
+      FlexItems = <>
       ParentColor = False
       Color = 16579066
-      Align = alNone
+      TabOrder = 0
       object UniLabel1: TUniLabel
-        Left = 20
-        Top = 20
+        Left = 0
+        Top = 0
         Width = 147
         Height = 30
         Hint = ''
@@ -40,11 +55,10 @@ object FrLeitorQrCode: TFrLeitorQrCode
         ParentColor = False
         Color = clBtnFace
         TabOrder = 1
-        Align = alNone
       end
       object UniLabel2: TUniLabel
-        Left = 20
-        Top = 50
+        Left = 0
+        Top = 40
         Width = 377
         Height = 20
         Hint = ''
@@ -55,69 +69,73 @@ object FrLeitorQrCode: TFrLeitorQrCode
         ParentColor = False
         Color = clBtnFace
         TabOrder = 2
-        Align = alNone
       end
       object ugbMensagem: TUniDSAFlexPanel
-        Left = 20
-        Top = 80
-        Width = 697
-        Height = 544
-        Hint = ''
-        TabOrder = 0
         Tag = 100
-        Flex.AutoHeight = True
-        Flex.Gap = 16
-        Flex.AlignContent = faStart
-        Flex.Overflow = foVisible
+        Left = 0
+        Top = 70
+        Width = 592
+        Height = 514
+        Hint = ''
         Flex.Direction = fdColumn
         Flex.Wrap = fwNoWrap
+        Flex.AlignContent = faStart
+        Flex.Gap = 16
+        Flex.Padding = 20
+        Flex.AutoHeight = True
         FlexItem.Shrink = 0
+        FlexItem.Basis = 'auto'
+        Responsive.XS.Span = 12
+        FlexItems = <>
         ParentColor = False
         Color = clWhite
-        Flex.Padding = 20
-        Align = alNone
+        TabOrder = 0
         object lblSectionugbMensagem: TUniLabel
           Tag = 100
+          Left = 20
+          Top = 20
+          Width = 35
+          Height = 13
+          Hint = ''
           Caption = 'Leitura'
-          Height = 28
-          Align = alNone
+          TabOrder = 2
         end
         object UniContainerPanel20: TUniDSAFlexPanel
-          Left = 2
-          Top = 20
-          Width = 693
-          Height = 42
-          Hint = ''
-          TabOrder = 1
           Tag = 101
-          Flex.AutoHeight = True
-          Flex.Gap = 10
+          Left = 20
+          Top = 49
+          Width = 552
+          Height = 77
+          Hint = ''
           Flex.AlignContent = faStart
-          Flex.Overflow = foVisible
-          Flex.Direction = fdRow
-          Flex.Wrap = fwWrap
+          Flex.Gap = 10
+          Flex.AutoHeight = True
           FlexItem.Shrink = 0
+          FlexItem.Basis = 'auto'
+          Responsive.XS.Span = 12
+          FlexItems = <>
           ParentColor = False
           Color = 16579066
-          Align = alNone
+          TabOrder = 1
           object UniContainerPanel23: TUniDSAFlexPanel
-            Left = 3
-            Top = 0
-            Width = 284
-            Height = 39
-            Hint = ''
-            TabOrder = 1
             Tag = 102
-            Flex.AutoHeight = True
-            Flex.Gap = 10
-            Flex.AlignContent = faStart
-            Flex.Overflow = foVisible
+            Left = 0
+            Top = 0
+            Width = 552
+            Height = 45
+            Hint = ''
             Flex.Direction = fdColumn
             Flex.Wrap = fwNoWrap
+            Flex.AlignContent = faStart
+            Flex.Gap = 10
+            Flex.AutoHeight = True
             FlexItem.Shrink = 0
+            FlexItem.Basis = 'auto'
+            Responsive.XS.Span = 12
+            FlexItems = <>
             ParentColor = False
             Color = 16579066
-            Align = alNone
+            TabOrder = 1
             object UniLabel16: TUniLabel
               Left = 0
               Top = 0
@@ -128,53 +146,51 @@ object FrLeitorQrCode: TFrLeitorQrCode
               ParentColor = False
               Color = clBtnFace
               TabOrder = 1
-              Align = alNone
             end
             object edtResultado: TUniEdit
               Left = 0
-              Top = 17
-              Width = 284
+              Top = 23
+              Width = 552
               Hint = ''
               Text = ''
               TabOrder = 2
-              Align = alNone
             end
           end
           object UniContainerPanel22: TUniDSAFlexPanel
-            Left = 293
-            Top = 0
-            Width = 108
-            Height = 39
-            Hint = ''
-            TabOrder = 2
             Tag = 102
-            Flex.AutoHeight = True
-            Flex.Gap = 10
-            Flex.AlignContent = faStart
-            Flex.Overflow = foVisible
+            Left = 0
+            Top = 55
+            Width = 552
+            Height = 22
+            Hint = ''
             Flex.Direction = fdColumn
             Flex.Wrap = fwNoWrap
+            Flex.AlignContent = faStart
+            Flex.Gap = 10
+            Flex.AutoHeight = True
             FlexItem.Shrink = 0
+            FlexItem.Basis = 'auto'
+            Responsive.XS.Span = 12
+            FlexItems = <>
             ParentColor = False
             Color = 16579066
-            Align = alNone
+            TabOrder = 2
             object btnLeitura: TUniButton
               Left = 0
-              Top = 17
-              Width = 108
+              Top = 0
+              Width = 552
               Height = 22
               Hint = ''
               Caption = 'Leitura '#250'nica'
               TabOrder = 1
               OnClick = btnLeituraClick
-              Align = alNone
             end
           end
         end
         object qrcLeitor: TUniDSAQrCodeReader
-          Left = 3
-          Top = 65
-          Width = 400
+          Left = 20
+          Top = 142
+          Width = 552
           Height = 352
           Hint = ''
           Text = ''
@@ -199,7 +215,6 @@ object FrLeitorQrCode: TFrLeitorQrCode
           SupportedFormats.UPC_E = True
           SupportedFormats.UPC_EAN_EXTENSION = True
           OnAfterReading = qrcLeitorAfterReading
-          Align = alNone
         end
       end
     end

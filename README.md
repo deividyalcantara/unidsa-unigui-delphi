@@ -1,4 +1,4 @@
-﻿# UniDSA para Delphi e uniGUI
+# UniDSA para Delphi e uniGUI
 
 ![Logotipo do UniDSA](images/logo-unidsa.png)
 
@@ -903,6 +903,41 @@ Esse é o comportamento esperado do uniGUI. `Show` é assíncrono. Mova o códig
 - Não limpe a coleção de botões antes do retorno AJAX.
 - Recompile e reinstale os pacotes depois de atualizar `UniDSAConfirm.pas`.
 - Verifique no navegador se a requisição AJAX foi enviada e se retornou sem erro.
+
+### Aviso de pasta `dsa` ou arquivo ausente
+
+Os componentes que usam assets externos verificam os arquivos locais antes de
+inicializar no navegador. Se a pasta estiver ausente ou incompleta, o componente
+interrompe o carregamento do formulário e mostra um cartão com HTML, CSS e ícone
+SVG embutidos no Pascal. O aviso funciona sem a pasta `dsa`, sem CDN e sem fontes
+externas; informa o componente e o nome do arquivo, sem exibir caminhos de pastas.
+O botão **Recarregar tela** tenta novamente. Quando a falha ocorre em uma chamada
+AJAX, **Voltar** ou Escape fecha o cartão e preserva a sessão aberta.
+A validação dos controles visuais ocorre antes da criação dos objetos JavaScript,
+evitando alertas de HTML, “Operation aborted” e classes UniDSA ausentes antes do cartão.
+
+Texto apresentado dentro do cartão:
+
+```text
+UniDSA: pasta "dsa" ausente.
+Componente: TUniDSAFormStyle.
+Copie a pasta "dsa" completa do UniDSA para a aplicação e recarregue a tela.
+```
+
+A verificação respeita o caminho físico resolvido pelo uniGUI, incluindo
+`ServerRoot` e `FilesFolder` personalizados, e ignora a versão `?v=...` das URLs.
+Style e FocusControl têm runtime embutido e não exigem a pasta `dsa`.
+Depois de copiar os arquivos, recarregue a aplicação no navegador.
+
+Essa validação identifica arquivos ausentes no servidor. Bloqueios de URL,
+CSP, proxy, permissões de leitura e conteúdo inválido ainda precisam ser
+investigados pelo carregamento HTTP dos assets.
+
+Teste automatizado: `powershell -File tools/Test-UniDSAAssets.ps1`.
+O script compila os pacotes em `tmp/asset-validation`, sem substituir os BPLs
+instalados, e testa os 13 componentes que dependem de arquivos externos.
+Depois, execute `node tools/test-asset-message.cjs` (Playwright e Edge) para validar
+o visual responsivo, ausência de requisições externas, teclado e retorno do foco.
 
 ### Assets retornam HTTP 404
 

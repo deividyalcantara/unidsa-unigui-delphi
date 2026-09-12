@@ -1,8 +1,97 @@
 ﻿program TestStyleModel;
 {$APPTYPE CONSOLE}
-uses System.SysUtils, System.Classes, System.JSON, Vcl.Graphics, UniDSAStyle, uniLabel;
+uses System.SysUtils, System.Classes, System.JSON, System.IOUtils, Vcl.Graphics, UniDSAStyle, uniLabel;
 procedure Check(Value: Boolean; const Message: string);
 begin if not Value then raise Exception.Create(Message); end;
+type
+  TChangeProbe = class
+    Count: Integer;
+    procedure Changed(Sender: TObject);
+  end;
+procedure TChangeProbe.Changed(Sender: TObject);
+begin Inc(Count); end;
+
+procedure TestEffects;
+var
+  Fixture, CopyStyle: TUniDSAStyle;
+  Input: TFileStream;
+  Binary: TMemoryStream;
+  A: TUniDSAStyleAppearance;
+  Probe: TChangeProbe;
+  JSON: TJSONObject;
+begin
+  Fixture := TUniDSAStyle.Create(nil);
+  CopyStyle := TUniDSAStyle.Create(nil);
+  Binary := TMemoryStream.Create;
+  Probe := TChangeProbe.Create;
+  A := TUniDSAStyleAppearance.Create(Probe.Changed);
+  try
+    Input := TFileStream.Create(ExpandFileName(ExtractFilePath(ParamStr(0)) + '..\..\tools\fixtures\style-skew-button.dfm'), fmOpenRead);
+    try ObjectTextToBinary(Input, Binary); finally Input.Free; end;
+    Binary.Position := 0;
+    Binary.ReadComponent(Fixture);
+    Binary.Clear;
+    Binary.WriteComponent(Fixture);
+    Binary.Position := 0;
+    Binary.ReadComponent(CopyStyle);
+    with CopyStyle.Styles[0] do begin
+      Check(Appearance.Display = sdInlineBlock, 'Display DFM');
+      Check(Appearance.Transform.SkewX = -21, 'Negative skew DFM');
+      Check(Appearance.Transform.SkewY = -1000, 'Unset skew DFM');
+      Check(Appearance.Content.Display = sdInlineBlock, 'Content display DFM');
+      Check(Appearance.Content.Transform.SkewX = 21, 'Content skew DFM');
+      Check(Appearance.Before.Enabled = ssYes, 'Before enabled DFM');
+      Check(Appearance.Before.Text = '', 'Empty pseudo content DFM');
+      Check(Appearance.Before.Position.ZIndex = -1, 'Negative z-index DFM');
+      Check(Appearance.Before.Position.Right.Units = suPercent, 'Percentage inset DFM');
+      Check(Appearance.Before.Position.Right.Value = 100, 'Percentage value DFM');
+      Check(Appearance.Before.Effects.TransitionAll = ssYes, 'Transition all DFM');
+      Check(Appearance.Before.Effects.TransitionMs = 500, 'Transition duration DFM');
+      Check(States.Hover.Before.Position.Right.Value = 0, 'Explicit hover zero DFM');
+      Check(States.Hover.Before.Effects.Opacity = 100, 'Pseudo hover DFM');
+    end;
+    JSON := CopyStyle.Styles[0].Rule.ToJSON;
+    try TFile.WriteAllText(ExtractFilePath(ParamStr(0)) + 'skew-button.json', JSON.ToJSON, TEncoding.UTF8);
+    finally JSON.Free; end;
+    CopyStyle.Styles.Assign(Fixture.Styles);
+    CopyStyle.Styles[0].Appearance.Content.Transform.SkewX := 0;
+    CopyStyle.Styles[0].Appearance.Before.Position.Right.Value := -25;
+    CopyStyle.Styles[0].States.Hover.Before.Effects.Opacity := 50;
+    Check(Fixture.Styles[0].Appearance.Content.Transform.SkewX = 21, 'Content deep Assign');
+    Check(Fixture.Styles[0].Appearance.Before.Position.Right.Value = 100, 'Pseudo offset deep Assign');
+    Check(Fixture.Styles[0].States.Hover.Before.Effects.Opacity = 100, 'Pseudo states deep Assign');
+    A.BeginUpdate;
+    try
+      A.Display := sdInlineBlock;
+      A.Transform.SkewX := -21;
+      A.Content.Transform.SkewX := 21;
+      A.Before.Enabled := ssYes;
+      A.Before.Position.Right.Units := suPercent;
+      A.Before.Effects.TransitionAll := ssYes;
+      A.After.Enabled := ssYes;
+      A.After.Text := 'After';
+    finally A.EndUpdate; end;
+    Check(Probe.Count = 1, 'New child changes must batch into one notification');
+    Probe.Count := 0;
+    A.Assign(Fixture.Styles[0].Appearance);
+    Check(Probe.Count = 1, 'Assign must emit a single notification');
+    A.After.Enabled := ssNo;
+    A.Transform.SkewX := 0;
+    A.Position.Left.Units := suPercent;
+    A.Position.Left.Value := -10;
+    CopyStyle.Styles[0].Appearance.Assign(A);
+    Binary.Clear;
+    Binary.WriteComponent(CopyStyle);
+    Binary.Position := 0;
+    Binary.ReadComponent(Fixture);
+    Check(Fixture.Styles[0].Appearance.After.Enabled = ssNo, 'Explicit pseudo disable DFM');
+    Check(Fixture.Styles[0].Appearance.Transform.SkewX = 0, 'Explicit zero skew DFM');
+    Check(Fixture.Styles[0].Appearance.Position.Left.Value = -10, 'Negative percentage DFM');
+    Writeln('PASS: effects DFM fixture, nested Assign, notifications, negative offsets and explicit resets.');
+  finally
+    A.Free; Probe.Free; Binary.Free; CopyStyle.Free; Fixture.Free;
+  end;
+end;
 var
   Source, Target: TUniDSAStyle;
   Named: TUniDSANamedStyle;
@@ -14,6 +103,7 @@ var
 begin
   try
     RegisterClass(TUniDSAStyle);
+    TestEffects;
     Source := TUniDSAStyle.Create(nil);
     Target := TUniDSAStyle.Create(nil);
     Stream := TMemoryStream.Create;

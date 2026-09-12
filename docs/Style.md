@@ -24,6 +24,10 @@ O mecanismo JavaScript está incorporado ao Pascal em `UniDSAStyleRuntime.inc`. 
 
 | Grupo | Propriedades |
 |---|---|
+| `Display` | `sdInherit`, `sdNone`, `sdBlock`, `sdInline`, `sdInlineBlock`, `sdFlex`, `sdInlineFlex`, `sdGrid` e `sdInlineGrid`. |
+| `Transform` | Inclinação geométrica `SkewX` e `SkewY`, em graus. `-1000` preserva a camada anterior; zero remove a inclinação daquele eixo. |
+| `Content` | Aparência do conteúdo interno, incluindo `Display` e `Transform` independentes da raiz. |
+| `Before` / `After` | Pseudo-elementos decorativos, com `Enabled`, `Text` e grupos de aparência próprios. |
 | `Background` | Cor/opacidade do fundo, URL de imagem, tamanho/repetição, gradiente linear/radial, padrões de pontos/grade/linhas. |
 | `Border` | Cor, largura e tipo; quatro lados independentes; raio geral ou por canto. |
 | `Typography` | Família, tamanho em pixels, cor, peso, itálico, alinhamento, entrelinha, espaçamento de letras, quebra, reticências, transformação e decoração. |
@@ -31,8 +35,8 @@ O mecanismo JavaScript está incorporado ao Pascal em `UniDSAStyleRuntime.inc`. 
 | `Sizing` | Largura/altura e limites mínimos/máximos, `MaxWidthPercent`, box sizing e overflow por eixo. |
 | `Scrollbar` | Visibilidade, espessura, cor da trilha, cor do indicador, cor no hover e raio do indicador. |
 | `Shadow` | Habilitação, cor, opacidade, deslocamentos, blur, spread e sombra interna. |
-| `Effects` | Opacidade do controle inteiro, cursor, duração das transições, outline/cor/deslocamento. |
-| `Position` | Posicionamento, quatro deslocamentos e z-index. Use somente quando quiser substituir explicitamente o posicionamento do layout. |
+| `Effects` | Opacidade do controle inteiro, cursor, `TransitionMs`, `TransitionAll`, outline/cor/deslocamento. |
+| `Position` | Posicionamento, `Insets` em pixels, `Top`/`Right`/`Bottom`/`Left` com unidades e z-index. Use somente quando quiser substituir explicitamente o posicionamento do layout. |
 
 Dimensões têm `Value` e `Units`: `suPx`, `suPercent`, `suEm`, `suRem`, `suVw`, `suVh`, `suDvh`, `suAuto`, `suFitContent`, `suMinContent` e `suMaxContent`. `suUnset` preserva a dimensão original. Nos valores automáticos, `Value` é ignorado.
 
@@ -79,7 +83,7 @@ Cada estado tem os mesmos grupos de propriedades de `Appearance`:
 - `States.Disabled`: estado desabilitado reconhecido pelas classes/atributos uniGUI.
 - `States.Selected`: ativado por `StyleItems[].Selected`; não desabilita o controle.
 
-A prioridade dos estados é Selected → Hover → Focus → Pressed → Disabled, somente para propriedades configuradas. Hover/foco/pressionado não prevalecem em controles desabilitados. Não são acrescentados eventos Delphi ou sobrescritos `ClientEvents` para implementar esses estados. Configure `Appearance.Effects.TransitionMs` para transições de cores, bordas e sombras.
+A prioridade dos estados é Selected → Hover → Focus → Pressed → Disabled, somente para propriedades configuradas. Hover/foco/pressionado não prevalecem em controles desabilitados. Não são acrescentados eventos Delphi ou sobrescritos `ClientEvents` para implementar esses estados. Configure `Appearance.Effects.TransitionMs` para transições de cores, bordas, sombras, opacidade e transformações. `TransitionAll = ssYes` inclui todas as propriedades CSS animáveis, como os deslocamentos de um pseudo-elemento. Cada parte possui sua própria configuração de transição. Alterar somente a duração em um estado preserva a seleção de propriedades da aparência base.
 
 Exemplo de DFM:
 
@@ -106,6 +110,65 @@ object ControlStyle: TUniDSAStyle
     end>
 end
 ```
+
+## Botão inclinado com preenchimento no hover
+
+O efeito com `skew(-21deg)`, texto reto e preenchimento animado pode ser configurado integralmente no Object Inspector. Crie um item em `Styles` e associe-o ao botão em `StyleItems`, usando `StyleName = SkewButton`.
+
+- `Appearance.Display = sdInlineBlock` corresponde a `display: inline-block`. Um item de FlexPanel continua sujeito às regras de layout flex do navegador, que podem calcular seu display como block.
+- `Appearance.Transform.SkewX = -21` inclina o botão. `Appearance.Content.Transform.SkewX = 21` compensa a inclinação no conteúdo. `Typography.Transform = ttUppercase` continua responsável apenas pelas maiúsculas.
+- `Appearance.Before.Enabled = ssYes` cria `::before`; com `Text` vazio, equivale a `content: ''`. `ssNo` remove o pseudo-elemento e `ssInherit` preserva a camada anterior. `After` funciona da mesma forma. O texto é literal, sem interpretar CSS ou HTML; para limpar um texto herdado, configure `Enabled = ssYes` e `Text` vazio na camada de substituição.
+- Configure `Before.Position.Right.Units = suPercent` e `Value = 100`; no hover, use zero. Os deslocamentos com unidades prevalecem sobre `Position.Insets` no mesmo lado e aceitam valores negativos. `suUnset` preserva a camada anterior.
+- Configure `Before.Effects.TransitionMs = 500` e `TransitionAll = ssYes` para animar tanto o preenchimento quanto a opacidade.
+
+`Content` aplica-se a um único contêiner interno: o wrap do botão (com texto e ícone), campo de entrada ou corpo do painel/contêiner. Não aplica a transformação a todos os spans descendentes. Controles sem um conteúdo interno reconhecido recebem apenas as propriedades da raiz. `Before` e `After` são gerados na raiz e não interceptam cliques; dependem do suporte do navegador ao pseudo-elemento naquele elemento (por exemplo, inputs nativos não o exibem). O posicionamento do controle continua explícito; o exemplo usa `poRelative` para ancorar a camada ao botão. A transformação cria o contexto de empilhamento necessário ao z-index negativo do exemplo.
+
+Exemplo completo, também disponível em [tools/fixtures/style-skew-button.dfm](../tools/fixtures/style-skew-button.dfm):
+
+~~~pascal
+object SkewButtonStyle: TUniDSAStyle
+  Styles = <
+    item
+      Name = 'SkewButton'
+      Appearance.Display = sdInlineBlock
+      Appearance.Background.Color = clWhite
+      Appearance.Border.Width = 0
+      Appearance.Border.Line = blNone
+      Appearance.Border.Radius = 0
+      Appearance.Typography.Color = clBlack
+      Appearance.Typography.Size = 15
+      Appearance.Typography.Weight = swSemiBold
+      Appearance.Typography.Transform = ttUppercase
+      Appearance.Spacing.Padding.Top = 10
+      Appearance.Spacing.Padding.Right = 20
+      Appearance.Spacing.Padding.Bottom = 10
+      Appearance.Spacing.Padding.Left = 20
+      Appearance.Sizing.Width.Value = 120.000000000000000000
+      Appearance.Sizing.Width.Units = suPx
+      Appearance.Effects.Cursor = scPointer
+      Appearance.Position.Mode = poRelative
+      Appearance.Transform.SkewX = -21
+      Appearance.Content.Display = sdInlineBlock
+      Appearance.Content.Transform.SkewX = 21
+      Appearance.Before.Enabled = ssYes
+      Appearance.Before.Background.Color = 1315860
+      Appearance.Before.Position.Mode = poAbsolute
+      Appearance.Before.Position.Insets.All = 0
+      Appearance.Before.Position.Right.Value = 100.000000000000000000
+      Appearance.Before.Position.Right.Units = suPercent
+      Appearance.Before.Position.ZIndex = -1
+      Appearance.Before.Effects.Opacity = 0
+      Appearance.Before.Effects.TransitionMs = 500
+      Appearance.Before.Effects.TransitionAll = ssYes
+      States.Hover.Typography.Color = clWhite
+      States.Hover.Before.Position.Right.Value = 0.000000000000000000
+      States.Hover.Before.Position.Right.Units = suPercent
+      States.Hover.Before.Effects.Opacity = 100
+    end>
+end
+~~~
+
+O hover respeita os estados desabilitados. As novas propriedades também podem ser usadas em `States.Focus`, `Pressed`, `Disabled`, `Selected` e `Responsive`. Cores numéricas do DFM usam TColor: `1315860` equivale a `RGB(20, 20, 20)`.
 
 ## Responsividade e FlexPanel
 
@@ -138,6 +201,7 @@ O runtime mantém uma folha de estilo por gerenciador, atualiza seu conteúdo e 
 `examples/WhatsAppWeb` usa três gerenciadores: um no formulário e um em cada frame. Toda a aparência está nos DFMs. Não há `chat.css` nem eventos `beforeInit` para associar classes. O pequeno `chat.js` trata apenas navegação móvel e rolagem.
 
 - `tools\Test-UniDSAStyle.ps1`: compila pacotes para `tmp/style-validation`, sem instalar ou substituir as BPLs em uso, e testa streaming DFM, Assign, notificações e referências.
+- `node tools/test-style-effects.cjs`: após `Test-UniDSAStyle.ps1`, testa no Chrome/Chromium o JSON exportado do DFM do botão: preenchimento animado, compensação da inclinação, cliques, estados, herança, responsividade, After e remoção das regras. As capturas ficam em `tmp/style-validation/skew-normal.png` e `skew-hover.png`.
 - `node tools/test-style-runtime.cjs`: testes de CSS real em Chromium/Chrome, incluindo hover, estados, herança, responsividade e limpeza.
 - `node examples/WhatsAppWeb/tests/ui.cjs`: teste completo da aplicação; configure `CHAT_URL` se a porta não for 8078.
 - `node tools/embed-style-runtime.cjs --check`: verifica que o JavaScript incorporado corresponde ao fonte.

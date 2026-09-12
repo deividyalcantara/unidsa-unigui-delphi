@@ -251,6 +251,7 @@ type
     function DesignChildAlignSelf(AControl: TControl): TUniDSAFlexAlignSelf;
     procedure UpdateDesignLayout;
   protected
+    procedure InitComponent; override;
     procedure ConfigJSClasses(ALoading: Boolean); override;
     function VCLControlClassName: string; override;
     function GetDesignJSClassName(const AJSClassName: string): string; override;
@@ -1004,6 +1005,14 @@ function TUniDSAFlexPanel.InsertControl(AControl: TControl): TControl;
 begin
   Result := inherited InsertControl(AControl);
   RefreshFlexItems;
+end;
+
+procedure TUniDSAFlexPanel.InitComponent;
+begin
+  // LoadCompleted exceptions are collected as native alerts by uniGUI.
+  // InitComponent runs before JSCreateControl, including during AJAX form creation.
+  UniDSASource.CheckAssets(Self);
+  inherited;
 end;
 
 procedure TUniDSAFlexPanel.LoadCompleted;

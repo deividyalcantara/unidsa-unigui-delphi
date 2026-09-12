@@ -28,6 +28,8 @@ type
 
 implementation
 
+uses UniDSASource;
+
 { TUniDSABaseComponent }
 
 procedure TUniDSABaseComponent.AJAXEvent(var EventName: string; var Params: TUniStrings);
@@ -105,6 +107,7 @@ end;
 
 procedure TUniDSABaseComponent.WebCreate;
 begin
+  UniDSASource.CheckAssets(Self);
   inherited;
   JSComponent := TJSObject.JSCreate('Object');
 end;

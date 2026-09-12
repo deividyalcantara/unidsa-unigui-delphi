@@ -1,4 +1,4 @@
-unit FrameConversa;
+﻿unit FrameConversa;
 
 { Área principal da conversa. O cabeçalho, o aviso, o histórico, o compositor e
   quatro mensagens de prévia ficam no DFM. Em execução, as prévias são removidas
@@ -52,6 +52,7 @@ type
     PreviaEnviada: TFrMensagem;
     PreviaRecebidaLonga: TFrMensagem;
     PreviaEnviadaCurta: TFrMensagem;
+    UniButton1: TUniButton;
     procedure CriarFrame(Remetente: TObject);
     procedure ClicarEnviar(Remetente: TObject);
     procedure AlterarMensagem(Remetente: TObject);
