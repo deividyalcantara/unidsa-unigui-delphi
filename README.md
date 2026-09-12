@@ -751,6 +751,21 @@ designer, inclusive outros `TUniDSAFlexPanel`. No navegador, os filhos são orga
 CSS Flexbox; na IDE, o componente aproxima o mesmo layout para permitir montar e
 revisar a tela sem executá-la.
 
+A prévia na IDE aplica todos os modos de `JustifyContent`: início, centro, fim,
+`fjSpaceBetween`, `fjSpaceAround` e `fjSpaceEvenly`, tanto em linhas quanto em
+colunas. Também considera `AlignItems`, `AlignSelf`, `AlignContent`, `Padding`,
+`RowGap`, `ColumnGap`, `Order`, quebras de linha e as direções invertidas, inclusive
+`fwWrapReverse`. Alterar o tamanho de um filho recalcula a distribuição no pai.
+Por exemplo, uma coluna com `JustifyContent = fjSpaceEvenly` já mostra espaços
+nas extremidades e entre os blocos no designer.
+
+A distribuição usa as dimensões dos controles na IDE; a medição de textos,
+`baseline` e o dimensionamento CSS por `Grow`, `Shrink` ou expressões em `Basis`
+continuam aproximados. `AutoHeight` usa a altura natural do conteúdo: para ver
+espaço vertical distribuído, mantenha altura fixa maior que o conjunto de filhos.
+Os testes `tools/Test-UniDSAFlex.ps1` e `tools/test-flex-preview.cjs` validam os
+pacotes, painéis aninhados e a comparação das posições VCL com CSS Flexbox.
+
 No contêiner, configure `Flex.Direction`, `Flex.Wrap`, `Flex.JustifyContent`,
 `Flex.AlignItems`, `Flex.Gap`, `Flex.Padding`, `Flex.Columns`, `Flex.AutoHeight` e
 `Flex.AutoWidth`. Quando `AutoHeight` está ativo, a altura do painel acompanha o conteúdo

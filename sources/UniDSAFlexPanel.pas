@@ -1069,7 +1069,16 @@ begin
 end;
 
 procedure TUniDSAFlexPanel.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
-begin inherited; UpdateDesignLayout; end;
+var
+  LSizeChanged: Boolean;
+begin
+  LSizeChanged := (Width <> AWidth) or (Height <> AHeight);
+  inherited;
+  UpdateDesignLayout;
+  if LSizeChanged and (csDesigning in ComponentState) and
+    not (csLoading in ComponentState) and (Parent is TUniDSAFlexPanel) then
+    TUniDSAFlexPanel(Parent).UpdateDesignLayout;
+end;
 
 procedure TUniDSAFlexPanel.SetDesignPreview(const Value: TUniDSADesignPreview);
 begin if FDesignPreview <> Value then begin FDesignPreview := Value; UpdateDesignLayout; end; end;
@@ -1079,13 +1088,26 @@ procedure TUniDSAFlexPanel.SetFlexItems(const Value: TUniDSAFlexChildItems); beg
 procedure TUniDSAFlexPanel.SetResponsive(const Value: TUniDSAResponsiveOptions); begin FResponsive.Assign(Value); end;
 
 procedure TUniDSAFlexPanel.UpdateDesignLayout;
+type
+  TPreviewItem = record
+    Control: TControl;
+    MainSize, CrossSize: Integer;
+  end;
+  TPreviewLine = record
+    First, Count, MainSize: Integer;
+    CrossSize: Double;
+  end;
 var
-  LControls: TList; LControl: TControl;
-  LIndex, LStep, LStart, LFinish, LX, LY, LRowHeight, LSpan, LWidth, LHeight,
-  LContentHeight, LContentWidth, LSortIndex, LCompareIndex, LOrder, LRowStart,
-    LPreviousIndex: Integer;
-  LAvailableWidth, LColumns, LColumnGap, LRowGap, LPadding: Integer;
-  LIsColumn, LReverse, LSizeChanged: Boolean;
+  LControls: TList;
+  LControl: TControl;
+  LItems: TArray<TPreviewItem>;
+  LLines: TArray<TPreviewLine>;
+  I, J, LLineIndex, LOrder, LCompareIndex, LPadding, LMainGap, LCrossGap,
+    LAvailableWidth, LMainExtent, LCrossExtent, LWidth, LHeight, LSpan,
+    LContentWidth, LContentHeight, LMainPos, LCrossPos, LCrossSize: Integer;
+  LIsColumn, LReverse, LWrapReverse, LAutoMain, LAutoCross, LSizeChanged: Boolean;
+  LCrossTotal, LCrossCursor, LMainCursor, LFree, LExtraGap, LOffset: Double;
+  LAlign: TUniDSAFlexAlign;
 
   function EffectiveAlign(AControl: TControl): TUniDSAFlexAlign;
   begin
@@ -1099,157 +1121,267 @@ var
       Result := FFlex.AlignItems;
     end;
     if (Result = faStretch) and (AControl is TUniDSAFlexPanel) then
-    begin
       if ((not LIsColumn) and TUniDSAFlexPanel(AControl).Flex.AutoHeight) or
          (LIsColumn and TUniDSAFlexPanel(AControl).Flex.AutoWidth) then
         Result := faStart;
-    end;
   end;
 
-  procedure AlignRow(AStartIndex, AEndIndex, AStep, ATop,
-    ARowHeight: Integer);
+  function NaturalWidth(AControl: TControl): Integer;
   var
-    I, LTop: Integer;
-    LRowControl: TControl;
+    Panel: TUniDSAFlexPanel;
+    K, Count, ChildWidth: Integer;
   begin
-    I := AStartIndex;
-    while ((AStep > 0) and (I <= AEndIndex)) or
-          ((AStep < 0) and (I >= AEndIndex)) do
-    begin
-      LRowControl := TControl(LControls[I]);
-      LTop := ATop;
-      case EffectiveAlign(LRowControl) of
-        faCenter: LTop := ATop + Max(0, (ARowHeight - LRowControl.Height) div 2);
-        faEnd: LTop := ATop + Max(0, ARowHeight - LRowControl.Height);
+    Result := AControl.Width;
+    if not (AControl is TUniDSAFlexPanel) then Exit;
+    Panel := TUniDSAFlexPanel(AControl);
+    Result := 0;
+    Count := 0;
+    // Column stretching clears the declared CSS width. Empty FlexPanels have
+    // no intrinsic width; nested contents still contribute to their line.
+    for K := 0 to Panel.ControlCount - 1 do
+      if Panel.Controls[K].Visible then
+      begin
+        ChildWidth := Panel.Controls[K].Width;
+        if Panel.Flex.Direction in [fdColumn, fdColumnReverse] then
+          Result := Max(Result, ChildWidth)
+        else
+        begin
+          if Count > 0 then Inc(Result, Panel.Flex.EffectiveColumnGap);
+          Inc(Result, ChildWidth);
+        end;
+        Inc(Count);
       end;
-      if LRowControl.Top <> LTop then
-        LRowControl.SetBounds(LRowControl.Left, LTop, LRowControl.Width,
-          LRowControl.Height);
-      Inc(I, AStep);
+    Inc(Result, 2 * Panel.Flex.Padding);
+  end;
+  procedure DistributeMain(AFree: Double; ACount: Integer);
+  begin
+    LOffset := 0;
+    LExtraGap := 0;
+    case FFlex.JustifyContent of
+      fjCenter: LOffset := AFree / 2;
+      fjEnd: LOffset := AFree;
+      fjSpaceBetween:
+        if (ACount > 1) and (AFree > 0) then
+          LExtraGap := AFree / (ACount - 1);
+      fjSpaceAround:
+        begin
+          LOffset := AFree / 2;
+          if AFree > 0 then
+          begin
+            LExtraGap := AFree / ACount;
+            LOffset := LExtraGap / 2;
+          end;
+        end;
+      fjSpaceEvenly:
+        begin
+          LOffset := AFree / 2;
+          if AFree > 0 then
+          begin
+            LExtraGap := AFree / (ACount + 1);
+            LOffset := LExtraGap;
+          end;
+        end;
     end;
   end;
 begin
   if FUpdatingDesignLayout or not (csDesigning in ComponentState) or
-    (csLoading in ComponentState) or not Assigned(FFlex) or
-    not Assigned(Parent) then Exit;
+    (csLoading in ComponentState) or (csDestroying in ComponentState) or
+    not Assigned(FFlex) or not Assigned(Parent) then Exit;
   FUpdatingDesignLayout := True;
   LControls := TList.Create;
   try
-    for LIndex := 0 to ControlCount - 1 do if Controls[LIndex].Visible then LControls.Add(Controls[LIndex]);
-    { CSS Flexbox orders by Order and preserves source order for equal values. }
-    for LSortIndex := 1 to LControls.Count - 1 do
+    for I := 0 to ControlCount - 1 do
+      if Controls[I].Visible then LControls.Add(Controls[I]);
+    // Keep source order for equal Order values. Reverse changes the axis, not
+    // the order in which items are collected into flex lines.
+    for I := 1 to LControls.Count - 1 do
     begin
-      LControl := TControl(LControls[LSortIndex]);
+      LControl := TControl(LControls[I]);
       LOrder := DesignChildOrder(LControl);
-      LCompareIndex := LSortIndex - 1;
+      LCompareIndex := I - 1;
       while (LCompareIndex >= 0) and
-            (DesignChildOrder(TControl(LControls[LCompareIndex])) > LOrder) do
+        (DesignChildOrder(TControl(LControls[LCompareIndex])) > LOrder) do
       begin
         LControls[LCompareIndex + 1] := LControls[LCompareIndex];
         Dec(LCompareIndex);
       end;
       LControls[LCompareIndex + 1] := LControl;
     end;
-    LPadding := FFlex.Padding; LColumnGap := FFlex.EffectiveColumnGap; LRowGap := FFlex.EffectiveRowGap;
+    LPadding := FFlex.Padding;
     LIsColumn := FFlex.Direction in [fdColumn, fdColumnReverse];
     LReverse := FFlex.Direction in [fdRowReverse, fdColumnReverse];
+    LWrapReverse := FFlex.Wrap = fwWrapReverse;
     LSizeChanged := False;
+    if LIsColumn then
+    begin
+      LMainGap := FFlex.EffectiveRowGap;
+      LCrossGap := FFlex.EffectiveColumnGap;
+      LAutoMain := FFlex.AutoHeight;
+      LAutoCross := FFlex.AutoWidth;
+    end
+    else
+    begin
+      LMainGap := FFlex.EffectiveColumnGap;
+      LCrossGap := FFlex.EffectiveRowGap;
+      LAutoMain := False; // fit-content width still wraps at the parent's width.
+      LAutoCross := FFlex.AutoHeight;
+    end;
 
     if FFlex.AutoWidth then
     begin
-      LContentWidth := LPadding * 2;
-      if LControls.Count > 0 then
-      begin
+      LContentWidth := 0;
+      for I := 0 to LControls.Count - 1 do
         if LIsColumn then
-        begin
-          for LIndex := 0 to LControls.Count - 1 do
-            LContentWidth := Max(LContentWidth,
-              TControl(LControls[LIndex]).Width + (LPadding * 2));
-        end
+          LContentWidth := Max(LContentWidth, TControl(LControls[I]).Width)
         else
         begin
-          for LIndex := 0 to LControls.Count - 1 do
-            Inc(LContentWidth, Max(1, TControl(LControls[LIndex]).Width));
-          Inc(LContentWidth, LColumnGap * (LControls.Count - 1));
+          Inc(LContentWidth, Max(1, TControl(LControls[I]).Width));
+          if I > 0 then Inc(LContentWidth, LMainGap);
         end;
-      end;
-      LContentWidth := Max(1, LContentWidth);
-      if Assigned(Parent) then
-        LContentWidth := Min(LContentWidth,
-          Max(1, Parent.ClientWidth - Left));
+      LContentWidth := Min(Max(1, LContentWidth + 2 * LPadding),
+        Max(1, Parent.ClientWidth));
       if Width <> LContentWidth then
       begin
         inherited SetBounds(Left, Top, LContentWidth, Height);
         LSizeChanged := True;
       end;
     end;
-
-    LColumns := Max(1, FFlex.Columns); LAvailableWidth := Max(1, Width - (LPadding * 2));
-    if LReverse then begin LStart := LControls.Count - 1; LFinish := 0; LStep := -1; end
-    else begin LStart := 0; LFinish := LControls.Count - 1; LStep := 1; end;
-    LX := LPadding; LY := LPadding; LRowHeight := 0; LIndex := LStart;
-    LRowStart := LStart;
-    LPreviousIndex := LStart;
-    while (LControls.Count > 0) and (((LStep > 0) and (LIndex <= LFinish)) or
-      ((LStep < 0) and (LIndex >= LFinish))) do
+    LAvailableWidth := Max(1, Width - 2 * LPadding);
+    if LIsColumn then
     begin
-      LControl := TControl(LControls[LIndex]); LHeight := Max(1, LControl.Height);
+      LMainExtent := Max(0, Height - 2 * LPadding);
+      LCrossExtent := LAvailableWidth;
+    end
+    else
+    begin
+      LMainExtent := LAvailableWidth;
+      LCrossExtent := Max(0, Height - 2 * LPadding);
+    end;
+
+    SetLength(LItems, LControls.Count);
+    SetLength(LLines, LControls.Count);
+    LLineIndex := -1;
+    for I := 0 to LControls.Count - 1 do
+    begin
+      LControl := TControl(LControls[I]);
+      LWidth := Max(1, LControl.Width);
+      if not LIsColumn then
+      begin
+        LSpan := DesignChildSpan(LControl);
+        if LSpan > 0 then
+          LWidth := Max(1, Round((LAvailableWidth + LMainGap) *
+            LSpan / Max(1, FFlex.Columns) - LMainGap));
+      end;
+      // Measure nested AutoHeight panels after applying their responsive width.
+      if LWidth <> LControl.Width then
+        LControl.SetBounds(LControl.Left, LControl.Top, LWidth, LControl.Height);
+      LHeight := Max(1, LControl.Height);
+      LItems[I].Control := LControl;
+      if LIsColumn and (EffectiveAlign(LControl) = faStretch) then
+        LWidth := NaturalWidth(LControl);
       if LIsColumn then
       begin
-        LWidth := Min(LAvailableWidth, Max(1, LControl.Width));
-        case EffectiveAlign(LControl) of
-          faStretch: begin LX := LPadding; LWidth := LAvailableWidth; end;
-          faCenter: LX := LPadding + Max(0, (LAvailableWidth - LWidth) div 2);
-          faEnd: LX := LPadding + Max(0, LAvailableWidth - LWidth);
-        else
-          LX := LPadding;
-        end;
-        LControl.SetBounds(LX, LY, LWidth, LHeight);
-        LHeight := Max(1, LControl.Height);
-        Inc(LY, LHeight + LRowGap);
+        LItems[I].MainSize := LHeight;
+        LItems[I].CrossSize := LWidth;
       end
       else
       begin
-        LSpan := DesignChildSpan(LControl);
-        if LSpan > 0 then LWidth := Max(1, Round(((LAvailableWidth + LColumnGap) * LSpan / LColumns) - LColumnGap))
-        else LWidth := Max(1, LControl.Width);
-        if (FFlex.Wrap <> fwNoWrap) and (LX > LPadding) and (LX + LWidth > LPadding + LAvailableWidth) then
-        begin
-          AlignRow(LRowStart, LPreviousIndex, LStep, LY, LRowHeight);
-          LX := LPadding;
-          Inc(LY, LRowHeight + LRowGap);
-          LRowHeight := 0;
-          LRowStart := LIndex;
-        end;
-        LControl.SetBounds(LX, LY, LWidth, LHeight);
-        LHeight := Max(1, LControl.Height);
-        Inc(LX, LWidth + LColumnGap); LRowHeight := Max(LRowHeight, LHeight);
+        LItems[I].MainSize := LWidth;
+        LItems[I].CrossSize := LHeight;
       end;
-      LPreviousIndex := LIndex;
-      Inc(LIndex, LStep);
-    end;
-
-    if (LControls.Count > 0) and not LIsColumn then
-      AlignRow(LRowStart, LPreviousIndex, LStep, LY, LRowHeight);
-
-    if FFlex.AutoHeight then
-    begin
-      if LControls.Count = 0 then
-        LContentHeight := LPadding * 2
-      else if LIsColumn then
-        LContentHeight := LY - LRowGap + LPadding
-      else
-        LContentHeight := LY + LRowHeight + LPadding;
-      LContentHeight := Max(1, LContentHeight);
-      if Height <> LContentHeight then
+      if (LLineIndex < 0) or ((FFlex.Wrap <> fwNoWrap) and not LAutoMain and
+        (LLines[LLineIndex].MainSize + LMainGap + LItems[I].MainSize > LMainExtent)) then
       begin
-        inherited SetBounds(Left, Top, Width, LContentHeight);
-        LSizeChanged := True;
+        Inc(LLineIndex);
+        LLines[LLineIndex].First := I;
+      end;
+      with LLines[LLineIndex] do
+      begin
+        if Count > 0 then Inc(MainSize, LMainGap);
+        Inc(Count);
+        Inc(MainSize, LItems[I].MainSize);
+        CrossSize := Max(CrossSize, LItems[I].CrossSize);
       end;
     end;
-    if LSizeChanged and Assigned(Parent) and (Parent is TUniDSAFlexPanel) then
+    SetLength(LLines, LLineIndex + 1);
+    LCrossTotal := 0;
+    for I := 0 to High(LLines) do
+    begin
+      if I > 0 then LCrossTotal := LCrossTotal + LCrossGap;
+      LCrossTotal := LCrossTotal + LLines[I].CrossSize;
+    end;
+    if LAutoMain then
+    begin
+      LMainExtent := 0;
+      for I := 0 to High(LLines) do
+        LMainExtent := Max(LMainExtent, LLines[I].MainSize);
+    end;
+    if LAutoCross then LCrossExtent := Round(LCrossTotal);
+    LContentWidth := Width;
+    LContentHeight := Height;
+    if FFlex.AutoHeight then
+      if LIsColumn then LContentHeight := Max(1, LMainExtent + 2 * LPadding)
+      else LContentHeight := Max(1, LCrossExtent + 2 * LPadding);
+    if FFlex.AutoWidth and LIsColumn then
+      LContentWidth := Max(1, LCrossExtent + 2 * LPadding);
+    if (Width <> LContentWidth) or (Height <> LContentHeight) then
+    begin
+      inherited SetBounds(Left, Top, LContentWidth, LContentHeight);
+      LSizeChanged := True;
+    end;
+
+    LCrossCursor := 0;
+    LFree := LCrossExtent - LCrossTotal;
+    if (FFlex.Wrap = fwNoWrap) and (Length(LLines) = 1) then
+      LLines[0].CrossSize := LCrossExtent
+    else
+      case FFlex.AlignContent of
+        faCenter: LCrossCursor := LFree / 2;
+        faEnd: LCrossCursor := LFree;
+        faStretch:
+          if (LFree > 0) and (Length(LLines) > 0) then
+            for I := 0 to High(LLines) do
+              LLines[I].CrossSize := LLines[I].CrossSize + LFree / Length(LLines);
+      end;
+
+    for I := 0 to High(LLines) do
+    begin
+      DistributeMain(LMainExtent - LLines[I].MainSize, LLines[I].Count);
+      LMainCursor := LOffset;
+      for J := LLines[I].First to LLines[I].First + LLines[I].Count - 1 do
+      begin
+        LControl := LItems[J].Control;
+        LCrossSize := LItems[J].CrossSize;
+        LAlign := EffectiveAlign(LControl);
+        // The browser explicitly stretches widths in column containers. Row
+        // children retain their declared heights, including AutoHeight panels.
+        if LIsColumn and (LAlign = faStretch) then
+          LCrossSize := Max(1, Round(LLines[I].CrossSize));
+        LOffset := 0;
+        case LAlign of
+          faCenter: LOffset := (LLines[I].CrossSize - LCrossSize) / 2;
+          faEnd: LOffset := LLines[I].CrossSize - LCrossSize;
+        end;
+        LMainPos := Round(LMainCursor);
+        LCrossPos := Round(LCrossCursor + LOffset);
+        if LReverse then LMainPos := LMainExtent - LMainPos - LItems[J].MainSize;
+        if LWrapReverse then LCrossPos := LCrossExtent - LCrossPos - LCrossSize;
+        if LIsColumn then
+          LControl.SetBounds(LPadding + LCrossPos, LPadding + LMainPos,
+            LCrossSize, LItems[J].MainSize)
+        else
+          LControl.SetBounds(LPadding + LMainPos, LPadding + LCrossPos,
+            LItems[J].MainSize, LCrossSize);
+        LMainCursor := LMainCursor + LItems[J].MainSize + LMainGap + LExtraGap;
+      end;
+      LCrossCursor := LCrossCursor + LLines[I].CrossSize + LCrossGap;
+    end;
+    if LSizeChanged and (Parent is TUniDSAFlexPanel) then
       TUniDSAFlexPanel(Parent).UpdateDesignLayout;
-  finally LControls.Free; FUpdatingDesignLayout := False; end;
+  finally
+    LControls.Free;
+    FUpdatingDesignLayout := False;
+  end;
 end;
 
 function TUniDSAFlexPanel.VCLControlClassName: string;
