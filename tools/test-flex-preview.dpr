@@ -1,11 +1,16 @@
 ﻿program TestFlexPreview;
 {$APPTYPE CONSOLE}
 uses System.SysUtils, System.Classes, System.JSON, System.IOUtils,
-  Vcl.Forms, UniDSAFlexPanel;
+  Vcl.Forms, UniDSAFlexPanel, UniDSAStyle;
 type
+  TDesignHost = class(TForm)
+    procedure Design;
+  end;
   TPreviewPanel = class(TUniDSAFlexPanel)
     procedure Preview;
   end;
+procedure TDesignHost.Design;
+begin SetDesigning(True, False); end;
 procedure TPreviewPanel.Preview;
 begin SetDesigning(True, False); RefreshFlex; end;
 var
@@ -82,6 +87,126 @@ begin
 end;
 procedure Check(Value: Boolean; const Message: string);
 begin if not Value then raise Exception.Create(Message); end;
+
+procedure TestDestroyingLayout;
+var
+  Host: TForm;
+  Root, Child, Light: TPreviewPanel;
+  OldTop: Integer;
+begin
+  Host := TForm.CreateNew(nil);
+  try
+    Root := TPreviewPanel.Create(Host);
+    Root.Parent := Host;
+    Root.SetBounds(0, 0, 600, 400);
+    Root.Flex.Direction := fdColumn;
+    Root.Flex.JustifyContent := fjCenter;
+    Root.Flex.AlignItems := faCenter;
+    Child := TPreviewPanel.Create(Host);
+    Child.Parent := Root;
+    Child.SetBounds(0, 0, 200, 100);
+    Root.Preview;
+    OldTop := Child.Top;
+    Child.Destroying;
+    Root.Height := 600;
+    Check(Child.Top = OldTop, 'Preview must not reposition a child being destroyed');
+    Child.Free;
+    Child := TPreviewPanel.Create(Host);
+    Child.Parent := Root;
+    Child.Flex.Direction := fdColumn;
+    Child.Flex.AlignItems := faCenter;
+    Child.Flex.JustifyContent := fjCenter;
+    Child.Preview;
+    Light := TPreviewPanel.Create(Host);
+    Light.SetBounds(0, 0, 60, 60);
+    Light.Parent := Child;
+    Child.RefreshFlex;
+    OldTop := Light.Top;
+    Root.Parent := nil;
+    Child.Flex.JustifyContent := fjStart;
+    Check(Light.Top = OldTop, 'Preview must stop when its subtree has no form');
+    Root.Parent := Host;
+    Child.RefreshFlex;
+    Check(Light.Top = 0, 'Preview must resume after reattaching the subtree');
+    Child.Flex.JustifyContent := fjCenter;
+    OldTop := Light.Top;
+    Root.Destroying;
+    Child.Flex.Padding := 15;
+    Child.Flex.JustifyContent := fjStart;
+    Check(Light.Top = OldTop, 'Preview must stop when an ancestor is being destroyed');
+    Writeln('PASS: preview ignores destroying children and ancestors.');
+  finally
+    Host.Free;
+  end;
+end;
+
+procedure TestDesignerDeletion(ADetach: Boolean);
+var
+  Host: TDesignHost;
+  Root, Gray, Light: TPreviewPanel;
+  Style: TUniDSAStyle;
+  I: Integer;
+begin
+  Host := TDesignHost.CreateNew(nil);
+  Host.Design;
+  try
+    Root := TPreviewPanel.Create(Host);
+    Root.Name := 'flexPrincipal';
+    Root.Parent := Host;
+    Root.SetBounds(0, 0, 737, 570);
+    Root.Flex.Direction := fdColumn;
+    Root.Flex.JustifyContent := fjCenter;
+    Root.Flex.AlignItems := faCenter;
+    Root.Preview;
+    Gray := TPreviewPanel.Create(Host);
+    Gray.Name := 'flexFarol';
+    Gray.Parent := Root;
+    Gray.SetBounds(0, 0, 221, 204);
+    Gray.Flex.Direction := fdColumn;
+    Gray.Flex.JustifyContent := fjSpaceEvenly;
+    Gray.Flex.AlignItems := faCenter;
+    Gray.Flex.AutoHeight := True;
+    Gray.Preview;
+    Style := TUniDSAStyle.Create(Host);
+    Style.StyleItems.Add.Control := Gray;
+    for I := 0 to 2 do
+    begin
+      Light := TPreviewPanel.Create(Host);
+      Light.Name := 'flexLight' + IntToStr(I);
+      Light.SetBounds(0, 0, 60, 60);
+      Light.Parent := Gray;
+      Light.Preview;
+      Style.StyleItems.Add.Control := Light;
+    end;
+    if ADetach then
+    begin
+      Root.FlexItems.Add.Control := Gray;
+      Gray.FlexItems.Add.Control := Light;
+    end;
+    Root.DesignPreview := dpPhone;
+    Root.HandleNeeded;
+    Gray.HandleNeeded;
+    Light.HandleNeeded;
+    if ADetach then
+    begin
+      Root.Parent := nil;
+      Gray.RemoveControl(Light);
+      Light.Free;
+      Check(Gray.FlexItems[0].Control = nil, 'Removed light reference must be cleared');
+    end;
+    Root.Free;
+    Check(Host.FindComponent('flexPrincipal') = nil, 'Root must be removed from the form');
+    Check(Host.FindComponent('flexFarol') = nil, 'Nested panel must be removed from the form');
+    for I := 0 to 2 do
+      Check(Host.FindComponent('flexLight' + IntToStr(I)) = nil,
+        'Lights must be removed from the form');
+    for I := 0 to Style.StyleItems.Count - 1 do
+      Check(Style.StyleItems[I].Control = nil, 'Style references must be cleared');
+    Writeln('PASS: designer root deletion with form-owned children and styles; detach=', ADetach);
+  finally
+    Host.Free;
+  end;
+end;
 
 procedure TestRuntimeIsolation;
 var
@@ -243,6 +368,9 @@ var
   AlignContent, AlignItems: TUniDSAFlexAlign;
 begin
   try
+    TestDestroyingLayout;
+    TestDesignerDeletion(False);
+    TestDesignerDeletion(True);
     TestRuntimeIsolation;
     TestNestedAndSizing;
     TestResponsiveAndOverrides;

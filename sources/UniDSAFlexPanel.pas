@@ -249,6 +249,7 @@ type
     function DesignChildSpan(AControl: TControl): Integer;
     function DesignChildOrder(AControl: TControl): Integer;
     function DesignChildAlignSelf(AControl: TControl): TUniDSAFlexAlignSelf;
+    function CanUpdateDesignLayout: Boolean;
     procedure UpdateDesignLayout;
   protected
     procedure InitComponent; override;
@@ -300,7 +301,7 @@ procedure Register;
 implementation
 
 uses
-  UniDSASource, UniDSAWebUtils;
+  Vcl.Forms, UniDSASource, UniDSAWebUtils;
 
 function ClampInt(const AValue, AMin, AMax: Integer): Integer;
 begin
@@ -874,10 +875,11 @@ end;
 
 destructor TUniDSAFlexPanel.Destroy;
 begin
-  FFlexItems.Free;
-  FResponsive.Free;
-  FFlexItem.Free;
-  FFlex.Free;
+  // Inherited destruction still sends notifications for VCL controls and children.
+  FreeAndNil(FFlexItems);
+  FreeAndNil(FResponsive);
+  FreeAndNil(FFlexItem);
+  FreeAndNil(FFlex);
   inherited;
 end;
 
@@ -1030,7 +1032,8 @@ var
   I: Integer;
 begin
   inherited;
-  if (Operation = opRemove) and Assigned(FFlexItems) then
+  if (Operation = opRemove) and not (csDestroying in ComponentState) and
+    Assigned(FFlexItems) then
     for I := FFlexItems.Count - 1 downto 0 do
       if FFlexItems[I].Control = AComponent then
         FFlexItems[I].Control := nil;
@@ -1038,6 +1041,7 @@ end;
 
 procedure TUniDSAFlexPanel.RefreshFlex;
 begin
+  if (csDestroying in ComponentState) or not Assigned(FFlex) then Exit;
   if csDesigning in ComponentState then
   begin
     UpdateDesignLayout;
@@ -1048,6 +1052,7 @@ end;
 
 procedure TUniDSAFlexPanel.RefreshFlexItem;
 begin
+  if (csDestroying in ComponentState) or not Assigned(FFlexItem) then Exit;
   if csDesigning in ComponentState then
   begin
     UpdateDesignLayout;
@@ -1059,6 +1064,7 @@ end;
 
 procedure TUniDSAFlexPanel.RefreshFlexItems;
 begin
+  if (csDestroying in ComponentState) or not Assigned(FFlexItems) then Exit;
   if csDesigning in ComponentState then
   begin
     UpdateDesignLayout;
@@ -1093,7 +1099,7 @@ begin
   LSizeChanged := (Width <> AWidth) or (Height <> AHeight);
   inherited;
   UpdateDesignLayout;
-  if LSizeChanged and
+  if LSizeChanged and not (csDestroying in ComponentState) and
     not (csLoading in ComponentState) and (Parent is TUniDSAFlexPanel) then
     TUniDSAFlexPanel(Parent).UpdateDesignLayout;
 end;
@@ -1108,6 +1114,29 @@ procedure TUniDSAFlexPanel.SetFlex(const Value: TUniDSAFlexOptions); begin FFlex
 procedure TUniDSAFlexPanel.SetFlexItem(const Value: TUniDSAFlexItemOptions); begin FFlexItem.Assign(Value); end;
 procedure TUniDSAFlexPanel.SetFlexItems(const Value: TUniDSAFlexChildItems); begin FFlexItems.Assign(Value); end;
 procedure TUniDSAFlexPanel.SetResponsive(const Value: TUniDSAResponsiveOptions); begin FResponsive.Assign(Value); end;
+
+function TUniDSAFlexPanel.CanUpdateDesignLayout: Boolean;
+var
+  LAncestor: TWinControl;
+begin
+  Result := False;
+  if FUpdatingDesignLayout or not (csDesigning in ComponentState) or
+    (csLoading in ComponentState) or (csDestroying in ComponentState) or
+    not Assigned(FFlex) or not Assigned(FFlexItems) or
+    (Assigned(Owner) and (csDestroying in Owner.ComponentState)) then Exit;
+
+  // Form-owned children are not marked destroying with their visual parent.
+  // During designer deletion the whole subtree may also be detached first.
+  LAncestor := Parent;
+  while Assigned(LAncestor) do
+  begin
+    if (csDestroying in LAncestor.ComponentState) or
+      (csLoading in LAncestor.ComponentState) then Exit;
+    if LAncestor is TCustomForm then
+      Exit(True);
+    LAncestor := LAncestor.Parent;
+  end;
+end;
 
 procedure TUniDSAFlexPanel.UpdateDesignLayout;
 type
@@ -1206,14 +1235,14 @@ var
     end;
   end;
 begin
-  if FUpdatingDesignLayout or not (csDesigning in ComponentState) or
-    (csLoading in ComponentState) or (csDestroying in ComponentState) or
-    not Assigned(FFlex) or not Assigned(Parent) then Exit;
+  if not CanUpdateDesignLayout then Exit;
   FUpdatingDesignLayout := True;
   LControls := TList.Create;
   try
     for I := 0 to ControlCount - 1 do
-      if Controls[I].Visible then LControls.Add(Controls[I]);
+      if Controls[I].Visible and (Controls[I].Parent = Self) and
+        not (csDestroying in Controls[I].ComponentState) then
+        LControls.Add(Controls[I]);
     // Keep source order for equal Order values. Reverse changes the axis, not
     // the order in which items are collected into flex lines.
     for I := 1 to LControls.Count - 1 do
