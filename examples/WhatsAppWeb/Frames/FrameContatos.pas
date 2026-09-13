@@ -199,20 +199,30 @@ procedure TFrContatos.SelecionarContato(Indice: Integer);
 begin
   if
     (Indice < Low(FContatosVisuais)) or
-    (Indice > High(FContatosVisuais))
+    (Indice > High(FContatosVisuais)) or
+    (Indice = FSelecionado)
   then
     Exit;
 
-  // Desmarca a linha anterior antes de aplicar States.Selected à nova linha.
-  if FSelecionado >= 0 then
-    EstiloControles.StyleItems.FindByControl(FContatosVisuais[FSelecionado].Linha).Selected := False;
+  // Agrupa seleção, contador e filtro em uma única aplicação de estilos.
+  EstiloControles.BeginUpdate;
+  try
+    if FSelecionado >= 0 then
+      EstiloControles.StyleItems.FindByControl(
+        FContatosVisuais[FSelecionado].Linha
+      ).Selected := False;
 
-  FSelecionado := Indice;
-  EstiloControles.StyleItems.FindByControl(FContatosVisuais[Indice].Linha).Selected := True;
+    FSelecionado := Indice;
+    EstiloControles.StyleItems.FindByControl(
+      FContatosVisuais[Indice].Linha
+    ).Selected := True;
 
-  // Abrir a conversa limpa seu contador de não lidas.
-  FContatosVisuais[Indice].QuantidadeNaoLidas := 0;
-  AplicarFiltro;
+    // Abrir a conversa limpa seu contador de não lidas.
+    FContatosVisuais[Indice].QuantidadeNaoLidas := 0;
+    AplicarFiltro;
+  finally
+    EstiloControles.EndUpdate;
+  end;
 end;
 
 procedure TFrContatos.ClicarContato(Remetente: TObject);
@@ -221,6 +231,10 @@ var
 begin
   // Cada linha guarda seu índice na propriedade Tag configurada no designer.
   Indice := TComponent(Remetente).Tag;
+  // Um clique na conversa já aberta não precisa atualizar nem carregar nada.
+  if Indice = FSelecionado then
+    Exit;
+
   SelecionarContato(Indice);
 
   if Assigned(AoSelecionarContato) then

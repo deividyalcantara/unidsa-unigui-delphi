@@ -48,6 +48,32 @@ fs.mkdirSync(output, {recursive:true});
       await page.locator('[data-unidsa-style-item="Contatos"] [data-unidsa-style-item^="lblNome"]').filter({hasText:name}).click();
       await expectText('[data-unidsa-style-item="flexCabecalho"] [data-unidsa-style-item^="lblNome"]',name);
     };
+    const outgoingLayout = await page.getByText('Podemos sim! Vou separar um tempo na agenda.', {exact:true}).evaluate(message => {
+      const bubble = message.closest('[data-unidsa-style-item^="flexBalao"]');
+      const inner = bubble.querySelector('.dsa-flex-inner');
+      const time = [...bubble.querySelectorAll('label')].find(label => label !== message);
+      const bubbleRect = bubble.getBoundingClientRect();
+      const messageRect = message.getBoundingClientRect();
+      const timeRect = time.getBoundingClientRect();
+      return {
+        alignItems: getComputedStyle(inner).alignItems,
+        messageAlign: getComputedStyle(message).textAlign,
+        timeAlign: getComputedStyle(time).textAlign,
+        messageRightGap: bubbleRect.right - messageRect.right,
+        timeRightGap: bubbleRect.right - timeRect.right
+      };
+    });
+    assert.equal(outgoingLayout.alignItems, 'flex-end', 'Sent bubble content must align to the right');
+    assert.equal(outgoingLayout.messageAlign, 'right', 'Sent message text must align to the right');
+    assert.equal(outgoingLayout.timeAlign, 'right', 'Sent message time must align to the right');
+    assert.ok(outgoingLayout.messageRightGap <= 16, 'Sent message must stay near the right padding');
+    assert.ok(outgoingLayout.timeRightGap <= 16, 'Sent time must stay near the right padding');
+
+    // The same DOM node must survive a contact switch; recreating it caused the delay.
+    await page.getByText('Oi! Tudo bem por aí?', {exact:true}).evaluate(el => { el.dataset.frameReuseProbe = 'preserved'; });
+    await select('Sofia Martins');
+    assert.equal(await page.locator('[data-frame-reuse-probe="preserved"]').count(), 1, 'Message frames must be reused between conversations');
+    await select('Mariana Costa');
     assert.equal(await page.locator('[data-unidsa-style-item^="flexContato"]:not([data-unidsa-style-item="flexContatos"]):visible').count(), 5);
     await page.locator('[data-unidsa-style-item="btnTodas"],[data-unidsa-style-item="btnNaoLidas"]').filter({hasText:'Não lidas'}).click();
     await page.waitForFunction(() => [...document.querySelectorAll('[data-unidsa-style-item^="flexContato"]:not([data-unidsa-style-item="flexContatos"])')].filter(el => el.offsetHeight).length === 2);
@@ -145,7 +171,9 @@ fs.mkdirSync(output, {recursive:true});
     assert.deepEqual(cssRequests, [], 'Appearance must not load chat.css');
     assert.deepEqual(jsRequests, [], 'Application must not load chat.js');
     assert.ok(flexRequests.some(url => url.includes('v=1.0.8')), 'FlexPanel JavaScript must use the current cachebuster');
-    await page.waitForFunction(() => document.querySelectorAll('style[data-unidsa-style-sheet]').length === 8);
+    const finalStyleSheetCount = await page.locator('style[data-unidsa-style-sheet]').count();
+    const cachedMessageFrameCount = await page.locator('[data-unidsa-style-item="lblMensagem"]').count();
+    assert.equal(finalStyleSheetCount, cachedMessageFrameCount + 3, 'Each cached message frame must keep exactly one style sheet');
     const aviso = page.locator('[data-unidsa-style-item="flexAviso"]');
     const alturaAviso = await aviso.evaluate(el => el.getBoundingClientRect().height);
     const textoAviso = await page.locator('[data-unidsa-style-item="lblAviso"]').innerText();

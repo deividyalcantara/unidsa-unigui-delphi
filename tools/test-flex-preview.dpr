@@ -83,6 +83,57 @@ end;
 procedure Check(Value: Boolean; const Message: string);
 begin if not Value then raise Exception.Create(Message); end;
 
+procedure TestRuntimeIsolation;
+var
+  Host: TForm;
+  Root: TUniDSAFlexPanel;
+  Children: array[0..1] of TUniDSAFlexPanel;
+  Mode: TUniDSADesignPreview;
+  Direction: TUniDSAFlexDirection;
+  Justify: TUniDSAFlexJustify;
+  I: Integer;
+begin
+  Host := TForm.CreateNew(nil);
+  Root := TUniDSAFlexPanel.Create(Host);
+  try
+    Root.SetBounds(0,0,600,400);
+    Root.Parent := Host;
+    for I := 0 to 1 do
+    begin
+      Children[I] := TUniDSAFlexPanel.Create(Root);
+      Children[I].SetBounds(17+I*100,23+I*60,80,50);
+      Children[I].Parent := Root;
+    end;
+    Check(not (csDesigning in Root.ComponentState),'Runtime fixture must not be designing');
+    Root.Flex.AutoHeight := True;
+    Root.Flex.AutoWidth := True;
+    Root.Flex.AlignItems := faCenter;
+    Root.Flex.AlignContent := faCenter;
+    for Mode := Low(TUniDSADesignPreview) to High(TUniDSADesignPreview) do
+      for Direction := Low(TUniDSAFlexDirection) to High(TUniDSAFlexDirection) do
+        for Justify := Low(TUniDSAFlexJustify) to High(TUniDSAFlexJustify) do
+        begin
+          Root.DesignPreview := Mode;
+          Root.Flex.Direction := Direction;
+          Root.Flex.JustifyContent := Justify;
+          Root.RefreshFlex;
+          Root.RefreshFlexItem;
+          Root.RefreshFlexItems;
+          Check((Root.Width=600) and (Root.Height=400),'Preview cannot auto-size a runtime container');
+          for I := 0 to 1 do
+            Check((Children[I].Left=17+I*100) and (Children[I].Top=23+I*60) and
+              (Children[I].Width=80) and (Children[I].Height=50),
+              'Preview must not overwrite child bounds at runtime');
+        end;
+    Root.SetBounds(5,7,800,500);
+    Children[0].SetBounds(31,41,120,90);
+    Check((Root.Width=800) and (Root.Height=500),'Runtime resize must keep requested bounds');
+    Check((Children[1].Left=117) and (Children[1].Top=83),
+      'Runtime resize cannot distribute siblings in Delphi');
+    Writeln('PASS: runtime bounds unchanged across all preview modes and layout options.');
+  finally Root.Free; Host.Free; end;
+end;
+
 procedure TestNestedAndSizing;
 var
   Host: TForm;
@@ -192,6 +243,7 @@ var
   AlignContent, AlignItems: TUniDSAFlexAlign;
 begin
   try
+    TestRuntimeIsolation;
     TestNestedAndSizing;
     TestResponsiveAndOverrides;
     Cases := TJSONArray.Create;

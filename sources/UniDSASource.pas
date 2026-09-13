@@ -254,8 +254,8 @@ begin
     AddJS(cFolder + '/tour/js/script.js', True, [upoFolderUni, upoPlatformBoth]);
   end
   else if AComponent = TTypeUniDSASource.FormStyle then begin
-    AddCSS(cFolder + '/form-style/css/style.css?v=5', True, [upoFolderUni, upoPlatformDesktop]);
-    AddJS(cFolder + '/form-style/js/script.js?v=5', True, [upoFolderUni, upoPlatformDesktop]);
+    AddCSS(cFolder + '/form-style/css/style.css?v=6', True, [upoFolderUni, upoPlatformDesktop]);
+    AddJS(cFolder + '/form-style/js/script.js?v=6', True, [upoFolderUni, upoPlatformDesktop]);
   end
   else if AComponent = TTypeUniDSASource.Flex then begin
     AddCSS(cFolder + '/flex/css/unidsa-flex.css?v=1.0.8', True, [upoFolderUni, upoPlatformDesktop]);

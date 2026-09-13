@@ -66,7 +66,10 @@ Minimizar, maximizar e restaurar usam ícones de traço no mesmo padrão do X.
 CloseButton.Size, Color e HoverColor também definem a aparência dessas ações;
 CloseButton.Visible continua controlando somente o X. Os tamanhos nativos de
 todos esses botões são restaurados ao desativar o componente.
-Os assets usam a versão v=5 para invalidar cópias anteriores em cache.
+Ao maximizar, o tamanho fica sob controle nativo do Ext/uniGUI; alterações no
+ContentControl não reaplicam os limites de Sizing. Restaurar a janela volta a
+aplicar esses limites e a centralização.
+Os assets usam a versão v=6 para invalidar cópias anteriores em cache.
 
 ## Instalação na IDE
 

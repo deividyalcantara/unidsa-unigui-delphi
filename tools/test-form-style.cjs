@@ -85,6 +85,18 @@ for(const tool of [minimizeTool,maximizeTool]){
   assert.equal(tool.width,40,'reapply includes minimize and the active restore tool');
   assert.equal(tool.height,40);
 }
+// A resize notification from ContentControl must not undo native maximization.
+win.maximized=true;win.setSize(1200,900);win.setPosition(0,0);
+win.fire('show');flush();
+assert.equal(win.width,1200);assert.equal(win.height,900);
+assert.equal(win.x,0);assert.equal(win.y,0);
+api.attach(win,{...options,autoHeight:false});flush();
+assert.equal(win.width,1200,'reapplying options preserves maximized bounds');
+assert.equal(win.height,900);
+win.maximized=false;win.fire('restore');flush();
+assert.equal(win.width,960,'restore reapplies normal width limit');
+assert.equal(win.height,800,'restore reapplies normal height limit');
+api.attach(win,options);flush();
 global.innerWidth=390;global.innerHeight=500;win.fire('show');flush();
 assert.equal(win.width,342);assert.ok(win.x>=0);assert.ok(win.y>=0);
 for(const fn of events.get('pointerdown'))fn({target:mask});

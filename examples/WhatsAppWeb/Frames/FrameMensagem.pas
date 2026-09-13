@@ -47,11 +47,20 @@ begin
 
   if Mensagem.EnviadaPorMim then begin
     flexLinha.Flex.JustifyContent := fjEnd;
+    // Dentro do balão enviado, texto e horário acompanham a borda direita.
+    flexBalao.Flex.AlignItems := faEnd;
+    flexBalao.Flex.AutoWidth := False;
+    lblMensagem.Alignment := taRightJustify;
+    lblHorario.Alignment := taRightJustify;
     EstiloMensagem.StyleItems.FindByControl(flexBalao).StyleName := 'MensagemEnviada';
     lblHorario.Caption := lblHorario.Caption + ' · você';
   end
   else begin
     flexLinha.Flex.JustifyContent := fjStart;
+    flexBalao.Flex.AlignItems := faStart;
+    flexBalao.Flex.AutoWidth := True;
+    lblMensagem.Alignment := taLeftJustify;
+    lblHorario.Alignment := taLeftJustify;
     EstiloMensagem.StyleItems.FindByControl(flexBalao).StyleName := 'mensagem-recebida';
   end;
 end;

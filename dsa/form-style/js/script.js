@@ -56,7 +56,7 @@
         win.header.setVisible(state.headerVisible);
       }
       if (state.shadow && win.el && win.el.enableShadow) win.el.enableShadow();
-      win.setSize(state.width, state.height);
+      if (!win.maximized) win.setSize(state.width, state.height);
     }
     syncMasks();
   }
@@ -66,6 +66,7 @@
       win.un('afterrender', win.dsaFormStylePending);
       delete win.dsaFormStylePending;
     }
+    const restoreSize = win.maximized && (states.get(win) || win.restoreSize);
     detach(win);
     if (!options.enabled) return;
     if (!win.rendered) {
@@ -79,7 +80,9 @@
       return;
     }
     const state = {
-      win, options, width: win.getWidth(), height: win.getHeight(),
+      win, options,
+      width: restoreSize ? restoreSize.width : win.getWidth(),
+      height: restoreSize ? restoreSize.height : win.getHeight(),
       headerHeight: win.header && win.header.getHeight(),
       headerVisible: win.header && win.header.isVisible(),
       onEsc: win.onEsc, shadow: win.el.shadow && !win.el.shadow.disabled,
@@ -149,6 +152,13 @@
       const maxH = Math.max(1, Math.min(options.maxHeight, global.innerHeight - 2 * margin));
       const footerHeight = state.footer && state.footer.offsetParent !== null ? state.footer.offsetHeight : 0;
       cssFooter(footerHeight);
+      // Maximized bounds belong to Ext. Content resize notifications must not
+      // reapply the normal window limits after the native maximize action.
+      if (win.maximized) {
+        if (win.fitContainer) win.fitContainer();
+        syncMasks();
+        return;
+      }
       // Set width first so wrapped text is measured at the correct breakpoint.
       if (Math.abs(win.getWidth() - maxW) > 1) win.setWidth(maxW);
       let height = maxH;
@@ -183,6 +193,7 @@
     if (state.content) state.mutations.observe(state.content, {childList:true, subtree:true, characterData:true});
     function listen(event, fn) { state.listeners.push([event, fn]); win.on(event, fn); }
     listen('show', schedule);
+    listen('restore', schedule);
     listen('activate', syncMasks);
     listen('deactivate', () => requestAnimationFrame(syncMasks));
     listen('hide', () => requestAnimationFrame(syncMasks));

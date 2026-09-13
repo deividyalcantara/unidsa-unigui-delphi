@@ -1,4 +1,4 @@
-unit Main;
+﻿unit Main;
 
 { Formulário principal. Ele conecta os frames e controla a navegação responsiva
   somente com eventos Delphi. }
@@ -17,7 +17,7 @@ uses
   UniDSAStyle,
   UniDSAFocusControl,
   FrameContatos,
-  FrameConversa;
+  FrameConversa, UniDSABase, Vcl.Controls, Vcl.Forms;
 
 const
   LarguraMaximaCelular = 700;

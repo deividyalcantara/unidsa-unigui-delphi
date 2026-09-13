@@ -756,6 +756,13 @@ A prévia na IDE aplica todos os modos de `JustifyContent`: início, centro, fim
 colunas. Também considera `AlignItems`, `AlignSelf`, `AlignContent`, `Padding`,
 `RowGap`, `ColumnGap`, `Order`, quebras de linha e as direções invertidas, inclusive
 `fwWrapReverse`. Alterar o tamanho de um filho recalcula a distribuição no pai.
+
+A prévia roda exclusivamente em tempo de design (`csDesigning`), no RAD Studio.
+Em execução, as alterações de tamanho e configuração seguem diretamente para o
+uniGUI e o CSS Flexbox existente. `DesignPreview` (celular, tablet, desktop,
+tela ampla ou automático) não posiciona nem redimensiona controles no servidor
+e não substitui o `display: flex` do navegador.
+
 Por exemplo, uma coluna com `JustifyContent = fjSpaceEvenly` já mostra espaços
 nas extremidades e entre os blocos no designer.
 

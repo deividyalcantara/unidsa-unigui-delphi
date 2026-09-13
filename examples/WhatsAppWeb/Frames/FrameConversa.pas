@@ -52,7 +52,6 @@ type
     PreviaEnviada: TFrMensagem;
     PreviaRecebidaLonga: TFrMensagem;
     PreviaEnviadaCurta: TFrMensagem;
-    UniButton1: TUniButton;
     procedure CriarFrame(Remetente: TObject);
     procedure ClicarEnviar(Remetente: TObject);
     procedure AlterarMensagem(Remetente: TObject);
@@ -62,11 +61,12 @@ type
     // O histórico pertence à sessão e não é compartilhado entre usuários.
     FConversas: TArrayConversas;
     FConversaSelecionada: Integer;
-    // A lista possui os frames e os libera ao trocar de conversa.
+    // O conjunto de frames é reaproveitado entre conversas para evitar recriação.
     FFramesMensagens: TObjectList<TFrMensagem>;
     FSequenciaFrame: Integer;
     procedure ExibirHistorico;
-    procedure AdicionarFrameMensagem(const Mensagem: TMensagemChat);
+    function ObterFrameMensagem(Indice: Integer): TFrMensagem;
+    procedure ExibirFrameMensagem(Indice: Integer; const Mensagem: TMensagemChat);
     procedure EnviarMensagem;
   public
     AoEnviarMensagem: TEventoMensagemEnviada;
@@ -105,7 +105,7 @@ begin
   if FConversaSelecionada < 0 then
     SelecionarConversa(0)
   else
-    // A seleção inicial acontece durante o streaming do formulário. Recriar o
+    // A seleção inicial acontece durante o streaming do formulário. Atualizar o
     // histórico nessa primeira requisição garante que os frames reais cheguem ao cliente
     // depois que as quatro prévias visuais forem removidas.
     ExibirHistorico;
@@ -139,49 +139,72 @@ begin
   ExibirHistorico;
 end;
 
-procedure TFrConversa.AdicionarFrameMensagem(
-  const Mensagem: TMensagemChat);
+function TFrConversa.ObterFrameMensagem(Indice: Integer): TFrMensagem;
 var
   FrameMensagem: TFrMensagem;
   ItemDoFlex: TUniDSAFlexChildItem;
 begin
-  // A instância traz todos os controles definidos no DFM do FrameMensagem.
-  FrameMensagem := TFrMensagem.Create(Self);
-  try
-    Inc(FSequenciaFrame);
-    FrameMensagem.Name := 'Mensagem' + IntToStr(FSequenciaFrame);
-    FrameMensagem.Parent := flexHistorico;
+  // Cria somente os frames que ainda não existem. Nas próximas trocas de
+  // contato, os mesmos controles recebem o novo conteúdo.
+  while FFramesMensagens.Count <= Indice do begin
+    FrameMensagem := TFrMensagem.Create(Self);
+    try
+      Inc(FSequenciaFrame);
+      FrameMensagem.Name := 'Mensagem' + IntToStr(FSequenciaFrame);
+      FrameMensagem.Parent := flexHistorico;
 
-    // Em uma coluna flex, Shrink = 0 impede que muitas mensagens virem faixas
-    // horizontais. A altura natural permanece e o excedente usa o scroll do pai.
-    ItemDoFlex := flexHistorico.FlexItems.Add;
-    ItemDoFlex.Shrink := 0;
-    ItemDoFlex.Basis := 'auto';
-    ItemDoFlex.Responsive.XS.Span := 0;
-    // TUniFrame expõe seu controle web por FormRegion (padrão usado no demo).
-    ItemDoFlex.Control := FrameMensagem.FormRegion;
+      // Em uma coluna flex, Shrink = 0 conserva a altura natural do frame.
+      ItemDoFlex := flexHistorico.FlexItems.Add;
+      ItemDoFlex.Shrink := 0;
+      ItemDoFlex.Basis := 'auto';
+      ItemDoFlex.Responsive.XS.Span := 0;
+      ItemDoFlex.Control := FrameMensagem.FormRegion;
 
-    FrameMensagem.ExibirMensagem(Mensagem);
-    FFramesMensagens.Add(FrameMensagem);
-  except
-    FrameMensagem.Free;
-    raise;
+      FFramesMensagens.Add(FrameMensagem);
+    except
+      FrameMensagem.Free;
+      raise;
+    end;
   end;
+
+  Result := FFramesMensagens[Indice];
+end;
+
+procedure TFrConversa.ExibirFrameMensagem(Indice: Integer;
+  const Mensagem: TMensagemChat);
+var
+  FrameMensagem: TFrMensagem;
+begin
+  FrameMensagem := ObterFrameMensagem(Indice);
+  FrameMensagem.Visible := True;
+  FrameMensagem.ExibirMensagem(Mensagem);
 end;
 
 procedure TFrConversa.ExibirHistorico;
 var
-  Mensagem: TMensagemChat;
+  Indice: Integer;
+  QuantidadeMensagens: Integer;
 begin
-  // Limpa as associações FlexItems junto com os frames da conversa anterior.
-  flexHistorico.FlexItems.Clear;
-  FFramesMensagens.Clear;
+  QuantidadeMensagens :=
+    Length(FConversas[FConversaSelecionada].Mensagens);
 
-  // Wrap = NoWrap mantém uma coluna contínua; Overflow = Auto cria a rolagem.
-  for Mensagem in FConversas[FConversaSelecionada].Mensagens do
-    AdicionarFrameMensagem(Mensagem);
+  // Agrupa alterações da coleção em uma única atualização do FlexPanel.
+  flexHistorico.FlexItems.BeginUpdate;
+  try
+    for Indice := 0 to FFramesMensagens.Count - 1 do
+      if FFramesMensagens[Indice].Visible <> (Indice < QuantidadeMensagens) then
+        FFramesMensagens[Indice].Visible := Indice < QuantidadeMensagens;
 
-  // Reenvia o mapa quando todos os FormRegions já possuem um JSId.
+    for Indice := 0 to QuantidadeMensagens - 1 do
+      ExibirFrameMensagem(
+        Indice,
+        FConversas[FConversaSelecionada].Mensagens[Indice]
+      );
+  finally
+    flexHistorico.FlexItems.EndUpdate;
+  end;
+
+  // Reenvia o mapa uma vez, inclusive quando novos frames foram necessários.
   flexHistorico.RefreshFlexItems;
 
   // Depois do layout, posiciona o histórico na mensagem mais recente.
@@ -205,8 +228,11 @@ begin
   end;
 
   FConversas[FConversaSelecionada].AdicionarMensagem(Texto, True, Now);
-  AdicionarFrameMensagem(FConversas[FConversaSelecionada].Mensagens[
-    High(FConversas[FConversaSelecionada].Mensagens)]);
+  ExibirFrameMensagem(
+    High(FConversas[FConversaSelecionada].Mensagens),
+    FConversas[FConversaSelecionada].Mensagens[
+      High(FConversas[FConversaSelecionada].Mensagens)]
+  );
   flexHistorico.RefreshFlexItems;
 
   edtMensagem.Clear;

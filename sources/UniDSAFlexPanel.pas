@@ -1018,7 +1018,7 @@ end;
 procedure TUniDSAFlexPanel.LoadCompleted;
 begin
   inherited;
-  UpdateDesignLayout;
+  if csDesigning in ComponentState then UpdateDesignLayout;
   JSConfig('dsaFlex', [JSStatement(BuildContainerConfig)]);
   JSConfig('dsaFlexItem', [JSStatement(BuildItemConfig)]);
   JSConfig('dsaFlexItems', [JSStatement(BuildChildItemsConfig)]);
@@ -1038,20 +1038,32 @@ end;
 
 procedure TUniDSAFlexPanel.RefreshFlex;
 begin
-  UpdateDesignLayout;
+  if csDesigning in ComponentState then
+  begin
+    UpdateDesignLayout;
+    Exit;
+  end;
   if WebMode and (not IsLoading) then JSCall('setDsaFlexConfig', [JSStatement(BuildContainerConfig)]);
 end;
 
 procedure TUniDSAFlexPanel.RefreshFlexItem;
 begin
-  UpdateDesignLayout;
-  if Assigned(Parent) and (Parent is TUniDSAFlexPanel) then TUniDSAFlexPanel(Parent).UpdateDesignLayout;
+  if csDesigning in ComponentState then
+  begin
+    UpdateDesignLayout;
+    if Parent is TUniDSAFlexPanel then TUniDSAFlexPanel(Parent).UpdateDesignLayout;
+    Exit;
+  end;
   if WebMode and (not IsLoading) then JSCall('setDsaFlexItemConfig', [JSStatement(BuildItemConfig)]);
 end;
 
 procedure TUniDSAFlexPanel.RefreshFlexItems;
 begin
-  UpdateDesignLayout;
+  if csDesigning in ComponentState then
+  begin
+    UpdateDesignLayout;
+    Exit;
+  end;
   if WebMode and (not IsLoading) then
     JSCall('setDsaFlexItemsConfig', [JSStatement(BuildChildItemsConfig)]);
 end;
@@ -1072,16 +1084,26 @@ procedure TUniDSAFlexPanel.SetBounds(ALeft, ATop, AWidth, AHeight: Integer);
 var
   LSizeChanged: Boolean;
 begin
+  // Runtime bounds belong to uniGUI/CSS. Never enter the designer layout path.
+  if not (csDesigning in ComponentState) then
+  begin
+    inherited;
+    Exit;
+  end;
   LSizeChanged := (Width <> AWidth) or (Height <> AHeight);
   inherited;
   UpdateDesignLayout;
-  if LSizeChanged and (csDesigning in ComponentState) and
+  if LSizeChanged and
     not (csLoading in ComponentState) and (Parent is TUniDSAFlexPanel) then
     TUniDSAFlexPanel(Parent).UpdateDesignLayout;
 end;
 
 procedure TUniDSAFlexPanel.SetDesignPreview(const Value: TUniDSADesignPreview);
-begin if FDesignPreview <> Value then begin FDesignPreview := Value; UpdateDesignLayout; end; end;
+begin
+  if FDesignPreview = Value then Exit;
+  FDesignPreview := Value;
+  if csDesigning in ComponentState then UpdateDesignLayout;
+end;
 procedure TUniDSAFlexPanel.SetFlex(const Value: TUniDSAFlexOptions); begin FFlex.Assign(Value); end;
 procedure TUniDSAFlexPanel.SetFlexItem(const Value: TUniDSAFlexItemOptions); begin FFlexItem.Assign(Value); end;
 procedure TUniDSAFlexPanel.SetFlexItems(const Value: TUniDSAFlexChildItems); begin FFlexItems.Assign(Value); end;

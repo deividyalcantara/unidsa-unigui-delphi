@@ -34,6 +34,7 @@ object FrMensagem: TFrMensagem
       Flex.Direction = fdColumn
       Flex.Wrap = fwNoWrap
       Flex.Gap = 4
+      Flex.AlignItems = faStart
       Flex.Padding = 12
       Flex.AutoHeight = True
       Flex.AutoWidth = True
@@ -66,7 +67,7 @@ object FrMensagem: TFrMensagem
         Width = 22
         Height = 12
         Hint = ''
-        Alignment = taRightJustify
+        Alignment = taLeftJustify
         Caption = '10:20'
         ParentFont = False
         Font.Color = 8753531
