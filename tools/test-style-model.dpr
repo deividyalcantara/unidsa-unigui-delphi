@@ -92,6 +92,8 @@ begin
     A.Free; Probe.Free; Binary.Free; CopyStyle.Free; Fixture.Free;
   end;
 end;
+{$I test-style-css-import.inc}
+
 var
   Source, Target: TUniDSAStyle;
   Named: TUniDSANamedStyle;
@@ -104,6 +106,10 @@ begin
   try
     RegisterClass(TUniDSAStyle);
     TestEffects;
+    TestCSSImport;
+    TestCustomCSS;
+    TestCSSReplace;
+    TestCSSSelectorGroups;
     Source := TUniDSAStyle.Create(nil);
     Target := TUniDSAStyle.Create(nil);
     Stream := TMemoryStream.Create;

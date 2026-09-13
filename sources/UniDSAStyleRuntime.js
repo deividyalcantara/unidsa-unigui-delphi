@@ -34,7 +34,9 @@
     for (const key of Object.keys(source || {})) {
       if (key === '__proto__' || key === 'constructor' || key === 'prototype') continue;
       const value = source[key];
-      if (value && typeof value === 'object' && !Array.isArray(value)) {
+      if (key === 'CustomCSS' && typeof value === 'string') {
+        target[key] = (target[key] ? target[key] + ';\n' : '') + value;
+      } else if (value && typeof value === 'object' && !Array.isArray(value)) {
         target[key] = merge(target[key] || {}, value);
       } else target[key] = value;
     }
@@ -63,6 +65,18 @@
     }
     return result;
   }
+  function customDeclarations(text) {
+    if (!text || typeof text !== 'string') return [];
+    const style = document.createElement('span').style;
+    style.cssText = text;
+    return Array.from(style, property => [property, style.getPropertyValue(property)]);
+  }
+  function customGroup(property) {
+    if (/^(background|border)(-|$)|^box-shadow$/.test(property)) return 'surface';
+    if (/^(font|text)(-|$)|^(color|line-height|letter-spacing|white-space|overflow-wrap|word-break)$/.test(property)) return 'text';
+    if (/^padding(-|$)/.test(property)) return 'content';
+    return 'root';
+  }
   function declarations(appearance, partial) {
     const result = {surface:{}, text:{}, content:{}, root:{}};
     const put = (group, property, value) => {
@@ -70,11 +84,13 @@
     };
     const a = appearance || {}, b = a.Background || {}, border = a.Border || {}, t = a.Typography || {};
     if (a.Display) put('root', 'display', ['', 'none', 'block', 'inline', 'inline-block', 'flex', 'inline-flex', 'grid', 'inline-grid'][a.Display]);
+    if (a.AlignItems) put('root', 'align-items', ['', 'stretch','flex-start','center','flex-end','baseline'][a.AlignItems]);
+    if (a.JustifyContent) put('root', 'justify-content', ['', 'flex-start','center','flex-end','space-between','space-around','space-evenly'][a.JustifyContent]);
     const geometry = a.Transform || {};
-    if (own(geometry, 'SkewX') || own(geometry, 'SkewY')) {
-      for (const axis of ['X', 'Y']) if (own(geometry, 'Skew' + axis))
-        put('root', '--unidsa-skew-' + axis.toLowerCase(), number(geometry['Skew' + axis], 0) + 'deg');
-      put('root', 'transform', 'skewX(var(--unidsa-skew-x, 0deg)) skewY(var(--unidsa-skew-y, 0deg))');
+    if (Object.keys(geometry).length) {
+      for (const [field, variable, unit] of [['SkewX','skew-x','deg'],['SkewY','skew-y','deg'],['ScaleX','scale-x',''],['ScaleY','scale-y',''],['RotateZ','rotate-z','deg']])
+        if (own(geometry, field)) put('root', '--unidsa-' + variable, number(geometry[field], 0) + unit);
+      put('root', 'transform', 'scale(var(--unidsa-scale-x, 1), var(--unidsa-scale-y, 1)) rotateZ(var(--unidsa-rotate-z, 0deg)) skewX(var(--unidsa-skew-x, 0deg)) skewY(var(--unidsa-skew-y, 0deg))');
     }
     put('surface', 'background-color', rgba(b.Color, b.Opacity));
     if (b.Color) put('surface', 'background-image', 'none');
@@ -121,7 +137,7 @@
     if (t.Family) put('text', 'font-family', JSON.stringify(t.Family));
     put('text', 'color', t.Color);
     if (own(t, 'Size')) put('text', 'font-size', px(Math.max(1, t.Size)));
-    if (t.Weight) put('text', 'font-weight', ['', '400', '500', '600', '700'][t.Weight]);
+    if (t.Weight) put('text', 'font-weight', ['', '400', '500', '600', '700', 'bolder', 'lighter'][t.Weight]);
     if (t.Italic) put('text', 'font-style', t.Italic === 2 ? 'italic' : 'normal');
     if (t.Alignment) put('text', 'text-align', ['', 'left','center','right','justify'][t.Alignment]);
     if (own(t, 'LineHeight')) put('text', 'line-height', Math.max(0.1, t.LineHeight));
@@ -155,6 +171,11 @@
       (shadow.Inset === 2 ? 'inset ' : '') + px(number(shadow.OffsetX, 0)) + ' ' + px(number(shadow.OffsetY, 2)) + ' ' +
       px(Math.max(0, number(shadow.Blur, 8))) + ' ' + px(number(shadow.Spread, 0)) + ' ' + rgba(shadow.Color || '#000000', number(shadow.Opacity, 15)));
     const effects = a.Effects || {};
+    if (own(effects, 'BackdropBlur')) {
+      put('root', 'backdrop-filter', 'blur(' + px(Math.max(0, effects.BackdropBlur)) + ')');
+      put('root', '-webkit-backdrop-filter', 'blur(' + px(Math.max(0, effects.BackdropBlur)) + ')');
+    }
+    if (effects.UserSelect) put('root', 'user-select', ['', 'auto','none','text','all'][effects.UserSelect]);
     if (own(effects, 'Opacity')) put('root', 'opacity', clamp(effects.Opacity, 0, 100) / 100);
     if (effects.Cursor) put('root', 'cursor', ['', 'default','pointer','text','not-allowed','grab'][effects.Cursor]);
     if (own(effects, 'TransitionMs')) {
@@ -204,7 +225,11 @@
   }
   function partValues(part, partial) {
     const rules = declarations(part, partial);
-    return Object.assign({}, rules.surface, rules.text, rules.content, rules.root);
+    const values = Object.assign({}, rules.surface, rules.text, rules.content, rules.root);
+    for (const [property, value] of customDeclarations((part || {}).CustomCSS)) {
+      delete values[property]; values[property] = value;
+    }
+    return values;
   }
   function contentString(text) {
     return '"' + String(text).replace(/[\\"\n\r\f{};\u0000]/g,
@@ -230,7 +255,7 @@
     for (const name of ['', 'Content', 'Before', 'After']) {
       if (!appearances.some(a => Object.keys(((name ? a[name] : a) || {}).Transform || {}).length)) continue;
       const targets = name === 'Content' ? contentTargets(el) : [name ? '::' + name.toLowerCase() : ''];
-      css += cssRule(targets.map(target => base + target), {'--unidsa-skew-x':'0deg', '--unidsa-skew-y':'0deg'});
+      css += cssRule(targets.map(target => base + target), {'--unidsa-skew-x':'0deg', '--unidsa-skew-y':'0deg', '--unidsa-scale-x':'1', '--unidsa-scale-y':'1', '--unidsa-rotate-z':'0deg'});
     }
     return css;
   }
@@ -305,6 +330,14 @@
       if (rules.surface['border-width'] === '0px') css += cssRule(bases.map(b => b + ' .x-form-trigger-wrap'), {'box-shadow':'none'});
       if (Object.keys(rules.content).length) css += cssRule(bases.map(b => b + ' .x-form-text'), {'box-sizing':'border-box'});
       if (rules.surface['border-radius']) css += cssRule(bases.map(b => b + ' .x-form-trigger-wrap'), {'overflow':'hidden'});
+    }
+    for (const [property, value] of customDeclarations((appearance || {}).CustomCSS)) {
+      const group = customGroup(property);
+      css += cssRule(bases.flatMap(base => map[group].map(suffix => base + suffix)), {[property]:value});
+      if (property.startsWith('background') && el.matches('.x-panel,.x-window')) {
+        const bodies = [' > .x-panel-bodyWrap > .x-panel-body',' > .x-window-bodyWrap > .x-window-body'];
+        css += cssRule(bases.flatMap(base => bodies.map(suffix => base + suffix)), {[property]:value});
+      }
     }
     return css;
   }

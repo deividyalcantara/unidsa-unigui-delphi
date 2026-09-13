@@ -1,0 +1,6 @@
+.box {
+border-radius: 46px;
+background: #e0e0e0;
+box-shadow: 34px 34px 68px #a4a4a4,
+&#x20; -34px -34px 68px #ffffff;
+&#x20; }

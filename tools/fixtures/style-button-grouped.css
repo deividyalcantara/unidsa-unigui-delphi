@@ -1,0 +1,31 @@
+.button-1 {
+&#x20; background-color: #EA4C89;
+&#x20; border-radius: 8px;
+&#x20; border-style: none;
+&#x20; box-sizing: border-box;
+&#x20; color: #FFFFFF;
+&#x20; cursor: pointer;
+&#x20; display: inline-block;
+&#x20; font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+&#x20; font-size: 14px;
+&#x20; font-weight: 500;
+&#x20; height: 40px;
+&#x20; line-height: 20px;
+&#x20; list-style: none;
+&#x20; margin: 0;
+&#x20; outline: none;
+&#x20; padding: 10px 16px;
+&#x20; position: relative;
+&#x20; text-align: center;
+&#x20; text-decoration: none;
+&#x20; transition: color 100ms;
+&#x20; vertical-align: baseline;
+&#x20; user-select: none;
+&#x20; -webkit-user-select: none;
+&#x20; touch-action: manipulation;
+}
+
+.button-1:hover,
+.button-1:focus {
+&#x20; background-color: #F082AC;
+}

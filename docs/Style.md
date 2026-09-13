@@ -1,4 +1,4 @@
-﻿# TUniDSAStyle
+# TUniDSAStyle
 
 Componente não visual para personalizar controles uniGUI pelo Object Inspector. As propriedades são persistidas no DFM. O componente gera regras isoladas por ID do controle, sem exigir classes em `ClientEvents`, seletores Ext JS ou arquivos CSS próprios da aplicação.
 
@@ -20,12 +20,128 @@ O mecanismo JavaScript está incorporado ao Pascal em `UniDSAStyleRuntime.inc`. 
 
 `Defaults` define valores comuns a todos os itens. Opcionalmente, `TargetContainer` aplica esses padrões a um controle/painel/frame/formulário; `IncludeChildren = True` inclui os controles descendentes desse alvo. A aplicação aos descendentes é explícita e não afeta outras janelas.
 
+## Colar CSS para configurar as propriedades
+
+`ImportCSS` está disponível em `Styles[]`, `StyleItems[]` e `Defaults`. No Object Inspector:
+
+1. Adicione ou selecione um item em `Styles`.
+2. Abra o botão `...` de `ImportCSS`.
+3. Cole o CSS, escolha **Substituir estilo** (padrão) ou **Mesclar com o atual** e clique em **Importar**.
+4. Associe o estilo ao controle em `StyleItems`, usando `Control` e `StyleName`.
+
+Também é possível importar diretamente em um `StyleItems[]` já associado a um controle. O nome do seletor, como `.card`, identifica os blocos do texto; não procura controles, não cria classes e não altera o `Name` do estilo.
+
+| Bloco colado | Propriedades preenchidas |
+|---|---|
+| `.card { ... }` ou declarações sem seletor | `Appearance` |
+| `.card:hover { ... }` | `States.Hover` |
+| `.card:active { ... }` | `States.Pressed` |
+| `.card:focus { ... }` | `States.Focus` |
+| `.card:disabled { ... }` | `States.Disabled` |
+
+Um bloco pode configurar vários estados ao mesmo tempo, inclusive com quebras de linha e comentários entre os seletores:
+
+```css
+.button-1:hover,
+.button-1:focus {
+  background-color: #F082AC;
+}
+```
+
+Nesse caso, a declaração é aplicada a `States.Hover` e `States.Focus`, que continuam editáveis separadamente. Os campos `CustomCSS` dos estados também recebem as declarações sem conversão. Regras posteriores podem alterar somente um dos estados. Todos os seletores do grupo devem usar a mesma base; listas vazias, seletores diferentes ou estados sem suporte cancelam a importação sem alterar o estilo anterior.
+
+O [exemplo completo do card](../tools/fixtures/style-card.css), atribuído a SteveBloX/Uiverse no próprio CSS, é aceito com comentários e espaços codificados como `&#x20;`, `&#32;` ou `&nbsp;`. A importação preenche dimensões, fundo com transparência, borda, raio, sombra, blur, alinhamento flex, tipografia, cursor, seleção de texto, transição, escala e rotação. Por exemplo:
+
+```pascal
+ControlStyle.Styles.Find('Card').ImportCSS :=
+  '.card { background: rgba(217,217,217,0.58); border-radius: 17px; transition: all 0.5s; }' +
+  '.card:hover { transform: scale(1.05); }' +
+  '.card:active { transform: scale(0.95) rotateZ(1.7deg); }';
+```
+
+Depois da importação, os parâmetros continuam editáveis normalmente. O texto de `ImportCSS` não fica armazenado e não é executado ao carregar o formulário: o DFM salva as propriedades resultantes. No modo **Substituir estilo**, a importação começa com uma regra vazia e substitui `Appearance`, todos os estados, `Content`, `Before`, `After`, `Responsive` e seus campos `CustomCSS`. No modo **Mesclar com o atual**, atualiza as propriedades correspondentes e preserva as demais configurações, inclusive `Responsive`. As regras de herança e prioridade de estados do Style continuam valendo.
+
+A conversão ocorre primeiro em uma cópia. Declarações sem conversão para propriedades são preservadas em `Appearance.CustomCSS` (ou no `CustomCSS` do estado correspondente), aplicado por último. Seletores sem suporte e erros estruturais, como chaves ou parênteses incompletos, ainda cancelam a importação inteira; em código, a falha lança `EArgumentException`. O editor mantém o texto para correção.
+
+### Substituir ou limpar o estilo anterior
+
+Use **Substituir estilo**, selecionado por padrão na janela, ao colar um novo visual completo. Isso evita que sombras, dimensões, hover, transições, pseudo-elementos ou CSS complementar do visual anterior continuem ativos. **Mesclar com o atual** é útil para importar apenas um ajuste.
+
+A substituição só é aplicada depois de processar o novo texto inteiro. Se houver um erro estrutural, a regra anterior fica intacta. Cancelar, deixar o texto vazio ou colar somente comentários não limpa o estilo.
+
+Em código, `LoadCSS` substitui por padrão; passe `False` para mesclar. `Reset` limpa a regra sem importar outro texto:
+
+```pascal
+// Novo visual completo: limpa a regra anterior e importa em uma única operação.
+ControlStyle.Styles.Find('Card').LoadCSS(NovoCSS);
+
+// Apenas um ajuste sobre o estilo atual.
+ControlStyle.Styles.Find('Card').LoadCSS('border-radius: 12px;', False);
+
+// Limpar somente as configurações deste estilo.
+ControlStyle.Styles.Find('Card').Reset;
+```
+
+Os métodos também existem em `StyleItems[]` e `Defaults`. A atribuição direta à propriedade `ImportCSS` em código mantém o comportamento de mesclagem, por compatibilidade.
+
+A limpeza é restrita à regra selecionada. Preserva `Name`, `Control`, `StyleName`, `Enabled` e `Selected` das associações. `Defaults`, um estilo nomeado herdado e as propriedades nativas do controle continuam valendo; limpar os ajustes locais de um `StyleItems[]` não apaga esses outros estilos. Substituir um item de `Styles[]` atualiza todos os controles que o utilizam.
+
+### Formatos convertidos em propriedades
+
+- Um seletor simples (classe, ID ou elemento), com os estados da tabela. Aceita grupos separados por vírgula quando todos usam o mesmo seletor base, como `.button-1:hover, .button-1:focus`. Blocos repetidos são processados na ordem do texto. Também aceita somente declarações.
+- Dimensões e deslocamentos com `px`, `%`, `em`, `rem`, `vw`, `vh` e `dvh`, além dos valores automáticos do grupo `Sizing`.
+- Cores `#RGB`, `#RRGGBB`, `rgb(r,g,b)` e `rgba(r,g,b,a)`, com canais RGB inteiros. Nomes aceitos: black, white, red, green, blue, yellow, gray/grey, silver, navy, teal, purple, maroon, lime, aqua, fuchsia e orange. `transparent` e alpha são aceitos no fundo e sombra; alpha é convertido para porcentagem inteira.
+- Fundo de cor única; `border: largura tipo cor`, `border: none`, cor/largura/tipo independentes e raio uniforme em pixels inteiros.
+- Uma sombra `x y [blur [spread]] cor`, com `inset` opcional no início, ou `none`. `backdrop-filter` aceita `blur(px)` e `none`.
+- Display, alinhamento flex, cursor, user-select, opacidade, tipografia básica, overflow, posição, z-index e padding/margin de um a quatro valores inteiros em pixels.
+- `transition: all <tempo> [ease]` ou duração sem `all`, com `s`/`ms`; `transition-duration` ajusta a duração. Outras curvas, delays e listas de transições são preservados em `CustomCSS`.
+- `transform: scale(x[,y]) rotateZ(graus) skewX(graus) skewY(graus)`, nessa ordem, com funções opcionais e sem repetição; `rotate` é alias de `rotateZ`. Skew aceita graus inteiros entre -89 e 89. `none` redefine todos os eixos para a transformação identidade. Escala e rotação aceitam decimais.
+
+Múltiplos seletores base, seletores compostos/descendentes, pseudo-elementos e regras `@media`/`@keyframes` não são importados. Configure `Before`, `After` e `Responsive` manualmente quando necessário. Declarações com múltiplas sombras, variáveis CSS, `calc()`, `!important`, gradientes, imagens ou valores que o modelo não representa são mantidas em `CustomCSS`. Isso também inclui valores reservados do modelo, como `margin: -1px`.
+
+### CustomCSS: declarações aplicadas por último
+
+`CustomCSS` é um campo de texto multilinha em `Appearance`, nos estados, em `Content`, `Before` e `After`. Abra seu botão `...` para editar as declarações. O DFM guarda esse conteúdo; edições em runtime notificam o gerenciador automaticamente.
+
+Por exemplo, os dois formatos abaixo são equivalentes para `ImportCSS`: a regra `.box { ... }` inteira ou apenas seu conteúdo.
+
+```css
+.box {
+  border-radius: 46px;
+  background: #e0e0e0;
+  box-shadow: 34px 34px 68px #a4a4a4,
+              -34px -34px 68px #ffffff;
+}
+```
+
+O resultado é:
+
+- `Appearance.Border.Radius = 46`.
+- `Appearance.Background.Color` recebe `#e0e0e0`.
+- `Appearance.CustomCSS` recebe a declaração completa de `box-shadow`, incluindo as duas sombras e sua ordem.
+
+O CSS complementar é aplicado depois das propriedades tipadas para aquela aparência/estado. Portanto, uma declaração em `CustomCSS` prevalece sobre uma propriedade que gere o mesmo CSS. Para voltar a controlar esse atributo somente pelas propriedades, remova a declaração do campo. Uma nova importação de uma declaração convertível, como `box-shadow: none`, remove automaticamente o fallback anterior de mesmo nome naquela aparência.
+
+`Defaults`, estilos nomeados e ajustes do item combinam seus campos `CustomCSS` na ordem de herança. O navegador resolve declarações repetidas; os estados continuam respeitando a prioridade normal do Style e o bloqueio de hover/pressed quando desabilitado. O CSS é restrito aos controles associados e às partes reconhecidas pelo componente; não cria uma folha global.
+
+Cole somente declarações em `CustomCSS`, sem seletores ou blocos. O navegador interpreta os valores e ignora declarações inválidas ou sem suporte. A importação preserva a grafia de variáveis como `--Accent` e `var(--Accent)`.
+
+### Novas propriedades editáveis
+
+- `Appearance.AlignItems` e `JustifyContent`: alinhamento dos filhos quando o display permite.
+- `Transform.ScaleX` / `ScaleY`: fator de escala, sendo `1` o tamanho original; `RotateZ`: rotação em graus. `-1000` preserva a camada anterior em cada propriedade.
+- `Effects.BackdropBlur`: blur do fundo em pixels; `-1` preserva a camada anterior e `0` remove o blur. Só é emitido quando configurado explicitamente.
+- `Effects.UserSelect`: `susAuto`, `susNone`, `susText`, `susAll` e `susInherit`.
+- `Typography.Weight`: também aceita `swBolder` e `swLighter`, relativos ao peso herdado.
+
+Essas propriedades também podem ser usadas nos estados, conteúdo interno, pseudo-elementos e regras responsivas. Confira o resultado no navegador: o designer VCL não reproduz integralmente CSS.
+
 ## Grupos de propriedades
 
 | Grupo | Propriedades |
 |---|---|
 | `Display` | `sdInherit`, `sdNone`, `sdBlock`, `sdInline`, `sdInlineBlock`, `sdFlex`, `sdInlineFlex`, `sdGrid` e `sdInlineGrid`. |
-| `Transform` | Inclinação geométrica `SkewX` e `SkewY`, em graus. `-1000` preserva a camada anterior; zero remove a inclinação daquele eixo. |
+| `Transform` | Inclinação `SkewX`/`SkewY`, escala `ScaleX`/`ScaleY` e rotação `RotateZ`. `-1000` preserva a camada anterior; escala 1 e ângulo zero representam identidade. |
 | `Content` | Aparência do conteúdo interno, incluindo `Display` e `Transform` independentes da raiz. |
 | `Before` / `After` | Pseudo-elementos decorativos, com `Enabled`, `Text` e grupos de aparência próprios. |
 | `Background` | Cor/opacidade do fundo, URL de imagem, tamanho/repetição, gradiente linear/radial, padrões de pontos/grade/linhas. |
@@ -34,8 +150,9 @@ O mecanismo JavaScript está incorporado ao Pascal em `UniDSAStyleRuntime.inc`. 
 | `Spacing` | `Padding` e `Margin`, com `All` e quatro lados. |
 | `Sizing` | Largura/altura e limites mínimos/máximos, `MaxWidthPercent`, box sizing e overflow por eixo. |
 | `Scrollbar` | Visibilidade, espessura, cor da trilha, cor do indicador, cor no hover e raio do indicador. |
-| `Shadow` | Habilitação, cor, opacidade, deslocamentos, blur, spread e sombra interna. |
-| `Effects` | Opacidade do controle inteiro, cursor, `TransitionMs`, `TransitionAll`, outline/cor/deslocamento. |
+| `Shadow` | Habilitação, cor, opacidade, deslocamentos, blur, spread e sombra interna. Múltiplas sombras importadas ficam em `CustomCSS`. |
+| `CustomCSS` | Declarações complementares aplicadas após as propriedades, com editor de texto multilinha. |
+| `Effects` | Opacidade do controle inteiro, cursor, `TransitionMs`, `TransitionAll`, `BackdropBlur`, `UserSelect`, outline/cor/deslocamento. |
 | `Position` | Posicionamento, `Insets` em pixels, `Top`/`Right`/`Bottom`/`Left` com unidades e z-index. Use somente quando quiser substituir explicitamente o posicionamento do layout. |
 
 Dimensões têm `Value` e `Units`: `suPx`, `suPercent`, `suEm`, `suRem`, `suVw`, `suVh`, `suDvh`, `suAuto`, `suFitContent`, `suMinContent` e `suMaxContent`. `suUnset` preserva a dimensão original. Nos valores automáticos, `Value` é ignorado.
@@ -202,6 +319,9 @@ O runtime mantém uma folha de estilo por gerenciador, atualiza seu conteúdo e 
 
 - `tools\Test-UniDSAStyle.ps1`: compila pacotes para `tmp/style-validation`, sem instalar ou substituir as BPLs em uso, e testa streaming DFM, Assign, notificações e referências.
 - `node tools/test-style-effects.cjs`: após `Test-UniDSAStyle.ps1`, testa no Chrome/Chromium o JSON exportado do DFM do botão: preenchimento animado, compensação da inclinação, cliques, estados, herança, responsividade, After e remoção das regras. As capturas ficam em `tmp/style-validation/skew-normal.png` e `skew-hover.png`.
+- `node tools/test-style-selector-groups.cjs`: após `Test-UniDSAStyle.ps1`, compara o botão completo com o CSS original e testa seletores agrupados, hover, foco pelo teclado, adaptadores, desabilitação e limpeza.
+- `node tools/test-style-custom-css.cjs`: após `Test-UniDSAStyle.ps1`, compara o box com duas sombras com o CSS original e testa fallback, precedência, herança, estados, adaptadores e limpeza.
+- `node tools/test-style-css-import.cjs`: após `Test-UniDSAStyle.ps1`, compara o card importado com o CSS original no Chrome, incluindo hover, active, blur, isolamento e limpeza.
 - `node tools/test-style-runtime.cjs`: testes de CSS real em Chromium/Chrome, incluindo hover, estados, herança, responsividade e limpeza.
 - `node examples/WhatsAppWeb/tests/ui.cjs`: teste completo da aplicação; configure `CHAT_URL` se a porta não for 8078.
 - `node tools/embed-style-runtime.cjs --check`: verifica que o JavaScript incorporado corresponde ao fonte.

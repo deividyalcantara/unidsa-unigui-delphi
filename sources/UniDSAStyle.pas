@@ -25,7 +25,7 @@ type
   TUniDSAStyleSwitch = (ssInherit, ssNo, ssYes);
   TUniDSAStyleUnit = (suUnset, suPx, suPercent, suEm, suRem, suVw, suVh, suDvh, suAuto, suFitContent, suMinContent, suMaxContent);
   TUniDSAStyleBorderLine = (blInherit, blNone, blSolid, blDashed, blDotted, blDouble);
-  TUniDSAStyleWeight = (swInherit, swNormal, swMedium, swSemiBold, swBold);
+  TUniDSAStyleWeight = (swInherit, swNormal, swMedium, swSemiBold, swBold, swBolder, swLighter);
   TUniDSAStyleAlign = (saInherit, saLeft, saCenter, saRight, saJustify);
   TUniDSAStyleWhiteSpace = (wsInherit, wsNormal, wsNoWrap, wsPre, wsPreWrap, wsPreLine);
   TUniDSAStyleTextOverflow = (toInherit, toClip, toEllipsis);
@@ -40,6 +40,9 @@ type
   TUniDSAStylePositionMode = (poInherit, poStatic, poRelative, poAbsolute, poFixed, poSticky);
   TUniDSAStyleBoxSizing = (bsInherit, bsBorderBox, bsContentBox);
   TUniDSAStyleDisplay = (sdInherit, sdNone, sdBlock, sdInline, sdInlineBlock, sdFlex, sdInlineFlex, sdGrid, sdInlineGrid);
+  TUniDSAStyleFlexAlign = (sfaInherit, sfaStretch, sfaFlexStart, sfaCenter, sfaFlexEnd, sfaBaseline);
+  TUniDSAStyleJustify = (sjInherit, sjFlexStart, sjCenter, sjFlexEnd, sjSpaceBetween, sjSpaceAround, sjSpaceEvenly);
+  TUniDSAStyleUserSelect = (susInherit, susAuto, susNone, susText, susAll);
   TUniDSAStyleOrientation = (orAny, orPortrait, orLandscape);
   TUniDSAStyleLength = class(TUniDSAStylePersistent)
   private
@@ -354,6 +357,8 @@ type
 
   TUniDSAStyleEffects = class(TUniDSAStylePersistent)
   private
+    FUserSelect: TUniDSAStyleUserSelect;
+    FBackdropBlur: Double;
     FOpacity: Integer;
     FCursor: TUniDSAStyleCursor;
     FTransitionMs: Integer;
@@ -361,6 +366,8 @@ type
     FOutlineWidth: Integer;
     FOutlineColor: TColor;
     FOutlineOffset: Integer;
+    procedure SetUserSelect(const Value: TUniDSAStyleUserSelect);
+    procedure SetBackdropBlur(const Value: Double);
     procedure SetOpacity(const Value: Integer);
     procedure SetCursor(const Value: TUniDSAStyleCursor);
     procedure SetTransitionMs(const Value: Integer);
@@ -373,6 +380,8 @@ type
     procedure Assign(Source: TPersistent); override;
     function ToJSON: TJSONObject;
   published
+    property UserSelect: TUniDSAStyleUserSelect read FUserSelect write SetUserSelect default susInherit;
+    property BackdropBlur: Double read FBackdropBlur write SetBackdropBlur nodefault;
     property Opacity: Integer read FOpacity write SetOpacity default -1;
     property Cursor: TUniDSAStyleCursor read FCursor write SetCursor default scInherit;
     property TransitionAll: TUniDSAStyleSwitch read FTransitionAll write SetTransitionAll default ssInherit;
@@ -416,7 +425,13 @@ type
   { Geometry is independent of Typography.Transform (uppercase/lowercase). }
   TUniDSAStyleGeometry = class(TUniDSAStylePersistent)
   private
+    FRotateZ: Double;
+    FScaleY: Double;
+    FScaleX: Double;
     FSkewX, FSkewY: Integer;
+    procedure SetRotateZ(const Value: Double);
+    procedure SetScaleY(const Value: Double);
+    procedure SetScaleX(const Value: Double);
     procedure SetSkewX(const Value: Integer);
     procedure SetSkewY(const Value: Integer);
   public
@@ -424,12 +439,18 @@ type
     procedure Assign(Source: TPersistent); override;
     function ToJSON: TJSONObject;
   published
+    property RotateZ: Double read FRotateZ write SetRotateZ nodefault;
+    property ScaleY: Double read FScaleY write SetScaleY nodefault;
+    property ScaleX: Double read FScaleX write SetScaleX nodefault;
     property SkewX: Integer read FSkewX write SetSkewX default -1000;
     property SkewY: Integer read FSkewY write SetSkewY default -1000;
   end;
 
   TUniDSAStyleVisual = class(TUniDSAStylePersistent)
   private
+    FCustomCSS: TStrings;
+    FJustifyContent: TUniDSAStyleJustify;
+    FAlignItems: TUniDSAStyleFlexAlign;
     FDisplay: TUniDSAStyleDisplay;
     FTransform: TUniDSAStyleGeometry;
     FBackground: TUniDSAStyleBackground;
@@ -440,6 +461,9 @@ type
     FShadow: TUniDSAStyleShadow;
     FEffects: TUniDSAStyleEffects;
     FPosition: TUniDSAStylePosition;
+    procedure SetCustomCSS(const Value: TStrings);
+    procedure SetJustifyContent(const Value: TUniDSAStyleJustify);
+    procedure SetAlignItems(const Value: TUniDSAStyleFlexAlign);
     procedure SetDisplay(const Value: TUniDSAStyleDisplay);
     procedure SetTransform(const Value: TUniDSAStyleGeometry);
     procedure SetBackground(const Value: TUniDSAStyleBackground);
@@ -456,6 +480,9 @@ type
     procedure Assign(Source: TPersistent); override;
     function ToJSON: TJSONObject; virtual;
   published
+    property CustomCSS: TStrings read FCustomCSS write SetCustomCSS;
+    property JustifyContent: TUniDSAStyleJustify read FJustifyContent write SetJustifyContent default sjInherit;
+    property AlignItems: TUniDSAStyleFlexAlign read FAlignItems write SetAlignItems default sfaInherit;
     property Display: TUniDSAStyleDisplay read FDisplay write SetDisplay default sdInherit;
     property Transform: TUniDSAStyleGeometry read FTransform write SetTransform;
     property Background: TUniDSAStyleBackground read FBackground write SetBackground;
@@ -574,6 +601,8 @@ type
     FAppearance: TUniDSAStyleAppearance;
     FStates: TUniDSAStyleStates;
     FResponsive: TUniDSAStyleBreakpoints;
+    function GetImportCSS: string;
+    procedure SetImportCSS(const Value: string);
     procedure SetAppearance(Value: TUniDSAStyleAppearance);
     procedure SetStates(Value: TUniDSAStyleStates);
     procedure SetResponsive(Value: TUniDSAStyleBreakpoints);
@@ -581,8 +610,11 @@ type
     constructor Create(AOnChange: TNotifyEvent); override;
     destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
+    procedure LoadCSS(const Value: string; ReplaceExisting: Boolean = True);
+    procedure Reset;
     function ToJSON: TJSONObject;
   published
+    property ImportCSS: string read GetImportCSS write SetImportCSS stored False;
     property Appearance: TUniDSAStyleAppearance read FAppearance write SetAppearance;
     property States: TUniDSAStyleStates read FStates write SetStates;
     property Responsive: TUniDSAStyleBreakpoints read FResponsive write SetResponsive;
@@ -592,6 +624,8 @@ type
   private
     FName: string;
     FRule: TUniDSAStyleRule;
+    function GetImportCSS: string;
+    procedure SetImportCSS(const Value: string);
     procedure ChildChanged(Sender: TObject);
     procedure SetName(const Value: string);
     function GetAppearance: TUniDSAStyleAppearance;
@@ -606,8 +640,11 @@ type
     constructor Create(Collection: TCollection); override;
     destructor Destroy; override;
     procedure Assign(Source: TPersistent); override;
+    procedure LoadCSS(const Value: string; ReplaceExisting: Boolean = True);
+    procedure Reset;
     property Rule: TUniDSAStyleRule read FRule;
   published
+    property ImportCSS: string read GetImportCSS write SetImportCSS stored False;
     property Name: string read FName write SetName;
     property Appearance: TUniDSAStyleAppearance read GetAppearance write SetAppearance;
     property States: TUniDSAStyleStates read GetStates write SetStates;
@@ -700,7 +737,9 @@ procedure Register;
 
 implementation
 
-uses UniDSAWebUtils;
+uses UniDSAWebUtils, System.RegularExpressions, System.StrUtils, System.Math;
+
+{$I UniDSAStyleCSSImport.inc}
 
 {$I UniDSAStyleRuntime.inc}
 
@@ -1686,9 +1725,25 @@ begin
   if FInset <> ssInherit then Result.AddPair('Inset', TJSONNumber.Create(Ord(FInset)));
 end;
 
+procedure TUniDSAStyleEffects.SetBackdropBlur(const Value: Double);
+begin
+  if FBackdropBlur = Value then Exit;
+  FBackdropBlur := Value;
+  Changed;
+end;
+
+procedure TUniDSAStyleEffects.SetUserSelect(const Value: TUniDSAStyleUserSelect);
+begin
+  if FUserSelect = Value then Exit;
+  FUserSelect := Value;
+  Changed;
+end;
+
 constructor TUniDSAStyleEffects.Create(AOnChange: TNotifyEvent);
 begin
   inherited;
+  FUserSelect := susInherit;
+  FBackdropBlur := -1;
   FOpacity := -1;
   FCursor := scInherit;
   FTransitionMs := -1;
@@ -1705,6 +1760,8 @@ begin
   S := TUniDSAStyleEffects(Source);
   BeginUpdate;
   try
+    FUserSelect := S.FUserSelect;
+    FBackdropBlur := S.FBackdropBlur;
     FOpacity := S.FOpacity;
     FCursor := S.FCursor;
     FTransitionMs := S.FTransitionMs;
@@ -1768,6 +1825,8 @@ end;
 function TUniDSAStyleEffects.ToJSON: TJSONObject;
 begin
   Result := TJSONObject.Create;
+  if FUserSelect <> susInherit then Result.AddPair('UserSelect', TJSONNumber.Create(Ord(FUserSelect)));
+  if FBackdropBlur <> -1 then Result.AddPair('BackdropBlur', TJSONNumber.Create(FBackdropBlur));
   if FOpacity <> -1 then Result.AddPair('Opacity', TJSONNumber.Create(FOpacity));
   if FCursor <> scInherit then Result.AddPair('Cursor', TJSONNumber.Create(Ord(FCursor)));
   if FTransitionAll <> ssInherit then Result.AddPair('TransitionAll', TJSONNumber.Create(Ord(FTransitionAll)));
@@ -1868,9 +1927,27 @@ begin
   if FZIndex <> -1000 then Result.AddPair('ZIndex', TJSONNumber.Create(FZIndex));
 end;
 
+procedure TUniDSAStyleVisual.SetAlignItems(const Value: TUniDSAStyleFlexAlign);
+begin
+  if FAlignItems = Value then Exit;
+  FAlignItems := Value;
+  Changed;
+end;
+
+procedure TUniDSAStyleVisual.SetJustifyContent(const Value: TUniDSAStyleJustify);
+begin
+  if FJustifyContent = Value then Exit;
+  FJustifyContent := Value;
+  Changed;
+end;
+
 constructor TUniDSAStyleVisual.Create(AOnChange: TNotifyEvent);
 begin
   inherited;
+  FCustomCSS := TStringList.Create;
+  TStringList(FCustomCSS).OnChange := ChildChanged;
+  FJustifyContent := sjInherit;
+  FAlignItems := sfaInherit;
   FDisplay := sdInherit;
   FTransform := TUniDSAStyleGeometry.Create(ChildChanged);
   FBackground := TUniDSAStyleBackground.Create(ChildChanged);
@@ -1885,6 +1962,7 @@ end;
 
 destructor TUniDSAStyleVisual.Destroy;
 begin
+  FCustomCSS.Free;
   FTransform.Free;
   FBackground.Free;
   FBorder.Free;
@@ -1904,6 +1982,9 @@ begin
   S := TUniDSAStyleVisual(Source);
   BeginUpdate;
   try
+    FCustomCSS.Assign(S.FCustomCSS);
+    FJustifyContent := S.FJustifyContent;
+    FAlignItems := S.FAlignItems;
     FDisplay := S.FDisplay;
     FTransform.Assign(S.FTransform);
     FBackground.Assign(S.FBackground);
@@ -1966,6 +2047,9 @@ end;
 function TUniDSAStyleVisual.ToJSON: TJSONObject;
 begin
   Result := TJSONObject.Create;
+  if Trim(FCustomCSS.Text) <> '' then Result.AddPair('CustomCSS', FCustomCSS.Text);
+  if FJustifyContent <> sjInherit then Result.AddPair('JustifyContent', TJSONNumber.Create(Ord(FJustifyContent)));
+  if FAlignItems <> sfaInherit then Result.AddPair('AlignItems', TJSONNumber.Create(Ord(FAlignItems)));
   if FDisplay <> sdInherit then Result.AddPair('Display', TJSONNumber.Create(Ord(FDisplay)));
   Result.AddPair('Transform', FTransform.ToJSON);
   Result.AddPair('Background', FBackground.ToJSON);
@@ -1976,6 +2060,11 @@ begin
   Result.AddPair('Shadow', FShadow.ToJSON);
   Result.AddPair('Effects', FEffects.ToJSON);
   Result.AddPair('Position', FPosition.ToJSON);
+end;
+
+procedure TUniDSAStyleVisual.SetCustomCSS(const Value: TStrings);
+begin
+  if Assigned(Value) then FCustomCSS.Assign(Value);
 end;
 
 procedure TUniDSAStyleVisual.SetDisplay(const Value: TUniDSAStyleDisplay);
@@ -1990,9 +2079,33 @@ begin
   if Assigned(Value) then FTransform.Assign(Value);
 end;
 
+procedure TUniDSAStyleGeometry.SetScaleX(const Value: Double);
+begin
+  if FScaleX = Value then Exit;
+  FScaleX := Value;
+  Changed;
+end;
+
+procedure TUniDSAStyleGeometry.SetScaleY(const Value: Double);
+begin
+  if FScaleY = Value then Exit;
+  FScaleY := Value;
+  Changed;
+end;
+
+procedure TUniDSAStyleGeometry.SetRotateZ(const Value: Double);
+begin
+  if FRotateZ = Value then Exit;
+  FRotateZ := Value;
+  Changed;
+end;
+
 constructor TUniDSAStyleGeometry.Create(AOnChange: TNotifyEvent);
 begin
   inherited;
+  FRotateZ := -1000;
+  FScaleY := -1000;
+  FScaleX := -1000;
   FSkewX := -1000;
   FSkewY := -1000;
 end;
@@ -2004,6 +2117,9 @@ begin
   S := TUniDSAStyleGeometry(Source);
   BeginUpdate;
   try
+    FRotateZ := S.FRotateZ;
+    FScaleY := S.FScaleY;
+    FScaleX := S.FScaleX;
     FSkewX := S.FSkewX;
     FSkewY := S.FSkewY;
     Changed;
@@ -2013,6 +2129,9 @@ end;
 function TUniDSAStyleGeometry.ToJSON: TJSONObject;
 begin
   Result := TJSONObject.Create;
+  if FRotateZ <> -1000 then Result.AddPair('RotateZ', TJSONNumber.Create(FRotateZ));
+  if FScaleY <> -1000 then Result.AddPair('ScaleY', TJSONNumber.Create(FScaleY));
+  if FScaleX <> -1000 then Result.AddPair('ScaleX', TJSONNumber.Create(FScaleX));
   if FSkewX <> -1000 then Result.AddPair('SkewX', TJSONNumber.Create(FSkewX));
   if FSkewY <> -1000 then Result.AddPair('SkewY', TJSONNumber.Create(FSkewY));
 end;
@@ -2331,6 +2450,17 @@ begin
     Result.AddPair('responsive', FResponsive.ToJSON);
   except Result.Free; raise; end;
 end;
+procedure TUniDSANamedStyle.LoadCSS(const Value: string; ReplaceExisting: Boolean);
+begin FRule.LoadCSS(Value, ReplaceExisting); end;
+
+procedure TUniDSANamedStyle.Reset;
+begin FRule.Reset; end;
+
+function TUniDSANamedStyle.GetImportCSS: string;
+begin Result := ''; end;
+procedure TUniDSANamedStyle.SetImportCSS(const Value: string);
+begin FRule.ImportCSS := Value; end;
+
 constructor TUniDSANamedStyle.Create(Collection: TCollection);
 begin
   inherited;

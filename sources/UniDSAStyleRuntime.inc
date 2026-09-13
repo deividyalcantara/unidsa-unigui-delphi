@@ -37,7 +37,9 @@ const
     '    for (const key of Object.keys(source || {})) {' + #10 +
     '      if (key === ''__proto__'' || key === ''constructor'' || key === ''prototype'') continue;' + #10 +
     '      const value = source[key];' + #10 +
-    '      if (value && typeof value === ''object'' && !Array.isArray(value)) {' + #10 +
+    '      if (key === ''CustomCSS'' && typeof value === ''string'') {' + #10 +
+    '        target[key] = (target[key] ? target[key] + '';\n'' : '''') + value;' + #10 +
+    '      } else if (value && typeof value === ''object'' && !Array.isArray(value)) {' + #10 +
     '        target[key] = merge(target[key] || {}, value);' + #10 +
     '      } else target[key] = value;' + #10 +
     '    }' + #10 +
@@ -66,6 +68,18 @@ const
     '    }' + #10 +
     '    return result;' + #10 +
     '  }' + #10 +
+    '  function customDeclarations(text) {' + #10 +
+    '    if (!text || typeof text !== ''string'') return [];' + #10 +
+    '    const style = document.createElement(''span'').style;' + #10 +
+    '    style.cssText = text;' + #10 +
+    '    return Array.from(style, property => [property, style.getPropertyValue(property)]);' + #10 +
+    '  }' + #10 +
+    '  function customGroup(property) {' + #10 +
+    '    if (/^(background|border)(-|$)|^box-shadow$/.test(property)) return ''surface'';' + #10 +
+    '    if (/^(font|text)(-|$)|^(color|line-height|letter-spacing|white-space|overflow-wrap|word-break)$/.test(property)) return ''text'';' + #10 +
+    '    if (/^padding(-|$)/.test(property)) return ''content'';' + #10 +
+    '    return ''root'';' + #10 +
+    '  }' + #10 +
     '  function declarations(appearance, partial) {' + #10 +
     '    const result = {surface:{}, text:{}, content:{}, root:{}};' + #10 +
     '    const put = (group, property, value) => {' + #10 +
@@ -73,11 +87,13 @@ const
     '    };' + #10 +
     '    const a = appearance || {}, b = a.Background || {}, border = a.Border || {}, t = a.Typography || {};' + #10 +
     '    if (a.Display) put(''root'', ''display'', ['''', ''none'', ''block'', ''inline'', ''inline-block'', ''flex'', ''inline-flex'', ''grid'', ''inline-grid''][a.Display]);' + #10 +
+    '    if (a.AlignItems) put(''root'', ''align-items'', ['''', ''stretch'',''flex-start'',''center'',''flex-end'',''baseline''][a.AlignItems]);' + #10 +
+    '    if (a.JustifyContent) put(''root'', ''justify-content'', ['''', ''flex-start'',''center'',''flex-end'',''space-between'',''space-around'',''space-evenly''][a.JustifyContent]);' + #10 +
     '    const geometry = a.Transform || {};' + #10 +
-    '    if (own(geometry, ''SkewX'') || own(geometry, ''SkewY'')) {' + #10 +
-    '      for (const axis of [''X'', ''Y'']) if (own(geometry, ''Skew'' + axis))' + #10 +
-    '        put(''root'', ''--unidsa-skew-'' + axis.toLowerCase(), number(geometry[''Skew'' + axis], 0) + ''deg'');' + #10 +
-    '      put(''root'', ''transform'', ''skewX(var(--unidsa-skew-x, 0deg)) skewY(var(--unidsa-skew-y, 0deg))'');' + #10 +
+    '    if (Object.keys(geometry).length) {' + #10 +
+    '      for (const [field, variable, unit] of [[''SkewX'',''skew-x'',''deg''],[''SkewY'',''skew-y'',''deg''],[''ScaleX'',''scale-x'',''''],[''ScaleY'',''scale-y'',''''],[''RotateZ'',''rotate-z'',''deg'']])' + #10 +
+    '        if (own(geometry, field)) put(''root'', ''--unidsa-'' + variable, number(geometry[field], 0) + unit);' + #10 +
+    '      put(''root'', ''transform'', ''scale(var(--unidsa-scale-x, 1), var(--unidsa-scale-y, 1)) rotateZ(var(--unidsa-rotate-z, 0deg)) skewX(var(--unidsa-skew-x, 0deg)) skewY(var(--unidsa-skew-y, 0deg))'');' + #10 +
     '    }' + #10 +
     '    put(''surface'', ''background-color'', rgba(b.Color, b.Opacity));' + #10 +
     '    if (b.Color) put(''surface'', ''background-image'', ''none'');' + #10 +
@@ -124,7 +140,7 @@ const
     '    if (t.Family) put(''text'', ''font-family'', JSON.stringify(t.Family));' + #10 +
     '    put(''text'', ''color'', t.Color);' + #10 +
     '    if (own(t, ''Size'')) put(''text'', ''font-size'', px(Math.max(1, t.Size)));' + #10 +
-    '    if (t.Weight) put(''text'', ''font-weight'', ['''', ''400'', ''500'', ''600'', ''700''][t.Weight]);' + #10 +
+    '    if (t.Weight) put(''text'', ''font-weight'', ['''', ''400'', ''500'', ''600'', ''700'', ''bolder'', ''lighter''][t.Weight]);' + #10 +
     '    if (t.Italic) put(''text'', ''font-style'', t.Italic === 2 ? ''italic'' : ''normal'');' + #10 +
     '    if (t.Alignment) put(''text'', ''text-align'', ['''', ''left'',''center'',''right'',''justify''][t.Alignment]);' + #10 +
     '    if (own(t, ''LineHeight'')) put(''text'', ''line-height'', Math.max(0.1, t.LineHeight));' + #10 +
@@ -158,6 +174,11 @@ const
     '      (shadow.Inset === 2 ? ''inset '' : '''') + px(number(shadow.OffsetX, 0)) + '' '' + px(number(shadow.OffsetY, 2)) + '' '' +' + #10 +
     '      px(Math.max(0, number(shadow.Blur, 8))) + '' '' + px(number(shadow.Spread, 0)) + '' '' + rgba(shadow.Color || ''#000000'', number(shadow.Opacity, 15)));' + #10 +
     '    const effects = a.Effects || {};' + #10 +
+    '    if (own(effects, ''BackdropBlur'')) {' + #10 +
+    '      put(''root'', ''backdrop-filter'', ''blur('' + px(Math.max(0, effects.BackdropBlur)) + '')'');' + #10 +
+    '      put(''root'', ''-webkit-backdrop-filter'', ''blur('' + px(Math.max(0, effects.BackdropBlur)) + '')'');' + #10 +
+    '    }' + #10 +
+    '    if (effects.UserSelect) put(''root'', ''user-select'', ['''', ''auto'',''none'',''text'',''all''][effects.UserSelect]);' + #10 +
     '    if (own(effects, ''Opacity'')) put(''root'', ''opacity'', clamp(effects.Opacity, 0, 100) / 100);' + #10 +
     '    if (effects.Cursor) put(''root'', ''cursor'', ['''', ''default'',''pointer'',''text'',''not-allowed'',''grab''][effects.Cursor]);' + #10 +
     '    if (own(effects, ''TransitionMs'')) {' + #10 +
@@ -207,7 +228,11 @@ const
     '  }' + #10 +
     '  function partValues(part, partial) {' + #10 +
     '    const rules = declarations(part, partial);' + #10 +
-    '    return Object.assign({}, rules.surface, rules.text, rules.content, rules.root);' + #10 +
+    '    const values = Object.assign({}, rules.surface, rules.text, rules.content, rules.root);' + #10 +
+    '    for (const [property, value] of customDeclarations((part || {}).CustomCSS)) {' + #10 +
+    '      delete values[property]; values[property] = value;' + #10 +
+    '    }' + #10 +
+    '    return values;' + #10 +
     '  }' + #10 +
     '  function contentString(text) {' + #10 +
     '    return ''"'' + String(text).replace(/[\\"\n\r\f{};\u0000]/g,' + #10 +
@@ -233,7 +258,7 @@ const
     '    for (const name of ['''', ''Content'', ''Before'', ''After'']) {' + #10 +
     '      if (!appearances.some(a => Object.keys(((name ? a[name] : a) || {}).Transform || {}).length)) continue;' + #10 +
     '      const targets = name === ''Content'' ? contentTargets(el) : [name ? ''::'' + name.toLowerCase() : ''''];' + #10 +
-    '      css += cssRule(targets.map(target => base + target), {''--unidsa-skew-x'':''0deg'', ''--unidsa-skew-y'':''0deg''});' + #10 +
+    '      css += cssRule(targets.map(target => base + target), {''--unidsa-skew-x'':''0deg'', ''--unidsa-skew-y'':''0deg'', ''--unidsa-scale-x'':''1'', ''--unidsa-scale-y'':''1'', ''--unidsa-rotate-z'':''0deg''});' + #10 +
     '    }' + #10 +
     '    return css;' + #10 +
     '  }' + #10 +
@@ -308,6 +333,14 @@ const
     '      if (rules.surface[''border-width''] === ''0px'') css += cssRule(bases.map(b => b + '' .x-form-trigger-wrap''), {''box-shadow'':''none''});' + #10 +
     '      if (Object.keys(rules.content).length) css += cssRule(bases.map(b => b + '' .x-form-text''), {''box-sizing'':''border-box''});' + #10 +
     '      if (rules.surface[''border-radius'']) css += cssRule(bases.map(b => b + '' .x-form-trigger-wrap''), {''overflow'':''hidden''});' + #10 +
+    '    }' + #10 +
+    '    for (const [property, value] of customDeclarations((appearance || {}).CustomCSS)) {' + #10 +
+    '      const group = customGroup(property);' + #10 +
+    '      css += cssRule(bases.flatMap(base => map[group].map(suffix => base + suffix)), {[property]:value});' + #10 +
+    '      if (property.startsWith(''background'') && el.matches(''.x-panel,.x-window'')) {' + #10 +
+    '        const bodies = ['' > .x-panel-bodyWrap > .x-panel-body'','' > .x-window-bodyWrap > .x-window-body''];' + #10 +
+    '        css += cssRule(bases.flatMap(base => bodies.map(suffix => base + suffix)), {[property]:value});' + #10 +
+    '      }' + #10 +
     '    }' + #10 +
     '    return css;' + #10 +
     '  }' + #10 +
